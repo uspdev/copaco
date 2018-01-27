@@ -37,11 +37,13 @@ class EquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //dd($request);
-        dd($request->patrimonio);
-        //dd($_POST);
+        // dd(request()->all());
+        Equipamento::create(request()->all());
+
+        // Melhorar este redirecionamento...
+        return redirect('/');
     }
 
     /**

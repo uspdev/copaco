@@ -29,7 +29,7 @@
     </div>
 
     <div>
-        rede: <input name="rede">
+        rede: <input name="rede_id">
     </div>
 
     <button type="submit"  value="Submit">Submit</button>
