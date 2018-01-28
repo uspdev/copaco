@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 
 //Route::get('/equipamento/create','EquipamentoController@create');
-Route::resource('/equipamento','EquipamentoController');
+Route::resource('equipamento','EquipamentoController');

@@ -54,7 +54,7 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {
-        //
+        dd($equipamento)   ;
     }
 
     /**
@@ -65,7 +65,11 @@ class EquipamentoController extends Controller
      */
     public function edit(Equipamento $equipamento)
     {
-        //
+        /* Rota gerada pelo laravel:
+        http://devserver:porta/equiapmento/{id}/edit
+        */
+        // return $contacts;
+        return view ('equipamentos.edit', compact('equipamento'));
     }
 
     /**
@@ -77,7 +81,11 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, Equipamento $equipamento)
     {
-        //
+        $eqto = Equipamento::find($equipamento->id)
+                    ->update($request->all())
+        ;
+        
+        return redirect('/');
     }
 
     /**
