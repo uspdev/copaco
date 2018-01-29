@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/about', function () {
+    return view('dashboard.master');
 });
 
 //Route::get('/equipamento/create','EquipamentoController@create');
-Route::resource('/equipamento','EquipamentoController');
+//Route::resource('/equipamento','EquipamentoController');
