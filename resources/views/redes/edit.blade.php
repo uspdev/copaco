@@ -14,7 +14,7 @@
 
 <form method="post" action="{{ action('RedeController@update', $rede->id) }}">
     {{csrf_field()}}
-    <input name="_method" type="hidden" value="PATCH">
+    {{method_field('patch')}}
     <div class="form-group row>
         <label class="col-form-label" for="nome">Nome</label>
         <div class="col-sm-7">
