@@ -11,12 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-//Route::get('/equipamento/create','EquipamentoController@create');
-
-Route::resource('equipamento','EquipamentoController');
+Route::resource('equipamentos','EquipamentoController');
 Route::resource('redes','RedeController');
-
