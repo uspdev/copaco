@@ -1,7 +1,7 @@
 @extends('dashboard.master')
 
 @section('content')
-<h1>Cadastrar Rede</h1>
+<h1>Cadastrar Equipamento</h1>
 
 <div class="flash-message">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
@@ -13,8 +13,8 @@
 </div> <!-- end .flash-message -->
 
 <p>
-    <a href="{{ route('redes.create') }}" class="btn btn-success">
-        Adicionar Rede
+    <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
+        Adicionar Equipamento
     </a>
 </p>
 
@@ -22,27 +22,22 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>#</th>
-                <th>Nome</th>
-                <th>IP Rede</th>
-                <th>CIDR</th>
+                <th>MAC Address</th>
+                <th>Data de Vencimento</th>
                 <th colspan="2">Ações</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($redes as $rede)
+            @foreach($equipamentos as $equipamento)
             <tr>
-                <td>{{ $rede->id }}</td>
-                <td>{{ $rede->nome }}</td>
-                <td>{{ $rede->iprede }}</td>
-                <td>{{ $rede->cidr }}</td>
+                <td>{{ $equipamento->macaddress }}</td>
+                <td>{{ $equipamento->vencimento }}</td>
                 <td>
-                    <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
                 </td>
                 <td>
-                    <form action="{{action('RedeController@destroy', $rede->id)}}" method="post">
-                      {{csrf_field()}}
-                      <input name="_method" type="hidden" value="DELETE">
+                    <form action="{{action('EquipamentoController@destroy', $equipamento->id)}}" method="post">
+                      {{csrf_field()}} {{ method_field('delete') }}
                       <button class="delete-item btn btn-danger" type="submit">Deletar</button>
                   </form>
                 </td>

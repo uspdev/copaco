@@ -14,7 +14,8 @@ class EquipamentoController extends Controller
      */
     public function index()
     {
-        //
+        $equipamentos = Equipamento::all();
+        return view('equipamentos.index',compact('equipamentos'));
     }
 
     /**
@@ -24,11 +25,7 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
-
-        $funfei = 'funfei mesmo';
-        return view('equipamentos.create',compact(
-            'funfei'
-        )); 
+        return view('equipamentos.create'); 
     }
 
     /**
@@ -37,11 +34,13 @@ class EquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        //dd($request);
-        dd($request->patrimonio);
-        //dd($_POST);
+        // dd(request()->all());
+        Equipamento::create(request()->all());
+
+        // Melhorar este redirecionamento...
+        return redirect('/equipamentos');
     }
 
     /**
@@ -52,7 +51,7 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {
-        //
+        dd($equipamento)   ;
     }
 
     /**
@@ -63,7 +62,11 @@ class EquipamentoController extends Controller
      */
     public function edit(Equipamento $equipamento)
     {
-        //
+        /* Rota gerada pelo laravel:
+        http://devserver:porta/equiapmento/{id}/edit
+        */
+        // return $contacts;
+        return view ('equipamentos.edit', compact('equipamento'));
     }
 
     /**
@@ -75,7 +78,11 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, Equipamento $equipamento)
     {
-        //
+        $eqto = Equipamento::find($equipamento->id)
+                    ->update($request->all())
+        ;
+        
+        return redirect('/equipamentos');
     }
 
     /**
