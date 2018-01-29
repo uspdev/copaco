@@ -5,7 +5,7 @@ Features:
  - Add new network
  - Generate dhcpd.conf for multi subnet setup
 
-Deploy procudures:
+Deploy procedures:
  
     composer install
     cp .env.example .env

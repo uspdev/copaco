@@ -2,13 +2,13 @@
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="#">
+                <a class="nav-link active" href="{{ url('redes') }}">
                   <span data-feather="home"></span>
                   Redes <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href=" {{ url('redes/create') }} ">
                   <span data-feather="file"></span>
                   Cadastrar rede
                 </a>
