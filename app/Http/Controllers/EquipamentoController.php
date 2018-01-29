@@ -14,7 +14,8 @@ class EquipamentoController extends Controller
      */
     public function index()
     {
-        //
+        $equipamentos = Equipamento::all();
+        return view('equipamentos.index',compact('equipamentos'));
     }
 
     /**
@@ -24,11 +25,7 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
-
-        $funfei = 'funfei mesmo';
-        return view('equipamentos.create',compact(
-            'funfei'
-        )); 
+        return view('equipamentos.create'); 
     }
 
     /**
@@ -43,7 +40,7 @@ class EquipamentoController extends Controller
         Equipamento::create(request()->all());
 
         // Melhorar este redirecionamento...
-        return redirect('/');
+        return redirect('/equipamentos');
     }
 
     /**
@@ -85,7 +82,7 @@ class EquipamentoController extends Controller
                     ->update($request->all())
         ;
         
-        return redirect('/');
+        return redirect('/equipamentos');
     }
 
     /**

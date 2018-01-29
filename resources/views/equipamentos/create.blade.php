@@ -1,7 +1,7 @@
-@extends('base')
+@extends('dashboard.master')
 
 @section('content')
-<form action="{{ url('equipamento') }}" method="post">
+<form action="{{ url('equipamentos') }}" method="post">
     {{ csrf_field() }}
 
     <div>

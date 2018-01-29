@@ -1,9 +1,9 @@
-@extends('base')
+@extends('dashboard.master')
 
 @section('content')
 <h1>Editar Equipamento</h1>
 
-<form action="{{ url('equipamento'). '/' . $equipamento->id }}" method='post'>
+<form action="{{ url('equipamentos'). '/' . $equipamento->id }}" method='post'>
     {{ csrf_field() }} {{ method_field('patch') }}
     <div>
         Patrimoniado: <input name="patrimoniado" value="{{ $equipamento->patrimoniado }}">
