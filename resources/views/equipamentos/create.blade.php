@@ -1,11 +1,39 @@
 @extends('base')
 
 @section('content')
-<h1>
-{{ $funfei }}
-</h1>
+<form action="{{ url('equipamento') }}" method="post">
+    {{ csrf_field() }}
 
-@include('equipamentos.form')
+    <div>
+        Patrimoniado: <input name="patrimoniado">
+    </div>
+
+    <div>
+        Patrimônio: <input name="patrimonio">
+    </div>
+
+    <div>
+        Mac Address: <input name="macaddress">
+    </div>
+
+    <div>
+        Local: <input name="local">
+    </div>
+
+    <div>
+        Vencimento: <input name="vencimento">
+    </div>
+
+    <div>
+        IP: <input name="ip">
+    </div>
+
+    <div>
+        rede: <input name="rede_id">
+    </div>
+
+    <button type="submit"  value="Submit">Submit</button>
+
+</form>
 
 @endsection
-
