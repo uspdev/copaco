@@ -20,7 +20,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('equipamentos/create') }}">
                   <span data-feather="users"></span>
                   Cadastrar Equipamentos
                 </a>
