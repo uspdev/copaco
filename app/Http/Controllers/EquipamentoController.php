@@ -36,10 +36,11 @@ class EquipamentoController extends Controller
      */
     public function store()
     {
-        // dd(request()->all());
+
         Equipamento::create(request()->all());
 
         // Melhorar este redirecionamento...
+        session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect('/equipamentos');
     }
 
@@ -82,6 +83,7 @@ class EquipamentoController extends Controller
                     ->update($request->all())
         ;
         
+        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect('/equipamentos');
     }
 
