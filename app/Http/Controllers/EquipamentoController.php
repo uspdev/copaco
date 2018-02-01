@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Equipamento;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,8 @@ class EquipamentoController extends Controller
     public function store()
     {
         // dd(request()->all());
+        $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
+        $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         Equipamento::create(request()->all());
 
         // Melhorar este redirecionamento...
@@ -78,9 +81,10 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, Equipamento $equipamento)
     {
+        $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
+        $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $eqto = Equipamento::find($equipamento->id)
-                    ->update($request->all())
-        ;
+                    ->update($request->all());
         
         return redirect('/equipamentos');
     }
@@ -95,4 +99,5 @@ class EquipamentoController extends Controller
     {
         //
     }
+  
 }
