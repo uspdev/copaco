@@ -41,6 +41,7 @@ class RedeController extends Controller
     {
         $rede = new Rede;
         $rede->nome     = $request->nome;
+	$this->validate ($request, ['iprede'=>'ip'],['Um IP válido é requerido.']);
         $rede->iprede   = $request->iprede;
         $rede->cidr     = $request->cidr;
 
