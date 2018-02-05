@@ -34,10 +34,18 @@ class EquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-
-        Equipamento::create(request()->all());
+        Equipamento::create([
+          'patrimoniado' => $request->patrimoniado,
+          'patrimonio' => $request->patrimonio,
+          'descricaonaopatromoniado' => $request->descricaonaopatromoniado,
+          'macaddress' => $request->macaddress,
+          'local' => $request->local,
+          'ip' => $request->ip,
+          'rede_id' => $request->rede_id,
+          'vencimento' => implode("-",array_reverse(explode('/',$request->vencimento))),
+        ]);
 
         // Melhorar este redirecionamento...
         session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
@@ -66,7 +74,8 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
-        // return $contacts;
+        // 
+        $equipamento->vencimento = implode("/",array_reverse(explode('-',$equipamento->vencimento)));
         return view ('equipamentos.edit', compact('equipamento'));
     }
 
