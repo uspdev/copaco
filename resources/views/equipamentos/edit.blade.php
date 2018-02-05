@@ -46,7 +46,7 @@
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="vencimento">Vencimento</label>
         <div class="col-sm-7">
-            <input name="vencimento" value="{{ $equipamento->vencimento }}">
+            <input name="vencimento" value="{{ $equipamento->vencimento }}" id="datepicker">
         </div>
     </div>
 
