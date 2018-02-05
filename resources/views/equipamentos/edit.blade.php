@@ -16,13 +16,23 @@
     {{ csrf_field() }} {{ method_field('patch') }}
     
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="patrimoniado">Patrimoniado</label>
+        <label class="col-sm-1 col-form-label"></label>
+          <div class="col-sm-7">
+             <label class="form-check-label" for="naopatrimoniado">
+                <input class="form-check-input" id="naopatrimoniado" name="naopatrimoniado" type="checkbox" value="{{ $equipamento->naopatrimoniado }}"{{ $equipamento->naopatrimoniado === 1 ? 'checked' : '' }}>
+                 Equipamento não patrimoniado?
+             </label>
+          </div>
+    </div>
+
+    <div class="form-group row" id="sempatrimonio" hidden>
+        <label class="col-sm-1 col-form-label" for="descricaosempatrimonio">Descrição para não patrimoniados</label>
         <div class="col-sm-7">
-            <input name="patrimoniado" value="{{ $equipamento->patrimoniado }}">
+            <input name="descricaosempatrimonio" value="{{ $equipamento->descricaosempatrimonio }}">
         </div>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row" id="compatrimonio">
         <label class="col-sm-1 col-form-label" for="patrimonio">Patrimônio</label>
             <div class="col-sm-7">
             <input name="patrimonio" value="{{ $equipamento->patrimonio }}">
