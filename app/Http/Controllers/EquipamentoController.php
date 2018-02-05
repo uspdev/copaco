@@ -35,14 +35,25 @@ class EquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        // dd(request()->all());
+
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
-        Equipamento::create(request()->all());
+      
+        Equipamento::create([
+          'patrimoniado' => $request->patrimoniado,
+          'patrimonio' => $request->patrimonio,
+          'descricaonaopatromoniado' => $request->descricaonaopatromoniado,
+          'macaddress' => $request->macaddress,
+          'local' => $request->local,
+          'ip' => $request->ip,
+          'rede_id' => $request->rede_id,
+          'vencimento' => implode("-",array_reverse(explode('/',$request->vencimento))),
+        ]);
 
         // Melhorar este redirecionamento...
+        session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect('/equipamentos');
     }
 
@@ -68,7 +79,8 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
-        // return $contacts;
+        // 
+        $equipamento->vencimento = implode("/",array_reverse(explode('-',$equipamento->vencimento)));
         return view ('equipamentos.edit', compact('equipamento'));
     }
 
@@ -86,6 +98,7 @@ class EquipamentoController extends Controller
         $eqto = Equipamento::find($equipamento->id)
                     ->update($request->all());
         
+        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect('/equipamentos');
     }
 
