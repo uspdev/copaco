@@ -16,16 +16,20 @@
     {{ csrf_field() }}
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label"></label>
-          <div class="col-sm-7">
-             <label class="form-check-label" for="naopatrimoniado">
-                <input class="form-check-input" id="naopatrimoniado" name="naopatrimoniado" type="checkbox" value="1">
-                 Equipamento não patrimoniado?
-             </label>
-          </div>
+      <label class="col-sm-1 col-form-label">Possui Patrimônio?</label>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1" checked="checked"> Sim
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-nao" value="0"> Não
+          </label>
+        </div>
     </div>
 
-    <div class="form-group row" id="sempatrimonio" hidden>
+    <div class="form-group row" id="sempatrimonio" hidden >
         <label class="col-sm-1 col-form-label" for="descricaosempatrimonio">Descrição para não patrimoniados</label>
         <div class="col-sm-7">
             <input name="descricaosempatrimonio">

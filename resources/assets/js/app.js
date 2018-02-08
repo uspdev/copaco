@@ -1,27 +1,18 @@
-$('#naopatrimoniado').change(function(){
-    if($(this).is(':checked')){
-        $('#sempatrimonio').attr('hidden',false);
-        $('#sempatrimonio input').attr('required',true);
-        $('#compatrimonio').hide();
-        $('#compatrimonio input').attr('required',false);
-    }
-    else {
-        $('#compatrimonio').show();
-        $('#compatrimonio input').attr('required',true);
-        $('#sempatrimonio').attr('hidden',true);
-        $('#sempatrimonio input').attr('required',false);
-    }
+$("input[name='naopatrimoniado']").change(function(){
+  if($(this).val() == 1){
+    checked_sim();
+  }
+  else {
+    checked_nao();
+  }
 });
 
-if($('#naopatrimoniado').is(':checked')){
-    $('#sempatrimonio').attr('hidden',false);
-    $('#sempatrimonio input').attr('required',true);
-    $('#compatrimonio').hide();
-    $('#compatrimonio input').attr('required',false);
+function checked_nao(){
+  $('#sempatrimonio').attr('hidden',false).find('input').attr('required',true);
+  $('#compatrimonio').attr('hidden',true).find('input').attr('required',false).val('');
 }
-else {
-    $('#compatrimonio').show();
-    $('#compatrimonio input').attr('required',true);
-    $('#sempatrimonio').attr('hidden',true);
-    $('#sempatrimonio input').attr('required',false);
-};
+
+function checked_sim(){
+  $('#compatrimonio').attr('hidden',false).find('input').attr('required',true);
+  $('#sempatrimonio').attr('hidden',true).find('input').attr('required',false).val('');
+}
