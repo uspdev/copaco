@@ -68,13 +68,25 @@
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="rede_id">Rede</label>
         <div class="col-sm-7">
-            <input name="rede_id">
-        </div>
+            <!-- <input name="rede_id"> -->
+            <select name="rede_id">
+                <option value="" selected="">Escolha uma Rede</option>
+                
+                @foreach($redes as $rede)
+                
+                    <option value="{{ $rede->id }}">
+                        {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                    </option>
+                
+                @endforeach()
+                
+            </select>
+        </div> 
     </div>
 
     <div class="form-group row">
         <div class="col-md-0"></div>
-        <input type="submit" class="btn btn-primary">
+        <input type="submit" class="btn btn-primary" value="Cadastrar Equipamento">
     </div>
 
 </form>
