@@ -80,8 +80,6 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
-        // 
-        $equipamento->vencimento = implode("/",array_reverse(explode('-',$equipamento->vencimento)));
         return view ('equipamentos.edit', compact('equipamento'));
     }
 
