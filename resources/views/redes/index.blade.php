@@ -18,6 +18,7 @@
                 <th>#</th>
                 <th>Nome</th>
                 <th>IP Rede</th>
+                <th>Gateway</th>
                 <th>CIDR</th>
                 <th colspan="2">Ações</th>
             </tr>
@@ -28,6 +29,7 @@
                 <td>{{ $rede->id }}</td>
                 <td>{{ $rede->nome }}</td>
                 <td>{{ $rede->iprede }}</td>
+                <td>{{ $rede->gateway }}</td>
                 <td>{{ $rede->cidr }}</td>
                 <td>
                     <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>

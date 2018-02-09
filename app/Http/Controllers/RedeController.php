@@ -43,6 +43,8 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
 	$this->validate ($request, ['iprede'=>'ip'],['Um IP válido é requerido.']);
         $rede->iprede   = $request->iprede;
+	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $rede->gateway   = $request->gateway;
         $rede->cidr     = $request->cidr;
 
         try {            
@@ -90,6 +92,7 @@ class RedeController extends Controller
         $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
+        $rede->gateway  = $request->gateway;
         $rede->cidr     = $request->cidr;
 
         try {            
