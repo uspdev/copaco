@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Equipamento;
 use Carbon\Carbon;
+use App\Rede;
 use Illuminate\Http\Request;
 
 class EquipamentoController extends Controller
@@ -17,7 +18,7 @@ class EquipamentoController extends Controller
     public function index()
     {
         $equipamentos = Equipamento::all();
-        return view('equipamentos.index',compact('equipamentos'));
+        return view('equipamentos.index', compact('equipamentos'));
     }
 
     /**
@@ -27,7 +28,8 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
-        return view('equipamentos.create'); 
+        $redes = Rede::all();
+        return view('equipamentos.create' , compact('redes')); 
     }
 
     /**
@@ -43,14 +45,14 @@ class EquipamentoController extends Controller
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
       
         Equipamento::create([
-          'patrimoniado' => $request->patrimoniado,
+          'naopatrimoniado' => $request->naopatrimoniado,
           'patrimonio' => $request->patrimonio,
-          'descricaonaopatromoniado' => $request->descricaonaopatromoniado,
+          'descricaosempatrimonio' => $request->descricaosempatrimonio,
           'macaddress' => $request->macaddress,
           'local' => $request->local,
           'ip' => $request->ip,
           'rede_id' => $request->rede_id,
-          'vencimento' => implode("-",array_reverse(explode('/',$request->vencimento))),
+          'vencimento' => implode("-", array_reverse(explode('/', $request->vencimento))),
         ]);
 
         // Melhorar este redirecionamento...

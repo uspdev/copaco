@@ -10,16 +10,30 @@
     {{ csrf_field() }}
 
     <div class="form-group row">
-        <label for="patrimoniado" class="col-sm-2 col-form-label">Patrimoniado</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control form-control-lg" id="patrimoniado" name="patrimoniado">
+      <label class="col-sm-1 col-form-label">Possui Patrimônio?</label>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1" checked="checked"> Sim
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <label class="form-check-label">
+            <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-nao" value="0"> Não
+          </label>
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="patrimonio">Patrimônio</label>
+    <div class="form-group row" id="sempatrimonio" hidden >
+        <label class="col-sm-1 col-form-label" for="descricaosempatrimonio">Descrição para não patrimoniados</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control form-control-lg" id="patrimonio" name="patrimonio">
+            <input name="descricaosempatrimonio">
+        </div>
+    </div>
+
+    <div class="form-group row" id="compatrimonio">
+        <label class="col-sm-1 col-form-label" for="patrimonio">Patrimônio</label>
+        <div class="col-sm-7">
+            <input name="patrimonio" required>
         </div>
     </div>
 
@@ -54,13 +68,25 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="rede_id">Rede</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control form-control-lg" id="rede_id" name="rede_id">
+            <!-- <input name="rede_id"> -->
+            <select name="rede_id">
+                <option value="" selected="">Escolha uma Rede</option>
+                
+                @foreach($redes as $rede)
+                
+                    <option value="{{ $rede->id }}">
+                        {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                    </option>
+                
+                @endforeach()
+                
+            </select>
         </div>
     </div>
 
     <div class="form-group row">
         <div class="col-md-0"></div>
-        <input type="submit" class="btn btn-primary">
+        <input type="submit" class="btn btn-primary" value="Cadastrar Equipamento">
     </div>
 
 </form>
