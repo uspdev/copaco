@@ -30,6 +30,7 @@ class CreateRedesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('equipamentos');
         Schema::dropIfExists('redes');
     }
 }
