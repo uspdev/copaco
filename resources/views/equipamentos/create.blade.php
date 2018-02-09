@@ -10,51 +10,51 @@
     {{ csrf_field() }}
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="patrimoniado">Patrimoniado</label>
-        <div class="col-sm-7">
-            <input name="patrimoniado">
+        <label for="patrimoniado" class="col-sm-2 col-form-label">Patrimoniado</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control form-control-lg" id="patrimoniado" name="patrimoniado">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="patrimonio">Patrimônio</label>
+        <label class="col-sm-2 col-form-label" for="patrimonio">Patrimônio</label>
         <div class="col-sm-7">
-            <input name="patrimonio">
+            <input type="text" class="form-control form-control-lg" id="patrimonio" name="patrimonio">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="macaddress">Mac Address</label>
+        <label class="col-sm-2 col-form-label" for="macaddress">Mac Address</label>
         <div class="col-sm-7">
-            <input id="macaddress" name="macaddress">
+            <input type="text" class="form-control form-control-lg" id="macaddress" name="macaddress">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="local">Local</label>
+        <label class="col-sm-2 col-form-label" for="local">Local</label>
         <div class="col-sm-7">
-            <input name="local">
+            <input type="text" class="form-control form-control-lg" id="local" name="local">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="vencimento">Vencimento</label>
-        <div class="col-sm-7">
-            <input name="vencimento" id="datepicker">
+        <label class="col-sm-2 col-form-label" for="vencimento">Vencimento</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control form-control-lg" id="datepicker" name="vencimento">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="ip">IP</label>
+        <label class="col-sm-2 col-form-label" for="ip">IP</label>
         <div class="col-sm-7">
-            <input name="ip">
+            <input type="text" class="form-control form-control-lg" id="ip" name="ip">
         </div>
     </div>
 
     <div class="form-group row">
-        <label class="col-sm-1 col-form-label" for="rede_id">Rede</label>
+        <label class="col-sm-2 col-form-label" for="rede_id">Rede</label>
         <div class="col-sm-7">
-            <input name="rede_id">
+            <input type="text" class="form-control form-control-lg" id="rede_id" name="rede_id">
         </div>
     </div>
 
