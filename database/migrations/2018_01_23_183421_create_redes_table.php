@@ -18,6 +18,7 @@ class CreateRedesTable extends Migration
             $table->timestamps();
             $table->string('nome');
             $table->ipAddress('iprede');
+            $table->ipAddress('gateway');
             $table->integer('cidr');
         });
     }

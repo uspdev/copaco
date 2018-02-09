@@ -22,6 +22,12 @@
         </div>
     </div>
     <div class="form-group row">
+        <label class="col-sm-1  col-form-label" for="gateway">Gateway</label>
+        <div class="col-sm-7">
+            <input type="text" name="gateway" value="{{ $rede->gateway }}">
+        </div>
+    </div>
+    <div class="form-group row">
         <label class="col-sm-1  col-form-label" for="cidr">Cidr</label>
         <div class="col-sm-7">
             <input type="text" name="cidr" value="{{ $rede->cidr }}">
