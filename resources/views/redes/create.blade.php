@@ -3,14 +3,8 @@
 @section('content')
 <h1>Cadastrar Rede</h1>
 
-<div class="flash-message">
-    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-    @if(Session::has('alert-' . $msg))
-
-    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="fechar">&times;</a></p>
-    @endif
-    @endforeach
-</div> <!-- end .flash-message -->
+@include('messages.flash')
+@include('messages.errors')
 
 <form method="post" action="{{ url('redes') }}">
     {{csrf_field()}}

@@ -3,14 +3,8 @@
 @section('content')
 <h1>Cadastrar Equipamento</h1>
 
-<div class="flash-message">
-    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-    @if(Session::has('alert-' . $msg))
-
-    <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="fechar">&times;</a></p>
-    @endif
-    @endforeach
-</div> <!-- end .flash-message -->
+@include('messages.flash')
+@include('messages.errors')
 
 <form action="{{ url('equipamentos') }}" method="post">
     {{ csrf_field() }}
@@ -46,7 +40,7 @@
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="macaddress">Mac Address</label>
         <div class="col-sm-7">
-            <input name="macaddress">
+            <input id="macaddress" name="macaddress">
         </div>
     </div>
 
@@ -60,7 +54,7 @@
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="vencimento">Vencimento</label>
         <div class="col-sm-7">
-            <input name="vencimento">
+            <input name="vencimento" id="datepicker">
         </div>
     </div>
 
