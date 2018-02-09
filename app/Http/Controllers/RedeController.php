@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use App\Rede;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 
 class RedeController extends Controller
 {
@@ -39,9 +40,20 @@ class RedeController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+                    'nome'      => 'required',
+                    'iprede'    => 'required|ip',
+                    'cidr'      => 'required|numeric|min:1|max:32'
+                ]);
+                
+                if ($validator->fails()) {
+                    return redirect('redes/create')
+                                ->withErrors($validator)
+                                ->withInput();
+                }
+
         $rede = new Rede;
         $rede->nome     = $request->nome;
-	$this->validate ($request, ['iprede'=>'ip'],['Um IP válido é requerido.']);
         $rede->iprede   = $request->iprede;
         $rede->cidr     = $request->cidr;
 
@@ -87,6 +99,18 @@ class RedeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+                    'nome'      => 'required',
+                    'iprede'    => 'required|ip',
+                    'cidr'      => 'required|numeric|min:1|max:32'
+                ]);
+                
+                if ($validator->fails()) {
+                    return redirect('redes/create')
+                                ->withErrors($validator)
+                                ->withInput();
+                }
+
         $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;

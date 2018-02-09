@@ -12,19 +12,19 @@
     <div class="form-group row">
         <label class="col-sm-1 col-form-label" for="nome">Nome</label>
         <div class="col-sm-7">
-            <input type="text" name="nome" value="{{ $rede->nome }}">
+            <input type="text" class="form-control form-control-lg" id="nome" name="nome" value="{{ $rede->nome }}">
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="iprede">IP Rede</label>
+        <label class="col-sm-1 col-form-label" for="iprede">IP Rede</label>
         <div class="col-sm-7">
-            <input type="text" name="iprede" value="{{ $rede->iprede }}">
+            <input type="text" class="form-control form-control-lg" id="iprede" name="iprede" value="{{ $rede->iprede }}">
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="cidr">Cidr</label>
+        <label class="col-sm-1 col-form-label" for="cidr">CIDR</label>
         <div class="col-sm-7">
-            <input type="text" name="cidr" value="{{ $rede->cidr }}">
+            <input type="text" class="form-control form-control-lg" id="cidr" name="cidr" value="{{ $rede->cidr }}">
         </div>
     </div>
     <div class="form-group row">
