@@ -99,6 +99,18 @@ class RedeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'nome'      => 'required',
+            'iprede'    => 'required|ip',
+            'cidr'      => 'required|numeric|min:1|max:32'
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect("redes/$id/edit")
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+        
         $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
