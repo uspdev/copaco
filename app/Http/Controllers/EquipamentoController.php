@@ -42,9 +42,9 @@ class EquipamentoController extends Controller
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
       
         Equipamento::create([
-          'patrimoniado' => $request->patrimoniado,
+          'naopatrimoniado' => $request->naopatrimoniado,
           'patrimonio' => $request->patrimonio,
-          'descricaonaopatromoniado' => $request->descricaonaopatromoniado,
+          'descricaosempatrimonio' => $request->descricaosempatrimonio,
           'macaddress' => $request->macaddress,
           'local' => $request->local,
           'ip' => $request->ip,
