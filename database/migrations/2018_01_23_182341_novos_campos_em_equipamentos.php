@@ -15,9 +15,9 @@ class NovosCamposEmEquipamentos extends Migration
     {
         Schema::table('equipamentos', function (Blueprint $table) {
             //
-            $table->boolean('patrimoniado');
+            $table->boolean('naopatrimoniado')->default(0);
             $table->string('patrimonio')->nullable();
-            $table->string('descricaonaopatromoniado')->nullable();
+            $table->string('descricaosempatrimonio')->nullable();
             $table->macAddress('macaddress')->unique();
             $table->string('local');
             $table->date('vencimento');
