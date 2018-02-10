@@ -31,7 +31,6 @@
                   dhcpd.conf
                 </a>
               </li>
-
             </ul>
 
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -52,8 +51,6 @@
                   <span data-feather="file-text"></span>
                   Equipamentos não alocados
                 </a>
-              </li>
-
               </li>
             </ul>
           </div>

@@ -67,7 +67,6 @@
                     </select>
             </div>
             <button type="submit" class="btn btn-primary">Cadastrar Equipamento</button>
-            <!-- <input type="submit" class="btn btn-primary" value="Cadastrar Equipamento"> -->
     
         </form>
     </div>
