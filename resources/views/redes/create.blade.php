@@ -5,37 +5,33 @@
 
 @include('messages.flash')
 @include('messages.errors')
+<div class="row">
+    <div class="col-lg-3">
+        <form method="post" action="{{ url('redes') }}">
+            {{csrf_field()}}
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" name="nome">
+            </div>
 
-<form method="post" action="{{ url('redes') }}">
-    {{csrf_field()}}
-    <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="nome">Nome</label>
-        <div class="col-sm-7">
-            <input type="text" name="nome">
-        </div>
+            <div class="form-group">
+                <label for="iprede">IP Rede</label>
+                <input type="text" class="form-control" name="iprede">
+            </div>
+
+
+            <div class="form-group">
+                <label for="gateway">Gateway</label>
+                <input type="text" class="form-control" name="gateway">
+            </div>
+
+            <div class="form-group">
+                <label for="cidr">Cidr</label>
+                <input type="text" class="form-control" name="cidr">
+            </div>
+            <button type="submit" class="btn btn-primary">Cadastrar Rede</button>
+        </form>
     </div>
-    <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="iprede">IP Rede</label>
-        <div class="col-sm-7">
-            <input type="text" name="iprede">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="gateway">Gateway</label>
-        <div class="col-sm-7">
-            <input type="text" name="gateway">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-1  col-form-label" for="cidr">Cidr</label>
-        <div class="col-sm-7">
-            <input type="text" name="cidr">
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-0"></div>
-        <input type="submit" class="btn btn-primary">
-    </div>
-</form>
+</div>
 
 @endsection
