@@ -9,6 +9,9 @@
 
         <title>Copaco USPdev</title>
 
+        <!-- Base do tema -->
+        <!-- https://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+
         <!-- Bootstrap core CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
