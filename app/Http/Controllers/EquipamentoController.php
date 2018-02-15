@@ -98,7 +98,7 @@ class EquipamentoController extends Controller
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $equipamento = Equipamento::findOrFail($id);
 
-        $equipamento->patrimoniado  = $request->patrimoniado;
+        $equipamento->naopatrimoniado  = $request->naopatrimoniado;
         $equipamento->patrimonio    = $request->patrimonio;
         $equipamento->macaddress    = $request->macaddress;
         $equipamento->local         = $request->local;
