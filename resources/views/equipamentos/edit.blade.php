@@ -61,9 +61,17 @@
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="rede_id">Rede</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control form-control-lg" id="rede_id" name="rede_id" value="{{ $equipamento->rede_id }}">
-        </div>
+        <select name="rede_id">
+            
+            @foreach($redes as $rede)
+            
+                <option value="{{ $rede->id }}" @if($equipamento->rede_id == $rede->id) selected='' @endif >
+                    {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                </option>
+            
+            @endforeach()
+            
+        </select>
     </div>
 
     <div class="form-group row">

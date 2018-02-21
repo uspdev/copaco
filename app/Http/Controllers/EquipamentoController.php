@@ -93,7 +93,8 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
-        return view ('equipamentos.edit', compact('equipamento'));
+        $redes = Rede::all();
+        return view ('equipamentos.edit', compact('equipamento','redes'));
     }
 
     /**
