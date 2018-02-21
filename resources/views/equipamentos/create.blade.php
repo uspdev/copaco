@@ -58,12 +58,6 @@
         </div>
     </div>
 
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" for="ip">IP</label>
-        <div class="col-sm-7">
-            <input type="text" class="form-control form-control-lg" id="ip" name="ip">
-        </div>
-    </div>
 
     <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="rede_id">Rede</label>
