@@ -47,12 +47,7 @@
                 <label  for="vencimento">Vencimento</label>
                 <input type="text" class="form-control" id="datepicker" name="vencimento">
             </div>
-
-            <div class="form-group">
-                <label for="ip">IP</label>
-                <input type="text" class="form-control" id="ip" name="ip">
-            </div>
-
+            
             <div class="form-group">
                 <label for="rede_id">Rede</label>
                     <select name="rede_id" class="form-control">
