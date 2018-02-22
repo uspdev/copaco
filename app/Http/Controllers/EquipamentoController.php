@@ -63,7 +63,7 @@ class EquipamentoController extends Controller
           'local' => $request->local,
           'ip' => $ip,
           'rede_id' => $request->rede_id,
-          'vencimento' => implode("-", array_reverse(explode('/', $request->vencimento))),
+          'vencimento' => Carbon::createFromFormat('d/m/Y', $request->vencimento),
         ]);
 
         // Melhorar este redirecionamento...
