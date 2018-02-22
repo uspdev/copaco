@@ -14,3 +14,4 @@
 Route::get('/','RedeController@index');
 Route::resource('equipamentos','EquipamentoController');
 Route::resource('redes','RedeController');
+Route::get('/dhcpd.conf','DhcpController@dhcpd');
