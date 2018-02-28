@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Rede;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
+use Illuminate\Support\Facades\DB;
 
 class EquipamentoController extends Controller
 {
@@ -133,9 +134,16 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Equipamento $equipamento)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+       $equipamentos = DB::table('equipamentos')->where('macaddress', 'LIKE', '%' . $request->pesquisar . '%')->get();
+       return view('equipamentos.index', compact('equipamentos'));
     }
   
 }
