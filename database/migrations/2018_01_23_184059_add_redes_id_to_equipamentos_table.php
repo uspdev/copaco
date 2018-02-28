@@ -28,7 +28,8 @@ class AddRedesIdToEquipamentosTable extends Migration
     public function down()
     {
         Schema::table('equipamentos', function (Blueprint $table) {
-            //
+            $table->dropForeign('equipamentos_rede_id_foreign');
+            $table->dropColumn('rede_id');
         });
     }
 }
