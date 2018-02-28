@@ -61,6 +61,17 @@
                         @endforeach()
                     </select>
             </div>
+            <div class="form-group">
+                <label>Fixar IP?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1">
+                    <label class="form-check-label" for="fixarip">Sim</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0" checked="checked">
+                    <label class="form-check-label" for="fixarip">Não</label>
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Cadastrar Equipamento</button>
     
         </form>
