@@ -40,4 +40,4 @@ Siga o guia no site do [uspdev](https://uspdev.github.io/contribua)
 
 ### Padrões de Projeto
 
-Utilizamos a [PSR-2] (https://www.php-fig.org/psr/psr-2/) para padrões de projeto. Ajuste seu editor favorito para a especificação.
+Utilizamos a [PSR-2](https://www.php-fig.org/psr/psr-2/) para padrões de projeto. Ajuste seu editor favorito para a especificação.
