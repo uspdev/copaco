@@ -12,5 +12,6 @@
 */
 
 Route::get('/','RedeController@index');
+Route::get('/equipamentos/search','EquipamentoController@search');
 Route::resource('equipamentos','EquipamentoController');
 Route::resource('redes','RedeController');

@@ -133,9 +133,16 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Equipamento $equipamento)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+       $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
+       return view('equipamentos.index', compact('equipamentos'));
     }
   
 }
