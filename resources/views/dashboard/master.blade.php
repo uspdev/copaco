@@ -41,15 +41,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.pt-BR.min.js"></script>
         <script src="/js/app.js"></script>
-
-        <!-- Remover esta gamby -->
-        <script type="text/javascript">
-            $(function () {
-                $(".delete-item").on("click", function(){
-                    return confirm("Tem certeza?");
-                });
-            });
-        </script>
     </body>
 </html>
 

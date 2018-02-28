@@ -17,6 +17,10 @@ function checked_sim(){
   $('#sempatrimonio').attr('hidden',true).find('input').attr('required',false).val('');
 }
 
+$(".delete-item").on("click", function(){
+    return confirm("Tem certeza?");
+});
+
 $('#datepicker').datepicker({
     format: 'dd/mm/yyyy',
     language: 'pt-BR'
