@@ -7,6 +7,7 @@ use App\Equipamento;
 use Carbon\Carbon;
 use App\Rede;
 use Illuminate\Http\Request;
+use App\Utils\NetworkOps;
 
 class EquipamentoController extends Controller
 {
@@ -43,6 +44,16 @@ class EquipamentoController extends Controller
 
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
+
+        // monta array com ips já em uso nesta rede
+        $rede = new Rede;
+        $rede = $rede->find($request->rede_id);
+        $ips_alocados = $rede->equipamentos->pluck('ip')->all();
+        ($ips_alocados != null) ? :$ips_alocados = [];
+
+        // aloca ip para a rede escolhida
+        $ops = new NetworkOps();
+        $ip = $ops->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
       
         Equipamento::create([
           'naopatrimoniado' => $request->naopatrimoniado,
@@ -50,7 +61,7 @@ class EquipamentoController extends Controller
           'descricaosempatrimonio' => $request->descricaosempatrimonio,
           'macaddress' => $request->macaddress,
           'local' => $request->local,
-          'ip' => $request->ip,
+          'ip' => $ip,
           'rede_id' => $request->rede_id,
           'vencimento' => implode("-", array_reverse(explode('/', $request->vencimento))),
         ]);
@@ -82,7 +93,8 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
-        return view ('equipamentos.edit', compact('equipamento'));
+        $redes = Rede::all();
+        return view ('equipamentos.edit', compact('equipamento','redes'));
     }
 
     /**

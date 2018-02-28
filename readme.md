@@ -1,3 +1,7 @@
+PHP libs:
+
+    php-bcmath
+
 A small app that promote integration and peace between USP devs!
 
 Features:
