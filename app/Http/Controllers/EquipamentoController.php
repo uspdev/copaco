@@ -63,7 +63,7 @@ class EquipamentoController extends Controller
           'local' => $request->local,
           'ip' => $ip,
           'rede_id' => $request->rede_id,
-          'vencimento' => implode("-", array_reverse(explode('/', $request->vencimento))),
+          'vencimento' => Carbon::createFromFormat('d/m/Y', $request->vencimento),
         ]);
 
         // Melhorar este redirecionamento...
@@ -133,9 +133,16 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(Equipamento $equipamento)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+       $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
+       return view('equipamentos.index', compact('equipamentos'));
     }
   
 }
