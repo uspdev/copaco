@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use App\Rede;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
-use Illuminate\Support\Facades\DB;
 
 class EquipamentoController extends Controller
 {
@@ -142,7 +141,7 @@ class EquipamentoController extends Controller
 
     public function search(Request $request)
     {
-       $equipamentos = DB::table('equipamentos')->where('macaddress', 'LIKE', '%' . $request->pesquisar . '%')->get();
+       $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
        return view('equipamentos.index', compact('equipamentos'));
     }
   
