@@ -72,12 +72,12 @@ class RedeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Rede  $rede
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Rede $rede)
     {
-        //
+        return view('redes.show',compact('rede'));
     }
 
     /**
