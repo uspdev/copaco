@@ -1,0 +1,28 @@
+
+
+Episódio 42
+UM NOVO FRAMEWORK
+
+É um período de guerra civil.
+Partindo de um pindura secreto,
+devs rebeldes se encontram e
+conquistam seu primeiro PR
+na corrida dos commits.
+
+Durante a jornada, devs
+rebeldes conseguem roubar
+os códigos usados nos sistemas
+em produção, a SENHA ÚNICA,
+uma autenticação blindada
+com poder suficiente para
+destruir mentes inteiras
+ao ser implementada.
+
+Perseguidos pela burocracia
+sinistra de suas unidades,
+os devs apressam-se em se unirem
+utilizando tecnologias abertas,
+protegendo a liberdade do conhecimento
+com códigos compartilhados que
+podem salvar sua sanidade e
+restaurar a paz entre os devs...
