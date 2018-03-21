@@ -4,7 +4,6 @@
 <h1>Cadastrar Equipamento</h1>
 
 @include('messages.flash')
-
 <p>
     <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
         Adicionar Equipamento
@@ -24,7 +23,7 @@
             @foreach($equipamentos as $equipamento)
             <tr>
                 <td>{{ $equipamento->macaddress }}</td>
-                <td>{{ $equipamento->vencimento }}</td>
+                <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
                 </td>
