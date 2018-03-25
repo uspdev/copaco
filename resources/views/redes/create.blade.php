@@ -19,13 +19,17 @@
                 <input type="text" class="form-control" name="iprede">
             </div>
 
-
             <div class="form-group">
                 <label for="gateway">Gateway</label>
                 <input type="text" class="form-control" name="gateway">
             </div>
 
             <div class="form-group">
+                <label for="dns">DNS</label>
+                <input type="text" class="form-control" name="dns">
+            </div>
+
+           <div class="form-group">
                 <label for="cidr">Cidr</label>
                 <input type="text" class="form-control" name="cidr">
             </div>

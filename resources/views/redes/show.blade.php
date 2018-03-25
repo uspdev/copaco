@@ -8,6 +8,7 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><b>rede</b>: {{ $rede->iprede }}/{{ $rede->cidr }}</li>
     <li class="list-group-item"><b>gateway</b>: {{ $rede->gateway }}</li>
+    <li class="list-group-item"><b>dns</b>: {{ $rede->dns }}</li>
   </ul>
 </div>
 

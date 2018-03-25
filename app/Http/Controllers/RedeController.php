@@ -55,8 +55,9 @@ class RedeController extends Controller
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
-	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
-        $rede->gateway   = $request->gateway;
+    	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $rede->gateway  = $request->gateway;
+        $rede->dns      = $request->dns;
         $rede->cidr     = $request->cidr;
 
         try {            
@@ -117,6 +118,7 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
+        $rede->dns      = $request->dns;
         $rede->cidr     = $request->cidr;
 
         try {            
