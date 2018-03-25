@@ -55,8 +55,10 @@ class RedeController extends Controller
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
-	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+    	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
         $rede->gateway   = $request->gateway;
+    	$this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
+        $rede->netbios   = $request->netbios;
         $rede->cidr     = $request->cidr;
 
         try {            
@@ -117,6 +119,8 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
+    	$this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
+        $rede->netbios  = $request->netbios;
         $rede->cidr     = $request->cidr;
 
         try {            
