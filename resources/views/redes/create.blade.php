@@ -11,17 +11,17 @@
             {{csrf_field()}}
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" class="form-control" name="nome">
+                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}">
             </div>
 
             <div class="form-group">
                 <label for="iprede">IP Rede</label>
-                <input type="text" class="form-control" name="iprede">
+                <input type="text" class="form-control" name="iprede" value="{{ old('iprede') }}">
             </div>
 
             <div class="form-group">
                 <label for="gateway">Gateway</label>
-                <input type="text" class="form-control" name="gateway">
+                <input type="text" class="form-control" name="gateway" value="{{ old('gateway') }}">
             </div>
 
             <div class="form-group">
@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <label for="cidr">Cidr</label>
-                <input type="text" class="form-control" name="cidr">
+                <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
             </div>
             <button type="submit" class="btn btn-primary">Cadastrar Rede</button>
         </form>

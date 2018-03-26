@@ -52,12 +52,19 @@ class RedeController extends Controller
                         ->withInput();
         }
 
+        if ($request->iprede == $request->gateway){
+            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
+            return back();
+        }
+
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
-    	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+
+	      $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+
         $rede->gateway   = $request->gateway;
-    	$this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
+    	  $this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
         $rede->netbios   = $request->netbios;
         $rede->cidr     = $request->cidr;
 
@@ -114,7 +121,12 @@ class RedeController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-        
+
+        if ($request->iprede == $request->gateway){
+            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
+            return back();
+        }
+
         $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
