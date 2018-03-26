@@ -19,7 +19,8 @@ class CreateRedesTable extends Migration
             $table->string('nome');
             $table->ipAddress('iprede');
             $table->ipAddress('gateway');
-            $table->ipAddress('netbios');
+            $table->srting('ntp')->nullable();
+            $table->srting('netbios')->nullable();
             $table->integer('cidr');
         });
     }

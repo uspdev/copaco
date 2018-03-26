@@ -30,6 +30,11 @@
             </div>
 
             <div class="form-group">
+                <label for="ntp">NTP</label>
+                <input type="text" class="form-control" name="ntp">
+            </div>
+
+            <div class="form-group">
                 <label for="cidr">Cidr</label>
                 <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
             </div>

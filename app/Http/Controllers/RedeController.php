@@ -61,21 +61,18 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
 
-	      $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
-
-        $rede->gateway   = $request->gateway;
-    	  $this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
+    	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $rede->gateway  = $request->gateway;
+      
+        $rede->ntp      = $request->ntp;
         $rede->netbios   = $request->netbios;
+      
         $rede->cidr     = $request->cidr;
-
-        try {            
-            $rede->save();
-            $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
-            return redirect()->route('redes.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+       
+        $rede->save();
+        $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
+        return redirect()->route('redes.index');
+ 
     }
 
     /**
@@ -131,18 +128,14 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
-    	$this->validate ($request, ['netbios'=>'ip'],['Um Servidor Netbios válido é requerido.']);
+
+        $rede->ntp      = $request->ntp;
         $rede->netbios  = $request->netbios;
         $rede->cidr     = $request->cidr;
-
-        try {            
-            $rede->save();
-            $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
-            return redirect()->route('redes.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+     
+        $rede->save();
+        $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
+        return redirect()->route('redes.index');
     }
 
     /**
