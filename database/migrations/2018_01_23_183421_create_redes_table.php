@@ -23,6 +23,7 @@ class CreateRedesTable extends Migration
             $table->string('ntp')->nullable();
             $table->string('netbios')->nullable();
             $table->integer('cidr');
+            $table->integer('vlan');
         });
     }
 

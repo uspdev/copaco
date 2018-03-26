@@ -50,11 +50,6 @@
                 <input type="text" class="form-control" name="dns" value="{{ old('dns') }}">
             </div>
 
-           <div class="form-group">
-                <label for="cidr">Cidr</label>
-                <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
-            </div>
-
             <button type="submit" class="btn btn-primary">Cadastrar Rede</button>
         </form>
     </div>
