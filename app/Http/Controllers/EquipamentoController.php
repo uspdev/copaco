@@ -93,6 +93,7 @@ class EquipamentoController extends Controller
         /* Rota gerada pelo laravel:
         http://devserver:porta/equiapmento/{id}/edit
         */
+        $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         $redes = Rede::all();
         return view ('equipamentos.edit', compact('equipamento','redes'));
     }
