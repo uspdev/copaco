@@ -33,6 +33,7 @@ class NovosCamposEmEquipamentos extends Migration
     public function down()
     {
         Schema::table('equipamentos', function (Blueprint $table) {
+            /* Não está funfando o refresh
             $table->dropColumn('naopatrimoniado');
             $table->dropColumn('patrimonio');
             $table->dropColumn('descricaosempatrimonio');
@@ -40,6 +41,7 @@ class NovosCamposEmEquipamentos extends Migration
             $table->dropColumn('local');
             $table->dropColumn('vencimento');
             $table->dropColumn('ip');
+             */
         });
     }
 }
