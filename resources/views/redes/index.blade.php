@@ -27,7 +27,7 @@
             @foreach($redes as $rede)
             <tr>
                 <td>{{ $rede->id }}</td>
-                <td>{{ $rede->nome }}</td>
+                <td><a href="/redes/{{ $rede->id }}">{{ $rede->nome }}</a></td>
                 <td>{{ $rede->iprede }}</td>
                 <td>{{ $rede->gateway }}</td>
                 <td>{{ $rede->cidr }}</td>

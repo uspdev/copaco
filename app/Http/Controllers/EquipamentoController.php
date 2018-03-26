@@ -63,7 +63,7 @@ class EquipamentoController extends Controller
           'local' => $request->local,
           'ip' => $ip,
           'rede_id' => $request->rede_id,
-          'vencimento' => implode("-", array_reverse(explode('/', $request->vencimento))),
+          'vencimento' => Carbon::createFromFormat('d/m/Y', $request->vencimento),
         ]);
 
         // Melhorar este redirecionamento...
@@ -135,7 +135,20 @@ class EquipamentoController extends Controller
      */
     public function destroy(Equipamento $equipamento)
     {
-        //
+        try {            
+            $equipamento->delete();
+            $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
+            return redirect()->route('equipamentos.index');
+        } catch (Exception $e) {
+            $request->session()->flash('alert-danger', 'Houve um erro.');
+            return back();
+        }
+    }
+
+    public function search(Request $request)
+    {
+       $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
+       return view('equipamentos.index', compact('equipamentos'));
     }
   
 }
