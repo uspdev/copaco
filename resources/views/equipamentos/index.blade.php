@@ -24,7 +24,7 @@
             @foreach($equipamentos as $equipamento)
             <tr>
                 <td>{{ $equipamento->macaddress }}</td>
-                <td>{{ Carbon\Carbon::parse($equipamento->vencimento)->format('d/m/Y') }}</td>
+                <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
                 </td>
