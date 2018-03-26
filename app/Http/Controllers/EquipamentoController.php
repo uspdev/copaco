@@ -115,7 +115,20 @@ class EquipamentoController extends Controller
         $equipamento->macaddress    = $request->macaddress;
         $equipamento->local         = $request->local;
         $equipamento->vencimento    = Carbon::createFromFormat('d/m/Y', $request->vencimento);
-        $equipamento->rede_id       = $request->rede_id;
+        
+        //Caso alterar a rede, pegar o proximo ip livre daquela rede.
+        if($equipamento->rede_id != $request->rede_id){
+            $equipamento->rede_id       = $request->rede_id;
+            // monta array com ips já em uso nesta rede
+            $rede = new Rede;
+            $rede = $rede->find($request->rede_id);
+            $ips_alocados = $rede->equipamentos->pluck('ip')->all();
+            ($ips_alocados != null) ? :$ips_alocados = [];
+            // aloca ip para a rede escolhida
+            $ops = new NetworkOps();
+            $ip = $ops->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
+            $equipamento->ip = $ip;
+        }
 
         try {            
             $equipamento->save();
@@ -153,5 +166,5 @@ class EquipamentoController extends Controller
        }
        return view('equipamentos.index', compact('equipamentos'));
     }
-  
+    
 }
