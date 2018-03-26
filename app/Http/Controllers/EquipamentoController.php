@@ -133,10 +133,16 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-
     public function destroy(Equipamento $equipamento)
     {
-        //
+        try {            
+            $equipamento->delete();
+            $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
+            return redirect()->route('equipamentos.index');
+        } catch (Exception $e) {
+            $request->session()->flash('alert-danger', 'Houve um erro.');
+            return back();
+        }
     }
 
     public function search(Request $request)
