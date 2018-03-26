@@ -60,14 +60,13 @@ class RedeController extends Controller
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
-
-    	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $rede->dns      = $request->dns;
         $rede->gateway  = $request->gateway;
-      
         $rede->ntp      = $request->ntp;
         $rede->netbios   = $request->netbios;
-      
         $rede->cidr     = $request->cidr;
+
+    	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
        
         $rede->save();
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
@@ -128,10 +127,10 @@ class RedeController extends Controller
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
-
+        $rede->dns      = $request->dns;
+        $rede->cidr     = $request->cidr;
         $rede->ntp      = $request->ntp;
         $rede->netbios  = $request->netbios;
-        $rede->cidr     = $request->cidr;
      
         $rede->save();
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');

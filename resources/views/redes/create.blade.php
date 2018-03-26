@@ -35,6 +35,11 @@
             </div>
 
             <div class="form-group">
+                <label for="dns">DNS</label>
+                <input type="text" class="form-control" name="dns">
+            </div>
+
+           <div class="form-group">
                 <label for="cidr">Cidr</label>
                 <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
             </div>
