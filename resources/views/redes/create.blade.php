@@ -19,10 +19,14 @@
                 <input type="text" class="form-control" name="iprede" value="{{ old('iprede') }}">
             </div>
 
-
             <div class="form-group">
                 <label for="gateway">Gateway</label>
                 <input type="text" class="form-control" name="gateway" value="{{ old('gateway') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="netbios">Netbios</label>
+                <input type="text" class="form-control" name="netbios">
             </div>
 
             <div class="form-group">
