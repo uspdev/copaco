@@ -26,12 +26,12 @@
 
             <div class="form-group">
                 <label for="netbios">Netbios</label>
-                <input type="text" class="form-control" name="netbios">
+                <input type="text" class="form-control" name="netbios" value="{{ old('netbios') }}">
             </div>
 
             <div class="form-group">
                 <label for="ntp">NTP</label>
-                <input type="text" class="form-control" name="ntp">
+                <input type="text" class="form-control" name="ntp" value="{{ old('ntp') }}">
             </div>
 
             <div class="form-group">
