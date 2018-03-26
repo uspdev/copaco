@@ -4,7 +4,7 @@
 <h1>Cadastrar Equipamento</h1>
 
 @include('messages.flash')
-
+ 
 <p>
     <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
         Adicionar Equipamento
