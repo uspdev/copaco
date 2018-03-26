@@ -20,6 +20,11 @@
             </div>
 
             <div class="form-group">
+                <label for="cidr">Cidr</label>
+                <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
+            </div>
+
+            <div class="form-group">
                 <label for="gateway">Gateway</label>
                 <input type="text" class="form-control" name="gateway" value="{{ old('gateway') }}">
             </div>
@@ -34,15 +39,22 @@
                 <input type="text" class="form-control" name="ntp" value="{{ old('ntp') }}">
             </div>
 
+
+             <div class="form-group">
+                <label for="vlan">VLAN</label>
+                <input type="text" class="form-control" name="vlan" value="{{ old('vlan') }}">
+            </div>
+
             <div class="form-group">
                 <label for="dns">DNS</label>
-                <input type="text" class="form-control" name="dns">
+                <input type="text" class="form-control" name="dns" value="{{ old('dns') }}">
             </div>
 
            <div class="form-group">
                 <label for="cidr">Cidr</label>
                 <input type="text" class="form-control" name="cidr" value="{{ old('cidr') }}">
             </div>
+
             <button type="submit" class="btn btn-primary">Cadastrar Rede</button>
         </form>
     </div>

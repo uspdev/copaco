@@ -43,7 +43,8 @@ class RedeController extends Controller
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
-            'cidr'      => 'required|numeric|min:1|max:32'
+            'cidr'      => 'required|numeric|min:1|max:32',
+            'vlan'      => 'numeric'
         ]);
         
         if ($validator->fails()) {
@@ -65,13 +66,13 @@ class RedeController extends Controller
         $rede->ntp      = $request->ntp;
         $rede->netbios   = $request->netbios;
         $rede->cidr     = $request->cidr;
+        $rede->vlan     =  $request->vlan;
 
     	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
        
         $rede->save();
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
         return redirect()->route('redes.index');
- 
     }
 
     /**
@@ -131,6 +132,8 @@ class RedeController extends Controller
         $rede->cidr     = $request->cidr;
         $rede->ntp      = $request->ntp;
         $rede->netbios  = $request->netbios;
+        $rede->cidr     = $request->cidr;
+        $rede->vlan     =  $request->vlan;
      
         $rede->save();
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
