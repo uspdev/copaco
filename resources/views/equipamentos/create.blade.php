@@ -62,12 +62,25 @@
                     </select>
             </div>
 
+            <div class="form-group">
+                <label>Escolher IP manualmente?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1">
+                    <label class="form-check-label" for="fixarip">Sim</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0" checked="checked">
+                    <label class="form-check-label" for="fixarip">Não</label>
+                </div>
+            </div>
+
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label" for="ip">IP</label>
                 <div class="col-sm-7">
                     <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ old('ip')  }}">
                 </div>
             </div>
+
 
             <button type="submit" class="btn btn-primary">Cadastrar Equipamento</button>
     
