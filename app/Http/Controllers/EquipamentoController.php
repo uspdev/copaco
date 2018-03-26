@@ -115,7 +115,20 @@ class EquipamentoController extends Controller
         $equipamento->macaddress    = $request->macaddress;
         $equipamento->local         = $request->local;
         $equipamento->vencimento    = Carbon::createFromFormat('d/m/Y', $request->vencimento);
-        $equipamento->rede_id       = $request->rede_id;
+        
+        //Caso alterar a rede, pegar o proximo ip livre daquela rede.
+        if($equipamento->rede_id != $request->rede_id){
+            $equipamento->rede_id       = $request->rede_id;
+            // monta array com ips já em uso nesta rede
+            $rede = new Rede;
+            $rede = $rede->find($request->rede_id);
+            $ips_alocados = $rede->equipamentos->pluck('ip')->all();
+            ($ips_alocados != null) ? :$ips_alocados = [];
+            // aloca ip para a rede escolhida
+            $ops = new NetworkOps();
+            $ip = $ops->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
+            $equipamento->ip = $ip;
+        }
 
         try {            
             $equipamento->save();
@@ -133,16 +146,25 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-
     public function destroy(Equipamento $equipamento)
     {
-        //
+        try {            
+            $equipamento->delete();
+            $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
+            return redirect()->route('equipamentos.index');
+        } catch (Exception $e) {
+            $request->session()->flash('alert-danger', 'Houve um erro.');
+            return back();
+        }
     }
 
     public function search(Request $request)
     {
        $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
+       if ($equipamentos->isEmpty()){  
+        $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
+       }
        return view('equipamentos.index', compact('equipamentos'));
     }
-  
+    
 }

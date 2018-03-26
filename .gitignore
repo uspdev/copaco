@@ -17,4 +17,5 @@ yarn-error.log
 .env
 *.swp
 *~
-*.swp
+package-lock.json
+

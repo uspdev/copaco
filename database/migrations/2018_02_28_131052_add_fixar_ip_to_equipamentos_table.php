@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRedesIdToEquipamentosTable extends Migration
+class AddFixarIpToEquipamentosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,8 @@ class AddRedesIdToEquipamentosTable extends Migration
     public function up()
     {
         Schema::table('equipamentos', function (Blueprint $table) {
+            $table->boolean('fixarip')->default(0);
             //
-            $table->integer('rede_id')->unsigned();
-            $table->foreign('rede_id')->references('id')->on('redes');
         });
     }
 
@@ -28,8 +27,7 @@ class AddRedesIdToEquipamentosTable extends Migration
     public function down()
     {
         Schema::table('equipamentos', function (Blueprint $table) {
-            $table->dropForeign('equipamentos_rede_id_foreign');
-            $table->dropColumn('rede_id');
+            //
         });
     }
 }

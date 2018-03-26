@@ -20,6 +20,8 @@ class CreateRedesTable extends Migration
             $table->ipAddress('iprede');
             $table->ipAddress('gateway');
             $table->string('dns');
+            $table->string('ntp')->nullable();
+            $table->string('netbios')->nullable();
             $table->integer('cidr');
         });
     }

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class NovosCamposEmEquipamentos extends Migration
 {
-    /**
+  /**
      * Run the migrations.
      *
      * @return void
@@ -33,7 +33,13 @@ class NovosCamposEmEquipamentos extends Migration
     public function down()
     {
         Schema::table('equipamentos', function (Blueprint $table) {
-            //
+            $table->dropColumn('naopatrimoniado');
+            $table->dropColumn('patrimonio');
+            $table->dropColumn('descricaosempatrimonio');
+            $table->dropColumn('macaddress');
+            $table->dropColumn('local');
+            $table->dropColumn('vencimento');
+            $table->dropColumn('ip');
         });
     }
 }
