@@ -52,23 +52,27 @@ class RedeController extends Controller
                         ->withInput();
         }
 
+        if ($request->iprede == $request->gateway){
+            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
+            return back();
+        }
+
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
-    	$this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
-        $rede->gateway  = $request->gateway;
-    	$this->validate ($request, ['ntp'=>'ip'],['Um Servidor NTP válido é requerido.']);
-        $rede->ntp      = $request->ntp;
-        $rede->cidr     = $request->cidr;
 
-        try {            
-            $rede->save();
-            $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
-            return redirect()->route('redes.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+    	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $rede->gateway  = $request->gateway;
+      
+        $rede->ntp      = $request->ntp;
+        $rede->netbios   = $request->netbios;
+      
+        $rede->cidr     = $request->cidr;
+       
+        $rede->save();
+        $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
+        return redirect()->route('redes.index');
+ 
     }
 
     /**
@@ -114,23 +118,24 @@ class RedeController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }
-        
+
+        if ($request->iprede == $request->gateway){
+            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
+            return back();
+        }
+
         $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
-    	$this->validate ($request, ['ntp'=>'ip'],['Um Servidor NTP válido é requerido.']);
-        $rede->ntp      = $request->ntp;
-        $rede->cidr     = $request->cidr;
 
-        try {            
-            $rede->save();
-            $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
-            return redirect()->route('redes.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+        $rede->ntp      = $request->ntp;
+        $rede->netbios  = $request->netbios;
+        $rede->cidr     = $request->cidr;
+     
+        $rede->save();
+        $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
+        return redirect()->route('redes.index');
     }
 
     /**

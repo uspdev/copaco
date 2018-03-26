@@ -9,6 +9,8 @@
     <li class="list-group-item"><b>rede</b>: {{ $rede->iprede }}/{{ $rede->cidr }}</li>
     <li class="list-group-item"><b>gateway</b>: {{ $rede->gateway }}</li>
     <li class="list-group-item"><b>ntp</b>: {{ $rede->ntp }}</li>
+    <li class="list-group-item"><b>netbios</b>: {{ $rede->netbios }}</li>
+
   </ul>
 </div>
 
