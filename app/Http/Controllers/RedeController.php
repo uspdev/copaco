@@ -43,7 +43,7 @@ class RedeController extends Controller
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
-            'cidr'      => 'required|numeric|min:1|max:32',
+            'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric'
         ]);
         
@@ -110,7 +110,7 @@ class RedeController extends Controller
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
-            'cidr'      => 'required|numeric|min:1|max:32'
+            'cidr'      => 'required|numeric|min:20|max:30'
         ]);
         
         if ($validator->fails()) {
