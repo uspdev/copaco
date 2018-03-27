@@ -16,6 +16,9 @@
         <thead>
             <tr>
                 <th>MAC Address</th>
+                <th>Identificação</th>
+                <th>IP</th>
+                <th>Rede</th>
                 <th>Data de Vencimento</th>
                 <th colspan="2">Ações</th>
             </tr>
@@ -24,6 +27,9 @@
             @foreach($equipamentos as $equipamento)
             <tr>
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
+                <td>{{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }}</td>
+                <td>{{ $equipamento->ip }}</td>
+                <td>{{ $equipamento->rede->nome }}</td>
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
