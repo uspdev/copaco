@@ -79,7 +79,7 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {
-        dd($equipamento)   ;
+        return view('equipamentos.show',compact('equipamento'));;
     }
 
     /**
