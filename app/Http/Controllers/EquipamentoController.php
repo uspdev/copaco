@@ -170,7 +170,7 @@ class EquipamentoController extends Controller
 
     public function naoAlocados()
     {
-        $equipamentos = Equipamento::where('ip', '=',  'NULL')->get();
+        $equipamentos = Equipamento::WhereNull('ip')->get();
         return view('equipamentos.index', compact('equipamentos'));
     }
 
