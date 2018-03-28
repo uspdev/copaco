@@ -47,6 +47,11 @@
     <small class="form-text text-muted">Ex: 143.107.253.3, 143.107.253.5</small>
 </div>
 
+<div class="form-group">
+    <label for="ad_domain">Domain Active Directory</label>
+    <input type="text" class="form-control" name="ad_domain" value="{{ $rede->ad_domain or old('ad_domain') }}">
+    <small class="form-text text-muted">Ex: mydomain.usp.br</small>
+</div>
 
 <div class="form-group row">
     <div class="col-md-0"></div>
