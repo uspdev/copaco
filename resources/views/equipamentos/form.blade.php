@@ -1,25 +1,55 @@
 <div class="form-group">
     <label>Possui Patrimônio?</label>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1" checked="checked">
-        <label class="form-check-label" for="naopatrimoniado">Sim</label>
+        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1"
+            @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
+                checked
+            @elseif ((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1))
+                checked 
+            @endif >
+        <label class="form-check-label" for="check-sim">Sim</label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-nao" value="0">
-        <label class="form-check-label" for="naopatrimoniado">Não</label>
+        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-nao" value="0"
+            @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
+                checked
+            @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
+                checked 
+            @endif >
+        <label class="form-check-label" for="check-nao">Não</label>
     </div>
 </div>
 
-<div class="form-group" id="compatrimonio">
+<div class="form-group" id="compatrimonio"
+    @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
+        hidden
+    @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
+        hidden
+    @endif >
     <label for="patrimonio">Patrimônio</label>
-    <input name="patrimonio" type="text" class="form-control" value="{{ $equipamento->patrimonio or old('patrimonio') }}" required>
+    <input name="patrimonio" type="text" class="form-control" value="{{ $equipamento->patrimonio or old('patrimonio') }}"
+        @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
+            required
+        @elseif (((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
+            required
+        @endif >
     <small class="form-text text-muted">Ex: 001.586985</small>
 </div>
 
-<div class="form-group" id="sempatrimonio" hidden>
+<div class="form-group" id="sempatrimonio"
+    @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
+        hidden
+    @elseif (((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
+        hidden
+    @endif >
     <label for="descricaosempatrimonio">Descrição para não patrimoniados</label>
-    <input name="descricaosempatrimonio" type="text" class="form-control" 
-           value="{{ $equipamento->descricaosempatrimonio or old('descricaosempatrimonio') }}">
+    <input name="descricaosempatrimonio" type="text" class="form-control"
+        value="{{ $equipamento->descricaosempatrimonio or old('descricaosempatrimonio') }}"
+        @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
+            required
+        @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
+            required
+        @endif >
     <small class="form-text text-muted">Ex: Professor visitante Joãozinho</small>
 </div>
 
@@ -58,11 +88,11 @@
     <label>Definir IP manualmente?</label>
     <div class="form-check">
         <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1">
-        <label class="form-check-label" for="fixarip">Sim</label>
+        <label class="form-check-label" for="check-fixarip-sim">Sim</label>
     </div>
     <div class="form-check">
         <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0" checked="checked">
-        <label class="form-check-label" for="fixarip">Não</label>
+        <label class="form-check-label" for="check-fixarip-nao">Não</label>
     </div>
 </div>
 
