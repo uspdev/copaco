@@ -52,11 +52,6 @@ class EquipamentoController extends Controller
         $aloca = $ops->aloca($request->rede_id,$request->ip);
         $rede = $aloca['rede'];
         $ip = $aloca['ip'];
-  
-        if(!empty($aloca['danger'])){
-            $request->session()->flash('alert-danger', $aloca['danger']);
-        }
-
 
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
@@ -66,11 +61,17 @@ class EquipamentoController extends Controller
         $equipamento->ip = $ip;
         $equipamento->rede_id = $rede;
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
-        $equipamento->save();
+        $equipamento->save();  
 
-        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');        
-       
-        return redirect('/equipamentos');
+        if(!empty($aloca['danger'])){
+            $request->session()->flash('alert-danger', $aloca['danger']);
+            return redirect("/equipamentos/$equipamento->id/edit");
+        }
+        else {
+            $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
+            return redirect("/equipamentos/$equipamento->id");
+        }
+      
     }
 
     /**
@@ -112,38 +113,36 @@ class EquipamentoController extends Controller
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
 
-        // Aloca IP
-        $ops = new NetworkOps;
-        if( ($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip){
-
-            $aloca = $ops->aloca($request->rede_id,$request->ip);
-            $rede = $aloca['rede'];
-            $ip = $aloca['ip'];
-      
-            if(!empty($aloca['danger'])){
-                $request->session()->flash('alert-danger', $aloca['danger']);
-            }
-        }
-        else {
-            $rede = $request->rede_id;
-            $ip = $request->ip;
-        }
-
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
-        $equipamento->ip = $ip;
-        $equipamento->rede_id = $rede;
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         $equipamento->save();
 
-        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');  
 
+        // Aloca IP
+        $ops = new NetworkOps;
+        if( ($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip){
+
+            $aloca = $ops->aloca($request->rede_id,$request->ip);
+            $equipamento->rede_id= $aloca['rede'];
+            $equipamento->ip = $aloca['ip'];
+            $equipamento->save();
+      
+            if(!empty($aloca['danger'])){
+                $request->session()->flash('alert-danger', $aloca['danger']);
+                return redirect("/equipamentos/$equipamento->id/edit");
+            }
+        }
+        $equipamento->rede_id= $request->rede_id;
+        $equipamento->ip = $request->ip;
         $equipamento->save();
-        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
-        return redirect()->route('equipamentos.index');
+
+        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
+        return redirect("/equipamentos/$equipamento->id");
+
     }
 
     /**
@@ -170,7 +169,7 @@ class EquipamentoController extends Controller
 
     public function naoAlocados()
     {
-        $equipamentos = Equipamento::where('ip', '=',  'NULL')->get();
+        $equipamentos = Equipamento::WhereNull('ip')->get();
         return view('equipamentos.index', compact('equipamentos'));
     }
 

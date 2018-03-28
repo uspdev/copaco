@@ -6,12 +6,17 @@
 @include('messages.flash')
 @include('messages.errors')
 
-<form method="post" action="{{ action('RedeController@update', $rede->id) }}">
-    {{csrf_field()}}
-    {{method_field('patch')}}
-    @include('redes.form')
+<div class="row">
+    <div class="col-lg-3">
+        <form method="post" action="{{ action('RedeController@update', $rede->id) }}">
+            {{csrf_field()}}
+            {{method_field('patch')}}
+            @include('redes.form')
+        </form>
+    </div>
+</div>
 
 
-</form>
+
 
 @endsection
