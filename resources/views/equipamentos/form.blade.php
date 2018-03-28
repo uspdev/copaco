@@ -74,7 +74,7 @@
 
 <div class="form-group">
     <label for="rede_id">Rede</label>
-    <select name="rede_id" class="form-control" required>
+    <select name="rede_id" class="form-control">
         <option value="" selected="">Escolha uma Rede</option>
         @foreach($redes as $rede)
             <option value="{{ $rede->id }}" {{ $equipamento->rede_id or old('rede_id') == $rede->id ? 'selected' : ''}}>

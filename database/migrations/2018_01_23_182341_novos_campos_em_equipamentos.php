@@ -21,7 +21,7 @@ class NovosCamposEmEquipamentos extends Migration
             $table->macAddress('macaddress')->unique();
             $table->string('local');
             $table->date('vencimento');
-            $table->ipAddress('ip');
+            $table->ipAddress('ip')->nullable();
         });
     }
 

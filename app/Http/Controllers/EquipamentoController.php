@@ -41,33 +41,35 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
+        $equipamento = new Equipamento;
 
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
+        $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
 
-        // monta array com ips já em uso nesta rede
-        $rede = new Rede;
-        $rede = $rede->find($request->rede_id);
-        $ips_alocados = $rede->equipamentos->pluck('ip')->all();
-        ($ips_alocados != null) ? :$ips_alocados = [];
+        $ops = new NetworkOps;
 
-        // aloca ip para a rede escolhida
-        $ops = new NetworkOps();
-        $ip = $ops->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
-      
-        Equipamento::create([
-          'naopatrimoniado' => $request->naopatrimoniado,
-          'patrimonio' => $request->patrimonio,
-          'descricaosempatrimonio' => $request->descricaosempatrimonio,
-          'macaddress' => $request->macaddress,
-          'local' => $request->local,
-          'ip' => $ip,
-          'rede_id' => $request->rede_id,
-          'vencimento' => Carbon::createFromFormat('d/m/Y', $request->vencimento),
-        ]);
+        $aloca = $ops->aloca($request->rede_id,$request->ip);
+        $rede = $aloca['rede'];
+        $ip = $aloca['ip'];
+  
+        if(!empty($aloca['danger'])){
+            $request->session()->flash('alert-danger', $aloca['danger']);
+        }
 
-        // Melhorar este redirecionamento...
-        session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
+
+        $equipamento->naopatrimoniado = $request->naopatrimoniado;
+        $equipamento->patrimonio = $request->patrimonio;
+        $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
+        $equipamento->macaddress = $request->macaddress;
+        $equipamento->local = $request->local;
+        $equipamento->ip = $ip;
+        $equipamento->rede_id = $rede;
+        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
+        $equipamento->save();
+
+        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');        
+       
         return redirect('/equipamentos');
     }
 
@@ -105,40 +107,43 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Equipamento $equipamento)
     {
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
-        $equipamento = Equipamento::findOrFail($id);
 
-        $equipamento->naopatrimoniado  = $request->naopatrimoniado;
-        $equipamento->patrimonio    = $request->patrimonio;
-        $equipamento->macaddress    = $request->macaddress;
-        $equipamento->local         = $request->local;
-        $equipamento->vencimento    = Carbon::createFromFormat('d/m/Y', $request->vencimento);
-        
-        //Caso alterar a rede, pegar o proximo ip livre daquela rede.
-        if($equipamento->rede_id != $request->rede_id){
-            $equipamento->rede_id       = $request->rede_id;
-            // monta array com ips já em uso nesta rede
-            $rede = new Rede;
-            $rede = $rede->find($request->rede_id);
-            $ips_alocados = $rede->equipamentos->pluck('ip')->all();
-            ($ips_alocados != null) ? :$ips_alocados = [];
-            // aloca ip para a rede escolhida
-            $ops = new NetworkOps();
-            $ip = $ops->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
-            $equipamento->ip = $ip;
+        // Aloca IP
+        $ops = new NetworkOps;
+        if( ($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip){
+
+            $aloca = $ops->aloca($request->rede_id,$request->ip);
+            $rede = $aloca['rede'];
+            $ip = $aloca['ip'];
+      
+            if(!empty($aloca['danger'])){
+                $request->session()->flash('alert-danger', $aloca['danger']);
+            }
+        }
+        else {
+            $rede = $request->rede_id;
+            $ip = $request->ip;
         }
 
-        try {            
-            $equipamento->save();
-            $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
-            return redirect()->route('equipamentos.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+        $equipamento->naopatrimoniado = $request->naopatrimoniado;
+        $equipamento->patrimonio = $request->patrimonio;
+        $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
+        $equipamento->macaddress = $request->macaddress;
+        $equipamento->local = $request->local;
+        $equipamento->ip = $ip;
+        $equipamento->rede_id = $rede;
+        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
+        $equipamento->save();
+
+        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');  
+
+        $equipamento->save();
+        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
+        return redirect()->route('equipamentos.index');
     }
 
     /**
@@ -147,16 +152,11 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Equipamento $equipamento)
+    public function destroy(Equipamento $equipamento, Request $request)
     {
-        try {            
-            $equipamento->delete();
-            $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
-            return redirect()->route('equipamentos.index');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro.');
-            return back();
-        }
+        $equipamento->delete();
+        $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
+        return redirect()->route('equipamentos.index');
     }
 
     public function search(Request $request)

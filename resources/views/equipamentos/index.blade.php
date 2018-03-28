@@ -4,6 +4,7 @@
 <h1>Cadastrar Equipamento</h1>
 
 @include('messages.flash')
+@include('messages.errors')
  
 <p>
     <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
