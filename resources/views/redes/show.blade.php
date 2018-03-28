@@ -6,11 +6,13 @@
 
 <div class="card">
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>rede</b>: {{ $rede->iprede }}/{{ $rede->cidr }}</li>
-    <li class="list-group-item"><b>gateway</b>: {{ $rede->gateway }}</li>
-    <li class="list-group-item"><b>dns</b>: {{ $rede->dns }}</li>
-    <li class="list-group-item"><b>ntp</b>: {{ $rede->ntp }}</li>
-    <li class="list-group-item"><b>netbios</b>: {{ $rede->netbios }}</li>
+    <li class="list-group-item"><b>Rede</b>: {{ $rede->iprede }}/{{ $rede->cidr }}</li>
+    <li class="list-group-item"><b>Gateway</b>: {{ $rede->gateway }}</li>
+    <li class="list-group-item"><b>DNS</b>: {{ $rede->dns }}</li>
+    <li class="list-group-item"><b>VLAN</b>: {{ $rede->vlan }}</li>
+    <li class="list-group-item"><b>Domain Active Directory</b>: {{ $rede->ad_domain }}</li>
+    <li class="list-group-item"><b>NTP</b>: {{ $rede->ntp }}</li>
+    <li class="list-group-item"><b>Netbios</b>: {{ $rede->netbios }}</li>
 
   </ul>
 </div>
