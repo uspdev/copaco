@@ -10,8 +10,8 @@
     <li class="list-group-item"><b>Mac Address:</b> {{ $equipamento->macaddress }}</li>
     <li class="list-group-item"><b>Local:</b> {{ $equipamento->local }}</li>
     <li class="list-group-item"><b>Vencimento:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</li>
-    <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome }}</li>
-    <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip }}</li>
+    <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome or '' }}</li>
+    <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip or '' }}</li>
   </ul>
 </div>
 
