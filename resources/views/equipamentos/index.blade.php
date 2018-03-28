@@ -29,8 +29,8 @@
             <tr>
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
                 <td>{{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }}</td>
-                <td>{{ $equipamento->ip }}</td>
-                <td>{{ $equipamento->rede->nome }}</td>
+                <td>{{ $equipamento->ip or '' }}</td>
+                <td>{{ $equipamento->rede->nome or '' }}</td>
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
