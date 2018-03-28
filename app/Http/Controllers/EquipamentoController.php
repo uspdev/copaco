@@ -167,5 +167,12 @@ class EquipamentoController extends Controller
        }
        return view('equipamentos.index', compact('equipamentos'));
     }
-    
+
+    public function naoAlocados()
+    {
+        $equipamentos = Equipamento::where('ip', '=',  'NULL')->get();
+        return view('equipamentos.index', compact('equipamentos'));
+    }
+
+   
 }

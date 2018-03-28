@@ -13,6 +13,7 @@
 
 Route::get('/','RedeController@index');
 Route::get('/equipamentos/search','EquipamentoController@search');
+Route::get('/equipamentos/naoalocados','EquipamentoController@naoAlocados');
 Route::resource('equipamentos','EquipamentoController');
 Route::resource('redes','RedeController');
 Route::get('/dhcpd.conf','DhcpController@dhcpd');
