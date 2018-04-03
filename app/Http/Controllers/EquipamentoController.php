@@ -52,11 +52,18 @@ class EquipamentoController extends Controller
         $aloca = $ops->aloca($request->rede_id,$request->ip);
         $rede = $aloca['rede'];
         $ip = $aloca['ip'];
-  
+
         if(!empty($aloca['danger'])){
             $request->session()->flash('alert-danger', $aloca['danger']);
         }
-
+        if(empty($request->vencimento))
+        {
+            $data_vencimento = date("d/m/Y", strtotime('+10 years'));
+        }
+        else
+        {
+            $data_vencimento = $request->vencimento;
+        }
 
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
@@ -65,11 +72,11 @@ class EquipamentoController extends Controller
         $equipamento->local = $request->local;
         $equipamento->ip = $ip;
         $equipamento->rede_id = $rede;
-        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
+        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $data_vencimento);
         $equipamento->save();
 
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');        
-       
+
         return redirect('/equipamentos');
     }
 
