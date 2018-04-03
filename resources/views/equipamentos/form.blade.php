@@ -87,11 +87,19 @@
 <div class="form-group">
     <label>Definir IP manualmente?</label>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1">
+        <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1"
+            @if (isset($equipamento->id) and ($equipamento->fixarip === 1))
+                checked
+            @endif >
         <label class="form-check-label" for="check-fixarip-sim">Sim</label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0" checked="checked">
+        <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0"
+            @if (isset($equipamento->id) and ($equipamento->fixarip === 0))
+                checked
+            @elseif ((old('fixarip') != null) and (old('fixarip') == 0))
+                checked
+            @endif >
         <label class="form-check-label" for="check-fixarip-nao">Não</label>
     </div>
 </div>

@@ -64,6 +64,7 @@ class EquipamentoController extends Controller
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
         $equipamento->ip = $ip;
+        $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id = $rede;
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         $equipamento->save();
