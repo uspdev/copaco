@@ -18,9 +18,7 @@ Route::resource('equipamentos','EquipamentoController');
 Route::resource('redes','RedeController');
 Route::get('/dhcpd.conf','DhcpController@dhcpd');
 
-# rotas para autenticação
-Auth::routes();
-
 # rotas para a senha única
-Route::get('login', 'Auth\LoginController@redirectToProvider');
-Route::get('callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/login', 'Auth\LoginController@redirectToProvider');
+Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('/logout', 'Auth\LoginController@logout');

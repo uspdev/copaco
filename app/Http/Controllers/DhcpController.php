@@ -15,6 +15,14 @@ use IPTools\Range;
 
 class DhcpController extends Controller
 {
+    
+    public function __construct()
+	{
+        $this->middleware('auth')->except([
+            'index' 
+        ]);
+	}
+
     public function dhcpd()
     {
         $ops = new NetworkOps;

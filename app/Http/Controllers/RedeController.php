@@ -9,7 +9,15 @@ use Illuminate\Support\Facades\View;
 
 class RedeController extends Controller
 {
-    /**
+    
+	public function __construct()
+    {
+        $this->middleware('auth')->except([
+            'index'
+        ]);
+    }
+
+	/**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
