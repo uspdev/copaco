@@ -73,9 +73,10 @@ class NetworkOps
 
             $ip = $this->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
 
-            if(!$ip) {             
-                
+            if($ip === false) {             
                 $danger = 'Acabaram os IPs dessa rede, equipamento nao alocado!';
+                $ip = null;
+                $rede_id = null;
             }
         }
 
