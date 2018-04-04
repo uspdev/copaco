@@ -1,10 +1,8 @@
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
     <div class="sidebar-sticky">
-        
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             Recursos
         </h6>
-        
         @auth
         <ul class="nav flex-column">
             <li class="nav-item">
@@ -17,19 +15,11 @@
                     Equipamentos
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url('dhcpd.conf') }}">
-                    dhcpd.conf
-                </a>
-            </li>
-        </ul>
-        @endauth
+            </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Relatórios</span>
         </h6>
-        
-        @auth
         <ul class="nav flex-column mb-2">
             <li class="nav-item">
                 <a class="nav-link" href="#">
@@ -44,5 +34,22 @@
         </ul>
         @endauth
 
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            Arquivos para deploy
+        </h6>
+        <ul class="nav flex-column">
+           <li class="nav-item">
+                <a class="nav-link" href="{{ url('dhcpd.conf') }}">
+                    dhcpd.conf
+                </a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/freeradius/authorize">
+                    freeRadius
+                </a>
+            </li>
+        </ul>
+
     </div>
+
 </nav>
