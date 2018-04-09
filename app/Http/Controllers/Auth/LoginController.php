@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use App\User;
+use Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Socialite;
-use App\User;
-use Auth;
 
 class LoginController extends Controller
 {
@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -37,23 +37,22 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        if (\App::environment('local')) {
-            # busca o usuário dev
-            $dev_user = env('DEVELOPER_ID');
-            $user = User::find($dev_user);
-
-            # faz login
-            Auth::login($user, true);
-        
-		    # redireciona
-            return redirect('/'); 
-        }
-
         $this->middleware('guest')->except('logout');
     }
  	
 	public function redirectToProvider()
     {
+        if (\App::environment('local')) {
+            # busca o usuário dev
+            $dev_user = env('DEVELOPER_ID');
+            $user = User::findOrFail($dev_user);
+
+            # faz login
+            Auth::login($user, true);
+
+            return redirect('/');
+        }
+
         return Socialite::driver('senhaunica')->redirect();
     }
     
