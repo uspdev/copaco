@@ -37,6 +37,18 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        if (\App::environment('local')) {
+            # busca o usuário dev
+            $dev_user = env('DEVELOPER_ID');
+            $user = User::find($dev_user);
+
+            # faz login
+            Auth::login($user, true);
+        
+		    # redireciona
+            return redirect('/'); 
+        }
+
         $this->middleware('guest')->except('logout');
     }
  	
