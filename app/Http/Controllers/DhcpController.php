@@ -17,11 +17,11 @@ class DhcpController extends Controller
 {
     
     public function __construct()
-	{
+    {
         $this->middleware('auth')->except([
-            'index' 
+            'dhcpd' 
         ]);
-	}
+    }
 
     public function dhcpd()
     {
@@ -31,7 +31,6 @@ class DhcpController extends Controller
         $dhcp .= "default-lease-time 86400;\n";
         $dhcp .= "max-lease-time 86400;\n";
         $dhcp .= "authoritative;\n";
-        $dhcp .= "option domain-name-servers 143.107.253.3,143.107.253.5;\n";
         $dhcp .= "shared-network \"default\" {\n\n";
 
         $redes = Rede::all(); 
@@ -49,6 +48,24 @@ class DhcpController extends Controller
             $dhcp .= "    range {$range_begin} {$range_end}; \n";
             $dhcp .= "    option routers {$rede->gateway}; \n";
             $dhcp .= "    option broadcast-address {$broadcast}; \n";
+
+            //Opcionais: Netbios, NTP, DNS e Domain (Active Directory)
+            if (!empty($rede->netbios)){
+                $dhcp .= "    option netbios-name-servers {$rede->netbios}; \n";
+            }
+
+            if (!empty($rede->ntp)){
+                $dhcp .= "    option ntp-servers {$rede->ntp}; \n";
+            }
+
+            if (!empty($rede->dns)){
+                $dhcp .= "    option domain-name-servers {$rede->dns}; \n";
+            }
+
+            if (!empty($rede->ad_domain)){
+                $dhcp .= "    option domain-name {$rede->ad_domain}; \n";
+            }
+
             $dhcp .= "    deny unknown-clients; \n";
 
             $equipamentos = $rede->equipamentos;
