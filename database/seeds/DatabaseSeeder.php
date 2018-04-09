@@ -11,12 +11,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        echo "Criando 10 redes...\n";
+        echo "Criando 10 redes..." . PHP_EOL;
         factory(App\Rede::class, 10)->create();
 
-        echo "Criando 30 equipamentos...\n";
+        echo "Criando 30 equipamentos...". PHP_EOL;
         factory(App\Equipamento::class, 30)->create();
 
-        echo "Pronto.";
+        echo "Pronto." . PHP_EOL;
     }
 }
