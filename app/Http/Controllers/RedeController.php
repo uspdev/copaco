@@ -159,12 +159,12 @@ class RedeController extends Controller
     public function destroy($id)
     {
         $rede = Rede::findOrFail($id);
-        try {
-            $rede->delete();
-            return redirect()->route('redes.index')->with('alert-danger', 'Rede deletada!');
-        } catch (Exception $e) {
-            $request->session()->flash('alert-danger', 'Houve um erro, a rede não foi deletada.');
-            return back();
+        // clean IPs
+        foreach ($rede->equipamentos as $equipamento) {
+            $equipamento->ip = null;
+            $equipamento->save();
         }
+        $rede->delete();
+        return redirect()->route('redes.index')->with('alert-danger', 'Rede deletada!');
     }
 }
