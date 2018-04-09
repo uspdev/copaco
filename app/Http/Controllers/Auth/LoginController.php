@@ -42,9 +42,11 @@ class LoginController extends Controller
  	
 	public function redirectToProvider()
     {
-        if (\App::environment('local')) {
+        if (\App::environment('local') && env('SENHAUNICA_OVERRIDE')) {
             # busca o usuário dev
             $dev_user = env('DEVELOPER_ID');
+
+            # Se não encontra, retorna 404
             $user = User::findOrFail($dev_user);
 
             # faz login
