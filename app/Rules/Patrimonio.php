@@ -26,6 +26,10 @@ class Patrimonio implements Rule
      */
     public function passes($attribute, $value)
     {
+        if ($value == '') {
+            return true;
+        }
+
         $patrimonio = new dadosUsp;
         $xml = $patrimonio->fetchNumpat($value);
         if (strpos($xml,'The server encountered an unexpected condition') !== false) {
