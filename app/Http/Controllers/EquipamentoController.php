@@ -153,10 +153,11 @@ class EquipamentoController extends Controller
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
         }
-        $equipamento->rede_id= $request->rede_id;
-        $equipamento->ip = $request->ip;
-        $equipamento->save();
-
+        else {
+            $equipamento->rede_id= $request->rede_id;
+            $equipamento->ip = $request->ip;
+            $equipamento->save();
+        }
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
 
