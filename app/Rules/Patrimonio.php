@@ -47,6 +47,6 @@ class Patrimonio implements Rule
      */
     public function message()
     {
-        return 'Patrimonio nao valido';
+        return 'Patrimônio inválido';
     }
 }
