@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -45,25 +45,21 @@ class LoginController extends Controller
         return Socialite::driver('senhaunica')->redirect();
     }
     
-	public function handleProviderCallback()
-	{
+    public function handleProviderCallback()
+    {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
-        // aqui vc pode inserir o usuário no banco de dados local, fazer o login etc.
-        
-		# busca o usuário local
+	# busca o usuário local
         $user = User::find($userSenhaUnica->id);
         
-		# restrição só para admins
+	# restrição só para admins
         $admins = explode(',', trim(env('CODPES_ADMINS')));
         
-		if (!in_array($userSenhaUnica->id, $admins)) {
-            # exibir mensagem flash de restrição...
-            dd('ACESSO RESTRITO!');
+        if (!in_array($userSenhaUnica->id, $admins)) {
+            session()->flash('alert-danger', 'Usuario sem permissao de acesso!');
             return redirect('/');
         }    
         
-		# se o usuário local NÃO EXISTE, cadastra
         if (is_null($user)) {
             $user = new User;
             $user->id = $userSenhaUnica->id;
@@ -79,16 +75,12 @@ class LoginController extends Controller
             $user->save(); 
         }
         
-		# faz login
         Auth::login($user, true);
-        
-		# redireciona
         return redirect('/');  
     }
     
-	public function logout() {
+    public function logout() {
         Auth::logout();
         return redirect('/');
     }
-    
 }
