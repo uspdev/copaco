@@ -14,7 +14,7 @@
         <li class="nav-item text-nowrap">
             <form action="/logout" method="POST">
                 {{ csrf_field() }}
-                <button type="button" class="btn btn-dark">{{ Auth::user()->name }}</button>
+                <span class="oi oi-person" title="{{ Auth::user()->name }}"></span>
                 <button type="submit" class="btn btn-dark">Sair</button>
             </form>
         </li>
