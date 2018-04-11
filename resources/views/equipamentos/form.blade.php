@@ -65,7 +65,7 @@
 <div class="form-group">
     <label  for="vencimento">Vencimento</label>
     <input type="text" class="form-control" id="datepicker" name="vencimento" 
-           value="{{ $equipamento->vencimento or old('vencimento')  }}" required>
+           value="{{ $equipamento->vencimento or old('vencimento')  }}">
 </div>
 
 <div class="form-group">
