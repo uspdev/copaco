@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4d595abf8bba022802dcc93b0ec8e0e",
+    "content-hash": "aee23678ca5aff63f98a4896f24a8dde",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2626,6 +2626,41 @@
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
             "homepage": "https://github.com/tijsverkoyen/CssToInlineStyles",
             "time": "2017-11-27T11:13:29+00:00"
+        },
+        {
+            "name": "uspdev/patrimonio",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/patrimonio.git",
+                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/patrimonio/zipball/3beb3d747fb7109c8ea57ba5e002e269a89d6810",
+                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Masaki Kawabata Neto",
+                    "email": "kawabata@usp.br",
+                    "homepage": "https://github.com/masakik"
+                }
+            ],
+            "description": "biblioteca que busca informações públicas sobre bens patrimoniais da USP",
+            "homepage": "https://github.com/uspdev/patrimonio",
+            "time": "2018-04-10T09:23:19+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",

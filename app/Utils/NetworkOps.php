@@ -74,7 +74,7 @@ class NetworkOps
             $ip = $this->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
 
             if($ip === false) {             
-                $danger = 'Acabaram os IPs dessa rede, equipamento nao alocado!';
+                $danger = 'Acabaram os IPs dessa rede, equipamento não alocado!';
                 $ip = null;
                 $rede_id = null;
             }
@@ -83,28 +83,28 @@ class NetworkOps
         // 2 - quando um ip é especificado e uma rede não
         if(!is_null($ip) && is_null($rede)){
             $ip = null;
-            $danger = 'Rede nao especificada, equipamento nao alocado';
+            $danger = 'Rede não especificada, equipamento não alocado';
         }
 
         // 3 - quando um ip e uma rede são especificados
         if(!is_null($ip) && !is_null($rede)){
             # ip pertence a rede?
             if (!$this->pertenceRede($ip, $rede->iprede, $rede->cidr)){
-                $danger = 'ip nao pertence a rede selecionada, equipamento nao alocado';
+                $danger = 'ip não pertence à rede selecionada, equipamento não alocado';
                 $ip = null;
                 $rede_id = null;
             }
             else {
                 # verificar se ip está disponível
                 if(!$this->isIpAvailable($rede, $ip)){
-                    $danger = 'ip nao disponivel na rede selecionada, equipamento nao alocado';
+                    $danger = 'ip não disponível na rede selecionada, equipamento não alocado';
                     $ip = null;
                     $rede_id = null;
                 }
             }
                       
         } 
-        return ['rede'=>$rede_id, 'ip'=>$ip, 'danger' => $danger]; 
+        return ['rede'=>$rede_id, 'ip'=>$ip, 'danger' => utf8_encode($danger)]; 
     }
    
 }

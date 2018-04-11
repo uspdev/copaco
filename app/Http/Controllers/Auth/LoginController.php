@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use App\User;
+use Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Socialite;
-use App\User;
-use Auth;
 
 class LoginController extends Controller
 {
@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -42,28 +42,37 @@ class LoginController extends Controller
  	
 	public function redirectToProvider()
     {
+        if (\App::environment('local') && env('SENHAUNICA_OVERRIDE')) {
+            # busca o usuário dev
+            $dev_user = env('DEVELOPER_ID');
+
+            # Se não encontra, retorna 404
+            $user = User::findOrFail($dev_user);
+
+            # faz login
+            Auth::login($user, true);
+
+            return redirect('/');
+        }
+
         return Socialite::driver('senhaunica')->redirect();
     }
     
-	public function handleProviderCallback()
-	{
+    public function handleProviderCallback()
+    {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
-        // aqui vc pode inserir o usuário no banco de dados local, fazer o login etc.
-        
-		# busca o usuário local
+	# busca o usuário local
         $user = User::find($userSenhaUnica->id);
         
-		# restrição só para admins
+	# restrição só para admins
         $admins = explode(',', trim(env('CODPES_ADMINS')));
         
-		if (!in_array($userSenhaUnica->id, $admins)) {
-            # exibir mensagem flash de restrição...
-            dd('ACESSO RESTRITO!');
+        if (!in_array($userSenhaUnica->id, $admins)) {
+            session()->flash('alert-danger', 'Usuario sem permissao de acesso!');
             return redirect('/');
         }    
         
-		# se o usuário local NÃO EXISTE, cadastra
         if (is_null($user)) {
             $user = new User;
             $user->id = $userSenhaUnica->id;
@@ -79,16 +88,12 @@ class LoginController extends Controller
             $user->save(); 
         }
         
-		# faz login
         Auth::login($user, true);
-        
-		# redireciona
         return redirect('/');  
     }
     
-	public function logout() {
+    public function logout() {
         Auth::logout();
         return redirect('/');
     }
-    
 }
