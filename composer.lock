@@ -2629,16 +2629,16 @@
         },
         {
             "name": "uspdev/patrimonio",
-            "version": "v1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/patrimonio.git",
-                "reference": "1df1447625f45ee2b573fd6c69846a2e1fce11fb"
+                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/patrimonio/zipball/1df1447625f45ee2b573fd6c69846a2e1fce11fb",
-                "reference": "1df1447625f45ee2b573fd6c69846a2e1fce11fb",
+                "url": "https://api.github.com/repos/uspdev/patrimonio/zipball/3beb3d747fb7109c8ea57ba5e002e269a89d6810",
+                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810",
                 "shasum": ""
             },
             "type": "library",
@@ -2660,7 +2660,7 @@
             ],
             "description": "biblioteca que busca informações públicas sobre bens patrimoniais da USP",
             "homepage": "https://github.com/uspdev/patrimonio",
-            "time": "2018-04-06T20:13:06+00:00"
+            "time": "2018-04-10T09:23:19+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
