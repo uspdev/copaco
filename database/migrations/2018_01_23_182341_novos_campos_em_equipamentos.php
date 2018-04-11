@@ -19,7 +19,7 @@ class NovosCamposEmEquipamentos extends Migration
             $table->string('patrimonio')->nullable();
             $table->string('descricaosempatrimonio')->nullable();
             $table->macAddress('macaddress')->unique();
-            $table->string('local');
+            $table->string('local')->nullable();
             $table->date('vencimento');
             $table->ipAddress('ip')->nullable();
         });

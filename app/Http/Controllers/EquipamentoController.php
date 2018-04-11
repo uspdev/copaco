@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Equipamento;
 use Carbon\Carbon;
 use App\Rede;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
+use App\Rules\Patrimonio;
 
 class EquipamentoController extends Controller
 {
@@ -54,6 +54,8 @@ class EquipamentoController extends Controller
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
+        
+        $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $ops = new NetworkOps;
 
@@ -129,6 +131,7 @@ class EquipamentoController extends Controller
     {
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
+        $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
