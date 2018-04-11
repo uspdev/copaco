@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <th>MAC Address</th>
-                <th>Identificação</th>
+                <th>Identificação/patrimônio</th>
                 <th>IP</th>
                 <th>Rede</th>
                 <th>Data de Vencimento</th>

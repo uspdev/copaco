@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Equipamento;
 use Carbon\Carbon;
 use App\Rede;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
+use App\Rules\Patrimonio;
 
 class EquipamentoController extends Controller
 {
@@ -55,6 +55,8 @@ class EquipamentoController extends Controller
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
         $this->validate(request(), ['vencimento' => 'required|date|after:yesterday']);
+      
+        $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $ops = new NetworkOps;
 
@@ -130,6 +132,7 @@ class EquipamentoController extends Controller
     {
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
+        $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
@@ -154,10 +157,11 @@ class EquipamentoController extends Controller
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
         }
-        $equipamento->rede_id= $request->rede_id;
-        $equipamento->ip = $request->ip;
-        $equipamento->save();
-
+        else {
+            $equipamento->rede_id= $request->rede_id;
+            $equipamento->ip = $request->ip;
+            $equipamento->save();
+        }
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
 

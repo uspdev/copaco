@@ -16,7 +16,7 @@ class AddRedesIdToEquipamentosTable extends Migration
         Schema::table('equipamentos', function (Blueprint $table) {
             //
             $table->integer('rede_id')->unsigned()->nullable();
-            $table->foreign('rede_id')->references('id')->on('redes');
+            $table->foreign('rede_id')->references('id')->on('redes')->onDelete('set null');
         });
     }
 

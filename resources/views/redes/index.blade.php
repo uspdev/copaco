@@ -4,6 +4,8 @@
 <h1>Cadastrar Rede</h1>
 
 @include('messages.flash')
+@include('messages.errors')
+
 
 <p>
     <a href="{{ route('redes.create') }}" class="btn btn-success">

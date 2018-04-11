@@ -32,6 +32,37 @@ Depois gere seu arquivo de configuração do Laravel e a chave da aplicação:
     npm install  
     npm run dev
 
+## Setup para usuário local de desenvolvimento
+
+Caso você não possua o token de utilização da senha única, proceda da seguinte forma:
+
+No seu arquivo .env, verifique se o seu `APP_ENV` está configurado para **local**.
+
+Rode as migragions com o  `Seeder`:
+
+    php artisan migrate --seed
+
+Caso já tenha rodado as migrations anteriormente, dê um refresh:
+
+    php artisan migrate:refresh --seed
+
+Você deve ver a seguinte saída:
+
+```
+Gerando usuário para dev...
+Seeding: DevUserSeeder
+Seu developer id é: 11223344
+Configure-o em seu arquivo .env
+```
+
+No seu arquivo `.env`, configure as entradas:
+
+    SENHAUNICA_OVERRIDE=true
+    DEVELOPER_ID=<numero gerado pelo seeder>
+
+Assim é possível logar no sistema sem necessidade do token configurado no seu ambiente de desenvolvimento
+
+
 ## Contribuindo com o projeto
 
 ### Passos iniciais

@@ -19,6 +19,10 @@
 
         <!-- Custom styles for this template -->
         <link href="/css/dashboard.css" rel="stylesheet">
+
+        <!-- Open Iconic  -->
+		<link rel="stylesheet" href="{{asset('css/app.css')}}">
+
     </head>
 
     <body>
@@ -29,11 +33,7 @@
                 @include('dashboard.sidebar')
                 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                    
-                    @auth
-                        @yield('content')
-                    @endauth
-                
+                    @yield('content')
                 </main>
             </div>
         </div>
@@ -48,6 +48,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.pt-BR.min.js"></script>
         <script src="/js/app.js"></script>
+
+        <!-- Open Iconic -->
+        <script src="{{asset('js/app.js')}}"></script>
 
         <!-- Remover esta gamby -->
         <script type="text/javascript">
