@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use App\User;
+use Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Socialite;
-use App\User;
-use Auth;
 
 class LoginController extends Controller
 {
@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -42,6 +42,19 @@ class LoginController extends Controller
  	
 	public function redirectToProvider()
     {
+        if (\App::environment('local') && env('SENHAUNICA_OVERRIDE')) {
+            # busca o usuário dev
+            $dev_user = env('DEVELOPER_ID');
+
+            # Se não encontra, retorna 404
+            $user = User::findOrFail($dev_user);
+
+            # faz login
+            Auth::login($user, true);
+
+            return redirect('/');
+        }
+
         return Socialite::driver('senhaunica')->redirect();
     }
     
