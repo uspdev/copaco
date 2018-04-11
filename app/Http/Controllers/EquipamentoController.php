@@ -54,8 +54,8 @@ class EquipamentoController extends Controller
         $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
-        $this->validate(request(), ['vencimento' => 'required|date|after:yesterday']);
-      
+        // $this->validate(request(), ['vencimento' => 'required|date|after:yesterday']);
+        
         $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $ops = new NetworkOps;
