@@ -5,7 +5,7 @@
             @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
                 checked
             @elseif ((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1))
-                checked 
+                checked
             @endif >
         <label class="form-check-label" for="check-sim">Sim</label>
     </div>
@@ -14,7 +14,7 @@
             @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
                 checked
             @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
-                checked 
+                checked
             @endif >
         <label class="form-check-label" for="check-nao">Não</label>
     </div>
@@ -86,12 +86,16 @@
         <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-sim" value="1"
             @if (isset($equipamento->id) and ($equipamento->fixarip === 1))
                 checked
+            @elseif ((old('fixarip') != null) and (old('fixarip') == 1))
+                checked
             @endif >
         <label class="form-check-label" for="check-fixarip-sim">Sim</label>
     </div>
     <div class="form-check">
         <input class="form-check-input" type="radio" name="fixarip" id="check-fixarip-nao" value="0"
             @if (isset($equipamento->id) and ($equipamento->fixarip === 0))
+                checked
+            @elseif ((old('fixarip') == null) and (!isset($equipamento->id)))
                 checked
             @elseif ((old('fixarip') != null) and (old('fixarip') == 0))
                 checked
@@ -100,7 +104,12 @@
     </div>
 </div>
 
-<div class="form-group row">
+<div class="form-group row" id="equipamento_ip"
+    @if (isset($equipamento->id) and ($equipamento->fixarip === 0))
+        hidden
+    @elseif (((old('fixarip') == 0)) and (!isset($equipamento->id)))
+        hidden
+    @endif >
     <label class="col-sm-2 col-form-label" for="ip">IP</label>
     <div class="col-sm-7">
         <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip or old('ip')  }}" placeholder="Ex: 192.168.0.1">

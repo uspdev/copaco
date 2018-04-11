@@ -156,12 +156,14 @@ class EquipamentoController extends Controller
                 $request->session()->flash('alert-danger', $aloca['danger']);
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
-        }
-        else {
+        
+        } else {
+            $equipamento->fixarip = $request->fixarip;
             $equipamento->rede_id= $request->rede_id;
             $equipamento->ip = $request->ip;
             $equipamento->save();
         }
+
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
 
