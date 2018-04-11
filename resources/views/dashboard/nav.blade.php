@@ -12,11 +12,15 @@
         
         @auth
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/logout" title="Sair">{{ Auth::user()->name }} | Sair</a>
+            <form action="/logout" method="POST">
+                {{ csrf_field() }}
+                <button type="button" class="btn btn-dark">{{ Auth::user()->name }}</button>
+                <button type="submit" class="btn btn-dark">Sair</button>
+            </form>
         </li>
         @else
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/login">Entrar</a>
+            <a class="btn btn-dark" href="/login">Entrar</a>
         </li>
         @endauth
 

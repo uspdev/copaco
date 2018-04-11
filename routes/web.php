@@ -9,7 +9,7 @@ Route::resource('redes','RedeController');
 # rotas para a senha única
 Route::get('/login', 'Auth\LoginController@redirectToProvider');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
-Route::get('/logout', 'Auth\LoginController@logout');
+Route::post('/logout', 'Auth\LoginController@logout');
 
 # APIs
 Route::get('/dhcpd.conf','DhcpController@dhcpd');
