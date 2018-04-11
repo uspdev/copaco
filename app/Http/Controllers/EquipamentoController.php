@@ -153,6 +153,7 @@ class EquipamentoController extends Controller
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
         }
+        $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id= $request->rede_id;
         $equipamento->ip = $request->ip;
         $equipamento->save();
