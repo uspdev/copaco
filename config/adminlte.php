@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => 'USPdev - COPACO',
 
     'title_prefix' => '',
 
@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>COPACO</b>',
 
-    'logo_mini' => '<b>A</b>LT',
+    'logo_mini' => '<b>C</b>PC',
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,7 @@ return [
     |
     */
 
-    'skin' => 'blue',
+    'skin' => 'purple-light',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,81 +108,46 @@ return [
     */
 
     'menu' => [
-        'MAIN NAVIGATION',
+        'RECURSOS',
         [
             'text' => 'Blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'Pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'file',
-            'label'       => 4,
-            'label_color' => 'success',
-        ],
-        'ACCOUNT SETTINGS',
-        [
-            'text' => 'Profile',
-            'url'  => 'admin/settings',
-            'icon' => 'user',
+            'text'        => 'Redes',
+            'url'         => '/redes',
+            'icon'        => 'sitemap',
         ],
         [
-            'text' => 'Change Password',
-            'url'  => 'admin/settings',
-            'icon' => 'lock',
+            'text'        => 'Equipamentos',
+            'url'         => '/equipamentos',
+            'icon'        => 'desktop',
         ],
+        'RELATÓRIOS',
         [
-            'text'    => 'Multilevel',
-            'icon'    => 'share',
-            'submenu' => [
-                [
-                    'text' => 'Level One',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'Level One',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'Level Two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'Level Two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'Level Three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'Level Three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'Level One',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        'LABELS',
-        [
-            'text'       => 'Important',
+            'text' => 'Equipamentos Vencidos',
+            'url'  => '#',
+            'icon' => 'calendar-times-o',
             'icon_color' => 'red',
         ],
         [
-            'text'       => 'Warning',
+            'text' => 'Equipamentos não alocados',
+            'url'  => '#',
+            'icon' => 'frown-o',
             'icon_color' => 'yellow',
         ],
+
+        'ARQUIVOS DEPLOY',
         [
-            'text'       => 'Information',
-            'icon_color' => 'aqua',
+            'text'       => 'dhcpd.conf',
+            'icon' => 'server',
         ],
+        [
+            'text'       => 'freeRadius',
+            'icon' => 'superpowers',
+        ],
+
     ],
 
     /*
