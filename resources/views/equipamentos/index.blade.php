@@ -1,10 +1,12 @@
-@extends('dashboard.master')
+@extends('adminlte::page')
+
+@section('content_header')
+    <h1>Cadastrar Equipamento</h1>
+@stop
 
 @section('content')
-<h1>Cadastrar Equipamento</h1>
-
-@include('messages.flash')
-@include('messages.errors')
+    @include('messages.flash')
+    @include('messages.errors')
  
 <p>
     <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
@@ -47,4 +49,4 @@
     </table>
 </div>
 
-@endsection
+@stop
