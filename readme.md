@@ -23,13 +23,13 @@ Procure pela biblioteca em sua distribuição.
     - Editar o arquivo .env
         - Dados da conexão
         - Dados do OAuth e números USP dos admins do sistema
-        ```
+```
         SENHAUNICA_KEY=
         SENHAUNICA_SECRET=
         SENHAUNICA_CALLBACK_ID=
 
         CODPES_ADMINS=
-        ```
+```
     - php artisan key:generate
     - php artisan migrate
 
