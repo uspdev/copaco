@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/',
 
     'logout_url' => 'logout',
 
@@ -93,7 +93,7 @@ return [
 
     'login_url' => 'login',
 
-    'register_url' => 'register',
+    'register_url' => '#',
 
     /*
     |--------------------------------------------------------------------------
@@ -140,12 +140,14 @@ return [
 
         'ARQUIVOS DEPLOY',
         [
-            'text'       => 'dhcpd.conf',
+            'text' => 'dhcpd.conf',
+            'url'  => '/dhcpd.conf',
             'icon' => 'server',
         ],
         [
-            'text'       => 'freeRadius',
+            'text' => 'freeRadius',
             'icon' => 'superpowers',
+            'url' => '/freeradius/authorize',
         ],
 
     ],

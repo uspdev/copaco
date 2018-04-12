@@ -1,17 +1,16 @@
-@extends('dashboard.master')
+@extends('adminlte::page')
+
+@section('content_header')
+    <h1>Cadastrar Rede</h1>
+@stop
 
 @section('content')
-<h1>Cadastrar Rede</h1>
-
-@include('messages.flash')
-@include('messages.errors')
-
-
-<p>
     <a href="{{ route('redes.create') }}" class="btn btn-success">
         Adicionar Rede
     </a>
-</p>
+
+    @include('messages.flash')
+    @include('messages.errors')
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -49,4 +48,14 @@
     </table>
 </div>
 
-@endsection
+@stop
+
+@section('js')
+<script type="text/javascript">
+    $(function () {
+        $(".delete-item").on("click", function(){
+            return confirm("Tem certeza?");
+        });
+    });
+</script>
+@stop
