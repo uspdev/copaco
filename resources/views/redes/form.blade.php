@@ -45,5 +45,5 @@
 </div>
 
 <div class="form-group">
-    <input type="submit" class="btn btn-primary" value="Cadastrar Rede">
+    <input type="submit" class="btn btn-primary" value="Enviar Dados">
 </div>

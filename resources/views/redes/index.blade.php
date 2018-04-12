@@ -5,12 +5,13 @@
 @stop
 
 @section('content')
-    <a href="{{ route('redes.create') }}" class="btn btn-success">
-        Adicionar Rede
-    </a>
-
     @include('messages.flash')
     @include('messages.errors')
+
+<a href="{{ route('redes.create') }}" class="btn btn-success">
+    Adicionar Rede
+</a>
+
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -21,7 +22,7 @@
                 <th>IP Rede</th>
                 <th>Gateway</th>
                 <th>CIDR</th>
-                <th colspan="2">Ações</th>
+                <th >Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -37,10 +38,10 @@
                 </td>
                 <td>
                     <form action="{{action('RedeController@destroy', $rede->id)}}" method="post">
-                      {{csrf_field()}}
-                      <input name="_method" type="hidden" value="DELETE">
-                      <button class="delete-item btn btn-danger" type="submit">Deletar</button>
-                  </form>
+                        {{csrf_field()}}
+                        <input name="_method" type="hidden" value="DELETE">
+                        <button class="delete-item btn btn-danger" type="submit">Deletar</button>
+                    </form>
                 </td>
             </tr>
             @endforeach
