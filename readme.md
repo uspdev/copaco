@@ -17,21 +17,33 @@ Funcionalidades:
 Procure pela biblioteca em sua distribuição.
 
 ## Procedimentos de deploy
- 
-    - composer install
-    - cp .env.example .env
-    - Editar o arquivo .env
-        - Dados da conexão
-        - Dados do OAuth e números USP dos admins do sistema
-```
-        SENHAUNICA_KEY=
-        SENHAUNICA_SECRET=
-        SENHAUNICA_CALLBACK_ID=
 
-        CODPES_ADMINS=
+Em seu terminal:
+
 ```
-    - php artisan key:generate
-    - php artisan migrate
+composer install
+cp .env.example .env
+```
+
+Editar o arquivo `.env`
+
+- Dados da conexão
+- Dados do OAuth e números USP dos admins do sistema
+
+```
+    SENHAUNICA_KEY=
+    SENHAUNICA_SECRET=
+    SENHAUNICA_CALLBACK_ID=
+
+    CODPES_ADMINS=
+```
+
+Rode as migrations
+
+```
+php artisan key:generate
+php artisan migrate
+```
 
 Caso falte alguma dependência, siga as instruções do `composer`.
 
@@ -46,13 +58,13 @@ Caso você não possua o token de utilização da senha única, proceda da segui
 
 No seu arquivo .env, verifique se o seu `APP_ENV` está configurado para **local**.
 
-Rode as migragions com o  `Seeder`:
+Rode o comando de setup::
 
-    php artisan migrate --seed
+    php artisan copaco:setup_dev
 
-Caso já tenha rodado as migrations anteriormente, dê um refresh:
+Caso já tenha rodado o comando anteriormente, dê um refresh:
 
-    php artisan migrate:refresh --seed
+    php artisan migrate:refresh
 
 Você deve ver a seguinte saída:
 
