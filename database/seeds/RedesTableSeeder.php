@@ -14,16 +14,18 @@ class RedesTableSeeder extends Seeder
         $now = date("Y-m-d H:i:s");
         DB::table('redes')->insert([
             [
-              'nome' => 'Rede Secretaria',
-              'iprede' => '192.168.1.0',
-              'cidr' => 28,
-              'gateway' => '192.168.1.1',
-              'dns' => '192.168.1.10',
-              'ntp' => 'ntp.usp.br',
-              "created_at" => $now,
-              "updated_at" => $now,
+                'id' => 1,
+                'nome' => 'Rede Secretaria',
+                'iprede' => '192.168.1.0',
+                'cidr' => 28,
+                'gateway' => '192.168.1.1',
+                'dns' => '192.168.1.10',
+                'ntp' => 'ntp.usp.br',
+                "created_at" => $now,
+                "updated_at" => $now,
             ],
             [
+                'id' => 2,
                 'nome' => 'Rede Biblioteca',
                 'iprede' => '172.16.1.0',
                 'cidr' => 28,
@@ -32,7 +34,7 @@ class RedesTableSeeder extends Seeder
                 'ntp' => 'lib.usp.br',
                 "created_at" => $now,
                 "updated_at" => $now,
-              ],
+            ],
         ]);
     }
 }
