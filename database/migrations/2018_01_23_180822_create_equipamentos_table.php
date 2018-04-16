@@ -15,6 +15,16 @@ class CreateEquipamentosTable extends Migration
     {
         Schema::create('equipamentos', function (Blueprint $table) {
             $table->increments('id');
+            $table->boolean('naopatrimoniado')->default(0);
+            $table->string('patrimonio')->nullable();
+            $table->string('descricaosempatrimonio')->nullable();
+            $table->macAddress('macaddress')->unique();
+            $table->string('local')->nullable();
+            $table->date('vencimento');
+            $table->boolean('fixarip')->default(0);
+            $table->ipAddress('ip')->nullable();
+            $table->integer('rede_id')->unsigned()->nullable();
+            $table->foreign('rede_id')->references('id')->on('redes')->onDelete('set null');
             $table->timestamps();
         });
     }
