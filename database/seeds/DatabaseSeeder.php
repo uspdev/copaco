@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
                 DevUserSeeder::class
             ]);
         }
+
+        $this->call([
+            RedesTableSeeder::class,
+            EquipamentosTableSeeder::class,
+        ]);
         // echo "Pronto." . PHP_EOL;
     }
 }
