@@ -19,3 +19,7 @@ yarn-error.log
 *~
 package-lock.json
 tags
+
+# Assets do AdminLTE
+
+/public/vendor/adminlte
