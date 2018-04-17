@@ -32,6 +32,14 @@ Depois gere seu arquivo de configuração do Laravel e a chave da aplicação:
     npm install  
     npm run dev
 
+## Publicando Assets do AdminLTE
+
+Para ter o font disponível usando o AdminLTE, utilize o comando:
+
+    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+
+
+
 ## Setup para usuário local de desenvolvimento
 
 Caso você não possua o token de utilização da senha única, proceda da seguinte forma:
