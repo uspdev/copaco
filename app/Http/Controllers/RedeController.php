@@ -6,6 +6,7 @@ use App\Rede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use App\Rules\DNS;
 use Illuminate\Validation\Rule;
 use App\Utils\NetworkOps;
 
@@ -82,13 +83,14 @@ class RedeController extends Controller
         $rede->dns      = $request->dns;
         $rede->gateway  = $request->gateway;
         $rede->ntp      = $request->ntp;
-        $rede->netbios   = $request->netbios;
+        $rede->netbios  = $request->netbios;
         $rede->cidr     = $request->cidr;
-        $rede->vlan     =  $request->vlan;
-        $rede->ad_domain     =  $request->ad_domain;
+        $rede->vlan     = $request->vlan;
+        $rede->ad_domain= $request->ad_domain;
 
-    	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
        
+        $request->validate(['dns' => [new DNS]]);
         $rede->save();
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
         return redirect()->route('redes.index');
@@ -152,9 +154,10 @@ class RedeController extends Controller
         $rede->ntp      = $request->ntp;
         $rede->netbios  = $request->netbios;
         $rede->cidr     = $request->cidr;
-        $rede->vlan     =  $request->vlan;
-        $rede->ad_domain     =  $request->ad_domain;
-     
+        $rede->vlan     = $request->vlan;
+        $rede->ad_domain= $request->ad_domain;
+
+        $request->validate(['dns' => [new DNS]]);
         $rede->save();
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
         return redirect()->route('redes.index');
