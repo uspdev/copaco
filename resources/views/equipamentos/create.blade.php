@@ -1,19 +1,23 @@
-@extends('dashboard.master')
+@extends('adminlte::page')
+
+@section('content_header')
+    <h1>Cadastrar Equipamento</h1>
+@stop
 
 @section('content')
-<h1>Cadastrar Equipamento</h1>
+    <div class="row">
+        @include('messages.flash')
+        @include('messages.errors')
 
-@include('messages.flash')
-@include('messages.errors')
-
-<div class="row">
-    <div class="col-lg-4">
-        <form action="{{ url('equipamentos') }}" method="post">
-        {{ csrf_field() }}
-        @include('equipamentos.form')
-        </form>
+        <div class="col-md-6">
+            <form action="{{ url('equipamentos') }}" method="post">
+            {{ csrf_field() }}
+            @include('equipamentos.form')
+            </form>
+        </div>
     </div>
-</div>
+@stop
 
-
-@endsection
+@section('js')
+    @include('equipamentos.js')
+@stop

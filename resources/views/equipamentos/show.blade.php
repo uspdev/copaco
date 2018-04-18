@@ -1,9 +1,10 @@
-@extends('dashboard.master')
+@extends('adminlte::page')
+
+@section('content_header')
+  <h1>Equipamento: {{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }} </h1>
+@stop
 
 @section('content')
-
-<h3>Equipamento: {{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }} </h3>
-
 <div class="card">
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><b>Patrimoniado:</b> {{ $equipamento->naopatrimoniado ? "Sim" : "Não" }}</li>
@@ -15,8 +16,7 @@
   </ul>
 </div>
 
-<hr>
 <a href="{{ url()->previous() }}" class="btn btn-primary">Voltar</a>
 
-@endsection
+@stop
 

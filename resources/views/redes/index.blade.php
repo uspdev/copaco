@@ -1,17 +1,17 @@
-@extends('dashboard.master')
+@extends('adminlte::page')
+
+@section('content_header')
+    <h1>Cadastrar Rede</h1>
+@stop
 
 @section('content')
-<h1>Cadastrar Rede</h1>
+    @include('messages.flash')
+    @include('messages.errors')
 
-@include('messages.flash')
-@include('messages.errors')
+<a href="{{ route('redes.create') }}" class="btn btn-success">
+    Adicionar Rede
+</a>
 
-
-<p>
-    <a href="{{ route('redes.create') }}" class="btn btn-success">
-        Adicionar Rede
-    </a>
-</p>
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -22,7 +22,7 @@
                 <th>IP Rede</th>
                 <th>Gateway</th>
                 <th>CIDR</th>
-                <th colspan="2">Ações</th>
+                <th >Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -38,10 +38,10 @@
                 </td>
                 <td>
                     <form action="{{action('RedeController@destroy', $rede->id)}}" method="post">
-                      {{csrf_field()}}
-                      <input name="_method" type="hidden" value="DELETE">
-                      <button class="delete-item btn btn-danger" type="submit">Deletar</button>
-                  </form>
+                        {{csrf_field()}}
+                        <input name="_method" type="hidden" value="DELETE">
+                        <button class="delete-item btn btn-danger" type="submit">Deletar</button>
+                    </form>
                 </td>
             </tr>
             @endforeach
@@ -49,4 +49,14 @@
     </table>
 </div>
 
-@endsection
+@stop
+
+@section('js')
+<script type="text/javascript">
+    $(function () {
+        $(".delete-item").on("click", function(){
+            return confirm("Tem certeza?");
+        });
+    });
+</script>
+@stop

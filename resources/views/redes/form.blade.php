@@ -1,21 +1,21 @@
 <div class="form-group">
     <label for="nome">Nome</label>
-    <input type="text" class="form-control" name="nome" value="{{ $rede->nome or old('nome')  }}" placeholder="Ex: Departamento de Música" required>
+    <input type="text" class="form-control" name="nome" value="{{ $rede->nome or old('nome')  }}" placeholder="Ex: Departamento de Música" required >
 </div>
 
 <div class="form-group">
     <label for="iprede">IP Rede</label>
-    <input type="text" class="form-control" name="iprede" value="{{ $rede->iprede or old('iprede') }}" placeholder="Ex: 143.107.75.0" required>
+    <input type="text" class="form-control" name="iprede" value="{{ $rede->iprede or old('iprede') }}" placeholder="Ex: 143.107.75.0" required >
 </div>
 
 <div class="form-group">
     <label for="cidr">Cidr</label>
-    <input type="text" class="form-control" name="cidr" value="{{ $rede->cidr or old('cidr') }}" placeholder="Ex: 29" required>
+    <input type="text" class="form-control" name="cidr" value="{{ $rede->cidr or old('cidr') }}" placeholder="Ex: 29" required >
 </div>
 
 <div class="form-group">
     <label for="gateway">Gateway</label>
-    <input type="text" class="form-control" name="gateway" value="{{ $rede->gateway or old('gateway') }}" placeholder="Ex: 143.107.75.1"required>
+    <input type="text" class="form-control" name="gateway" value="{{ $rede->gateway or old('gateway') }}" placeholder="Ex: 143.107.75.1" required >
 </div>
 
 <div class="form-group">
@@ -44,7 +44,6 @@
     <input type="text" class="form-control" name="ad_domain" value="{{ $rede->ad_domain or old('ad_domain') }}"placeholder="mydomain.usp.br">
 </div>
 
-<div class="form-group row">
-    <div class="col-md-0"></div>
-    <input type="submit" class="btn btn-primary">
+<div class="form-group">
+    <input type="submit" class="btn btn-primary" value="Enviar Dados">
 </div>
