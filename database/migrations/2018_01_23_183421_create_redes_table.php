@@ -25,6 +25,10 @@ class CreateRedesTable extends Migration
             $table->integer('cidr');
             $table->integer('vlan')->nullable();
             $table->string('ad_domain')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->integer('last_modify_by')->unsigned()->nullable();
+            $table->foreign('last_modify_by')->references('id')->on('users')->onDelete('set null');
         });
     }
 
