@@ -16,14 +16,11 @@ class DatabaseSeeder extends Seeder
 
         // echo "Criando 30 equipamentos...". PHP_EOL;
         // factory(App\Equipamento::class, 30)->create();
-
         
-        if (\App::environment('local')){
-            echo "Gerando usuário para dev..." . PHP_EOL;
-            $this->call([
-                DevUserSeeder::class
-            ]);
-        }
+        $this->call([
+            RedesTableSeeder::class,
+            EquipamentosTableSeeder::class,
+        ]);
         // echo "Pronto." . PHP_EOL;
     }
 }
