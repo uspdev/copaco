@@ -6,6 +6,8 @@ use App\Rede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
+use Illuminate\Validation\Rule;
+use App\Utils\NetworkOps;
 
 class RedeController extends Controller
 {
@@ -48,11 +50,19 @@ class RedeController extends Controller
      */
     public function store(Request $request)
     {
+        // Validando o Gateway (ver se está no range da rede)
+        $ops = new NetworkOps;
+        $ips = $ops->getRange($request->iprede, $request->cidr);
+
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
             'cidr'      => 'required|numeric|min:20|max:30',
-            'vlan'      => 'numeric'
+            'vlan'      => 'numeric',
+            'gateway' => [
+                'required',
+                Rule::in($ips),
+            ],
         ]);
         
         if ($validator->fails()) {

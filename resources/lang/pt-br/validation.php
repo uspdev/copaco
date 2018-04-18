@@ -89,8 +89,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'gateway' => [
+            'in' => 'O IP do gateway está fora do intervalo da rede.',
         ],
     ],
 
