@@ -18,14 +18,22 @@ Procure pela biblioteca em sua distribuição.
 
 ## Procedimentos de deploy
  
-    composer install
+    - composer install
+    - cp .env.example .env
+    - Editar o arquivo .env
+        - Dados da conexão
+        - Dados do OAuth e números USP dos admins do sistema
+```
+        SENHAUNICA_KEY=
+        SENHAUNICA_SECRET=
+        SENHAUNICA_CALLBACK_ID=
+
+        CODPES_ADMINS=
+```
+    - php artisan key:generate
+    - php artisan migrate
 
 Caso falte alguma dependência, siga as instruções do `composer`.
-
-Depois gere seu arquivo de configuração do Laravel e a chave da aplicação:
-
-    cp .env.example .env
-    php artisan key:generate
 
 ## Compile os assests com npm
 
