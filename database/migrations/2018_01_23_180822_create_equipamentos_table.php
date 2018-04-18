@@ -26,6 +26,8 @@ class CreateEquipamentosTable extends Migration
             $table->integer('rede_id')->unsigned()->nullable();
             $table->foreign('rede_id')->references('id')->on('redes')->onDelete('set null');
             $table->timestamps();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
