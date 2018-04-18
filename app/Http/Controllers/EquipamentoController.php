@@ -83,6 +83,8 @@ class EquipamentoController extends Controller
         $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id = $rede;
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $data_vencimento);
+        $equipamento->user_id = \Auth::user()->id;
+        $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
         if(!empty($aloca['danger'])) {
@@ -140,6 +142,7 @@ class EquipamentoController extends Controller
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
+        $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
 

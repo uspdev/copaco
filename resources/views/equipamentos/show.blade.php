@@ -12,6 +12,8 @@
     <li class="list-group-item"><b>Vencimento:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</li>
     <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome or '' }}</li>
     <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip or '' }}</li>
+    <li class="list-group-item"><b>Cadastrado por:</b> {{ $equipamento->user_id }} em {{ $equipamento->created_at }}</li>
+    <li class="list-group-item"><b>Modificado por:</b> {{ $equipamento->last_modify_by }} em {{ $equipamento->updated_at }}</li>
   </ul>
 </div>
 
