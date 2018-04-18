@@ -86,6 +86,8 @@ class RedeController extends Controller
         $rede->cidr     = $request->cidr;
         $rede->vlan     =  $request->vlan;
         $rede->ad_domain     =  $request->ad_domain;
+        $rede->user_id = \Auth::user()->id;
+        $rede->last_modify_by = \Auth::user()->id;
 
     	  $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
        
@@ -154,6 +156,7 @@ class RedeController extends Controller
         $rede->cidr     = $request->cidr;
         $rede->vlan     =  $request->vlan;
         $rede->ad_domain     =  $request->ad_domain;
+        $rede->last_modify_by = \Auth::user()->id;
      
         $rede->save();
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
