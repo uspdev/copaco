@@ -63,28 +63,26 @@ class LoginController extends Controller
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
 	# busca o usuário local
-        $user = User::find($userSenhaUnica->id);
+        $user = User::find($userSenhaUnica->codpes);
         
 	# restrição só para admins
         $admins = explode(',', trim(env('CODPES_ADMINS')));
         
-        if (!in_array($userSenhaUnica->id, $admins)) {
+        if (!in_array($userSenhaUnica->codpes, $admins)) {
             session()->flash('alert-danger', 'Usuario sem permissao de acesso!');
             return redirect('/');
         }    
         
         if (is_null($user)) {
             $user = new User;
-            $user->id = $userSenhaUnica->id;
+            $user->id = $userSenhaUnica->codpes;
             $user->email = $userSenhaUnica->email;
-            $user->name = $userSenhaUnica->name;
+            $user->name = $userSenhaUnica->nompes;
             $user->save();
         } else {
-            # se o usuário EXISTE local
-            # atualiza os dados
-            $user->id = $userSenhaUnica->id;
+            $user->id = $userSenhaUnica->codpes;
             $user->email = $userSenhaUnica->email;
-            $user->name = $userSenhaUnica->name;
+            $user->name = $userSenhaUnica->nompes;
             $user->save(); 
         }
         

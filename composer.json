@@ -11,8 +11,8 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "s1lentium/iptools": "^1.1",
-        "uspdev/patrimonio": "^1.0",
-        "uspdev/senhaunica-socialite": "^1.0"
+        "uspdev/patrimonio": "^1.0.1",
+        "uspdev/senhaunica-socialite": "^2.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
