@@ -55,7 +55,7 @@ class EquipamentoController extends Controller
         $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
         $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
         // $this->validate(request(), ['vencimento' => 'required|date|after:yesterday']);
-        
+
         $request->validate(['patrimonio' => [new Patrimonio]]);
 
         $ops = new NetworkOps;
@@ -67,11 +67,11 @@ class EquipamentoController extends Controller
         if(!empty($aloca['danger'])) {
             $request->session()->flash('alert-danger', $aloca['danger']);
         }
-      
+
         if(empty($request->vencimento)) {
-            $data_vencimento = date("d/m/Y", strtotime('+10 years'));
+            $equipamento->vencimento = Carbon::now()->addYears(10);
         } else {
-            $data_vencimento = $request->vencimento;
+            $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         }
 
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
@@ -82,7 +82,6 @@ class EquipamentoController extends Controller
         $equipamento->ip = $ip;
         $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id = $rede;
-        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $data_vencimento);
         $equipamento->user_id = \Auth::user()->id;
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
