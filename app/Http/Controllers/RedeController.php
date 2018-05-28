@@ -128,12 +128,21 @@ class RedeController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Validando o Gateway (ver se está no range da rede)
+        $ops = new NetworkOps;
+        $ips = $ops->getRange($request->iprede, $request->cidr);
+
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
-            'cidr'      => 'required|numeric|min:20|max:30'
+            'cidr'      => 'required|numeric|min:20|max:30',
+            'vlan'      => 'numeric',
+            'gateway' => [
+                'required',
+                Rule::in($ips),
+            ],
         ]);
-        
+
         if ($validator->fails()) {
             return redirect("redes/$id/edit")
                         ->withErrors($validator)
