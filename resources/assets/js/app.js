@@ -30,7 +30,9 @@ function checked_sim(name){
 $('#datepicker').datepicker({
     format: 'dd/mm/yyyy',
     language: 'pt-BR',
-    startDate: 'today'
+    startDate: 'today',
+    autoclose: true,
+    todayHighlight: true
 });
 
     
