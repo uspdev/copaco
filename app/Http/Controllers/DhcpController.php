@@ -27,11 +27,14 @@ class DhcpController extends Controller
     {
         $ops = new NetworkOps;
 
-        $dhcp = "ddns-update-style none;\n";
-        $dhcp .= "default-lease-time 86400;\n";
-        $dhcp .= "max-lease-time 86400;\n";
-        $dhcp .= "authoritative;\n";
-        $dhcp .= "shared-network \"default\" {\n\n";
+        $dhcp = <<<'NOWDOC'
+ddns-update-style none;
+default-lease-time 86400;
+max-lease-time 86400;
+authoritative;
+shared-network "default" {
+
+NOWDOC;
 
         $redes = Rede::all(); 
         foreach($redes as $rede){
@@ -44,40 +47,66 @@ class DhcpController extends Controller
             $mask = (string)Network::parse("{$rede->iprede}/{$rede->cidr}")->netmask;
 
 
-            $dhcp .= "  subnet {$rede->iprede} netmask {$mask} {\n";
-            $dhcp .= "    range {$range_begin} {$range_end}; \n";
-            $dhcp .= "    option routers {$rede->gateway}; \n";
-            $dhcp .= "    option broadcast-address {$broadcast}; \n";
+            $dhcp .= <<<HEREDOC
 
+  subnet {$rede->iprede} netmask {$mask} {
+  range {$range_begin} {$range_end};
+  option routers {$rede->gateway};
+  option broadcast-address {$broadcast};
+
+HEREDOC;
             //Opcionais: Netbios, NTP, DNS e Domain (Active Directory)
             if (!empty($rede->netbios)){
-                $dhcp .= "    option netbios-name-servers {$rede->netbios}; \n";
+                $dhcp .= <<<HEREDOC
+  option netbios-name-servers {$rede->netbios};
+
+HEREDOC;
             }
 
             if (!empty($rede->ntp)){
-                $dhcp .= "    option ntp-servers {$rede->ntp}; \n";
+                $dhcp .= <<<HEREDOC
+  option ntp-servers {$rede->ntp};
+
+HEREDOC;
             }
 
             if (!empty($rede->dns)){
-                $dhcp .= "    option domain-name-servers {$rede->dns}; \n";
+                $dhcp .= <<<HEREDOC
+  option domain-name-servers {$rede->dns};
+
+HEREDOC;
             }
 
             if (!empty($rede->ad_domain)){
-                $dhcp .= "    option domain-name {$rede->ad_domain}; \n";
+                $dhcp .= <<<HEREDOC
+  option domain-name {$rede->ad_domain};
+
+HEREDOC;
             }
 
-            $dhcp .= "    deny unknown-clients; \n";
+            $dhcp .= <<<'NOWDOC'
+  deny unknown-clients;
+
+NOWDOC;
 
             $equipamentos = $rede->equipamentos;
             foreach($equipamentos as $equipamento) {
-                $dhcp .= "      host equipamento{$equipamento->id} {\n";
-                $dhcp .= "        hardware ethernet {$equipamento->macaddress};\n";
-                $dhcp .= "        fixed-address {$equipamento->ip};\n";
-                $dhcp .= "      }\n";
+                $dhcp .= <<<HEREDOC
+    host equipamento{$equipamento->id} {
+       hardware ethernet {$equipamento->macaddress};
+       fixed-address {$equipamento->ip};
+    }
+
+HEREDOC;
             }
-            $dhcp .= "  }\n";
+            $dhcp .= <<<'NOWDOC'
+  }
+
+NOWDOC;
         }
-        $dhcp .= "}";
+        $dhcp .= <<<'NOWDOC'
+}
+NOWDOC;
         return response($dhcp)->header('Content-Type', 'text/plain');
     }
 }
