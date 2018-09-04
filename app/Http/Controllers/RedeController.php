@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use App\Rules\DNS;
-use Illuminate\Validation\Rule;
-use App\Utils\NetworkOps;
+use App\Rules\PertenceRede;
 
 class RedeController extends Controller
 {
@@ -51,10 +50,6 @@ class RedeController extends Controller
      */
     public function store(Request $request)
     {
-        // Validando o Gateway (ver se está no range da rede)
-        $ops = new NetworkOps;
-        $ips = $ops->getRange($request->iprede, $request->cidr);
-
         $validator = Validator::make($request->all(), [
             'nome'      => 'required',
             'iprede'    => 'required|ip',
@@ -62,7 +57,7 @@ class RedeController extends Controller
             'vlan'      => 'numeric',
             'gateway' => [
                 'required',
-                Rule::in($ips),
+                new PertenceRede($request->gateway, $request->iprede, $request->cidr),
             ],
         ]);
         
