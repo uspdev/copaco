@@ -18,6 +18,10 @@
     </div>
 @stop
 
+@section('css')
+    @include('equipamentos.css')
+@stop
+
 @section('js')
     @include('equipamentos.js')
 @stop
