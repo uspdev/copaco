@@ -56,7 +56,7 @@ Caso falte alguma dependência, siga as instruções do `composer`.
 
 Para ter o font disponível usando o AdminLTE, utilize o comando:
 
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+    php artisan deploy:assets
 
 
 
