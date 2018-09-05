@@ -11,7 +11,9 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
     $rede = factory(App\Rede::class)->create();
     $op = new NetworkOps;
     $ips = $op->getRange($rede->iprede, $rede->cidr);
-    $ip_selecionado = $ips[rand(0, count($ips)-1)];
+
+    // Não começa em zero para excluir gateway
+    $ip_selecionado = $ips[rand(1, count($ips)-1)]; 
 
     return [
         'naopatrimoniado' => true,
