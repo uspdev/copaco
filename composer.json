@@ -6,6 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=7.1.3",
+        "ext-curl": "*",
+        "ext-ldap": "*",
+        "ext-bcmath": "*",
         "fideloper/proxy": "~4.0",
         "jeroennoten/laravel-adminlte": "^1.23",
         "laravel/framework": "5.6.*",
