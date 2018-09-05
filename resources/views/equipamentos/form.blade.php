@@ -72,10 +72,17 @@
     <label for="rede_id">Rede</label>
     <select name="rede_id" class="form-control">
         <option value="" selected="">Escolha uma Rede</option>
-        @foreach($redes as $rede)
-            <option value="{{ $rede->id }}" {{ $equipamento->rede_id or old('rede_id') == $rede->id ? 'selected' : ''}}>
-                {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
-            </option>
+        @foreach($redes->sortBy('nome') as $rede)
+            @if(old('rede_id')=='' and isset($equipamento->rede_id))
+                <option value="{{ $rede->id }}" {{ ( $equipamento->rede_id == $rede->id) ? 'selected' : ''}}>
+                    {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                </option>                
+            @else
+                <option value="{{ $rede->id }}" {{ (old('rede_id') == $rede->id) ? 'selected' : ''}}>
+                    {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                </option>   
+            @endif
+
         @endforeach()
     </select>
 </div>

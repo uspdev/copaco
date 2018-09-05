@@ -31,12 +31,9 @@ class Patrimonio implements Rule
         }
 
         $patrimonio = new dadosUsp;
-        $xml = $patrimonio->fetchNumpat($value);
-        if (strpos($xml,'The server encountered an unexpected condition') !== false) {
+        if ($patrimonio->stabem($value) == false) {
             return false;
         }
-        // talvez os dados desse array em alguma coisa...
-        $output = $patrimonio->xml2array($xml);
         return true;
     }
 
