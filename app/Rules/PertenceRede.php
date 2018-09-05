@@ -33,7 +33,7 @@ class PertenceRede implements Rule
     {
         $ops = new NetworkOps;
 
-        if($ops->pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
+        if ($ops->pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
             return true;
         }
 

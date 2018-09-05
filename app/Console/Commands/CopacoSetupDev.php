@@ -37,16 +37,15 @@ class CopacoSetupDev extends Command
      */
     public function handle()
     {
-        if (!\App::environment('local')){
+        if (!\App::environment('local')) {
             $erro = "[ ERRO ]" .  PHP_EOL . "Configure seu ambiente para 'local' em seu arquivo .env";
             $this->error($erro);
             exit(1);
         }
         $this->info("Gerando usuário para dev...");
         // Chamando o seeder
-        $this->call('db:seed',[
+        $this->call('db:seed', [
             '--class' => 'DevUserSeeder'
         ]);
-       
     }
 }

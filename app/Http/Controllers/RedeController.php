@@ -11,15 +11,14 @@ use App\Rules\PertenceRede;
 
 class RedeController extends Controller
 {
-    
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth')->except([
             'index'
         ]);
     }
 
-	/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -67,7 +66,7 @@ class RedeController extends Controller
                         ->withInput();
         }
 
-        if ($request->iprede == $request->gateway){
+        if ($request->iprede == $request->gateway) {
             $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
             return back();
         }
@@ -85,7 +84,7 @@ class RedeController extends Controller
         $rede->user_id = \Auth::user()->id;
         $rede->last_modify_by = \Auth::user()->id;
 
-        $this->validate ($request, ['gateway'=>'ip'],['Um Gateway válido é requerido.']);
+        $this->validate($request, ['gateway'=>'ip'], ['Um Gateway válido é requerido.']);
        
         $request->validate(['dns' => [new DNS]]);
         $rede->save();
@@ -101,7 +100,7 @@ class RedeController extends Controller
      */
     public function show(Rede $rede)
     {
-        return view('redes.show',compact('rede'));
+        return view('redes.show', compact('rede'));
     }
 
     /**
@@ -142,7 +141,7 @@ class RedeController extends Controller
                         ->withInput();
         }
 
-        if ($request->iprede == $request->gateway){
+        if ($request->iprede == $request->gateway) {
             $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
             return back();
         }

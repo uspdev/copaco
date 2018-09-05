@@ -11,8 +11,7 @@ use App\Rules\Patrimonio;
 
 class EquipamentoController extends Controller
 {
-
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth')->except([
             'index'
@@ -38,7 +37,7 @@ class EquipamentoController extends Controller
     public function create()
     {
         $redes = Rede::all();
-        return view('equipamentos.create' , compact('redes')); 
+        return view('equipamentos.create', compact('redes'));
     }
 
     /**
@@ -60,15 +59,15 @@ class EquipamentoController extends Controller
 
         $ops = new NetworkOps;
 
-        $aloca = $ops->aloca($request->rede_id,$request->ip);
+        $aloca = $ops->aloca($request->rede_id, $request->ip);
         $rede = $aloca['rede'];
         $ip = $aloca['ip'];
 
-        if(!empty($aloca['danger'])) {
+        if (!empty($aloca['danger'])) {
             $request->session()->flash('alert-danger', $aloca['danger']);
         }
 
-        if(empty($request->vencimento)) {
+        if (empty($request->vencimento)) {
             $equipamento->vencimento = Carbon::now()->addYears(10);
         } else {
             $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
@@ -86,7 +85,7 @@ class EquipamentoController extends Controller
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
-        if(!empty($aloca['danger'])) {
+        if (!empty($aloca['danger'])) {
             $request->session()->flash('alert-danger', $aloca['danger']);
             return redirect("/equipamentos/$equipamento->id/edit");
         } else {
@@ -103,7 +102,8 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {
-        return view('equipamentos.show',compact('equipamento'));;
+        return view('equipamentos.show', compact('equipamento'));
+        ;
     }
 
     /**
@@ -119,7 +119,7 @@ class EquipamentoController extends Controller
         */
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         $redes = Rede::all();
-        return view ('equipamentos.edit', compact('equipamento','redes'));
+        return view('equipamentos.edit', compact('equipamento', 'redes'));
     }
 
     /**
@@ -147,18 +147,16 @@ class EquipamentoController extends Controller
 
         // Aloca IP
         $ops = new NetworkOps;
-        if( ($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip){
-
-            $aloca = $ops->aloca($request->rede_id,$request->ip);
+        if (($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip) {
+            $aloca = $ops->aloca($request->rede_id, $request->ip);
             $equipamento->rede_id= $aloca['rede'];
             $equipamento->ip = $aloca['ip'];
             $equipamento->save();
       
-            if(!empty($aloca['danger'])){
+            if (!empty($aloca['danger'])) {
                 $request->session()->flash('alert-danger', $aloca['danger']);
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
-        
         } else {
             $equipamento->fixarip = $request->fixarip;
             $equipamento->rede_id= $request->rede_id;
@@ -168,7 +166,6 @@ class EquipamentoController extends Controller
 
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
-
     }
 
     /**
@@ -186,11 +183,11 @@ class EquipamentoController extends Controller
 
     public function search(Request $request)
     {
-       $equipamentos = Equipamento::where('macaddress', 'LIKE',  '%' . $request->pesquisar . '%')->get();
-       if ($equipamentos->isEmpty()){  
-        $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
-       }
-       return view('equipamentos.index', compact('equipamentos'));
+        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->pesquisar . '%')->get();
+        if ($equipamentos->isEmpty()) {
+            $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
+        }
+        return view('equipamentos.index', compact('equipamentos'));
     }
 
     public function naoAlocados()
@@ -198,6 +195,4 @@ class EquipamentoController extends Controller
         $equipamentos = Equipamento::WhereNull('ip')->get();
         return view('equipamentos.index', compact('equipamentos'));
     }
-
-   
 }

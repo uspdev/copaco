@@ -40,7 +40,7 @@ class DeployAdminlteAssets extends Command
         $this->info("Deploying Assets...");
 
         // Calling the service provider
-        $this->call('vendor:publish',[
+        $this->call('vendor:publish', [
             '--provider' => 'JeroenNoten\LaravelAdminLte\ServiceProvider',
             '--tag' => 'assets'
         ]);

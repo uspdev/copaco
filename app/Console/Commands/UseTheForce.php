@@ -34,7 +34,7 @@ class UseTheForce extends Command
     /**
      * Mostra a logo inicial
      *
-     * @return string 
+     * @return string
      */
     public function show_logo()
     {
@@ -45,18 +45,17 @@ class UseTheForce extends Command
 
     /**
      * Mostra abertura Star Warzica
-     * 
+     *
      * TODO: Fazer do modo laravélico. Ou não.
      *
-     * @return string 
+     * @return string
      */
     public function show_opening()
     {
         $opening = __DIR__.'/intro.txt';
-        $file = fopen($opening,"r");
+        $file = fopen($opening, "r");
         
-        while(! feof($file))
-        {
+        while (! feof($file)) {
             $this->info(fgets($file));
             sleep(1);
         }
@@ -72,6 +71,5 @@ class UseTheForce extends Command
     {
         $this->show_logo();
         $this->show_opening();
-
     }
 }

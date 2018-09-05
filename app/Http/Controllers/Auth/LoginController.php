@@ -39,8 +39,8 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
- 	
-	public function redirectToProvider()
+    
+    public function redirectToProvider()
     {
         if (\App::environment('local') && env('SENHAUNICA_OVERRIDE')) {
             # busca o usuário dev
@@ -62,16 +62,16 @@ class LoginController extends Controller
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
-	# busca o usuário local
+        # busca o usuário local
         $user = User::find($userSenhaUnica->codpes);
         
-	# restrição só para admins
+        # restrição só para admins
         $admins = explode(',', trim(env('CODPES_ADMINS')));
         
         if (!in_array($userSenhaUnica->codpes, $admins)) {
             session()->flash('alert-danger', 'Usuario sem permissao de acesso!');
             return redirect('/');
-        }    
+        }
         
         if (is_null($user)) {
             $user = new User;
@@ -83,14 +83,15 @@ class LoginController extends Controller
             $user->id = $userSenhaUnica->codpes;
             $user->email = $userSenhaUnica->email;
             $user->name = $userSenhaUnica->nompes;
-            $user->save(); 
+            $user->save();
         }
         
         Auth::login($user, true);
-        return redirect('/');  
+        return redirect('/');
     }
     
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
         return redirect('/');
     }

@@ -12,14 +12,12 @@ use IPTools\IP;
 use IPTools\Network;
 use IPTools\Range;
 
-
 class DhcpController extends Controller
 {
-    
     public function __construct()
     {
         $this->middleware('auth')->except([
-            'dhcpd' 
+            'dhcpd'
         ]);
     }
 
@@ -36,11 +34,10 @@ shared-network "default" {
 
 NOWDOC;
 
-        $redes = Rede::all(); 
-        foreach($redes as $rede){
-
-            $ips = $ops->getRange($rede->iprede,$rede->cidr);
-            $range_begin = $ips[1]; 
+        $redes = Rede::all();
+        foreach ($redes as $rede) {
+            $ips = $ops->getRange($rede->iprede, $rede->cidr);
+            $range_begin = $ips[1];
             $range_end = $ips[count($ips)-2];
             $broadcast = end($ips);
 
@@ -56,28 +53,28 @@ NOWDOC;
 
 HEREDOC;
             //Opcionais: Netbios, NTP, DNS e Domain (Active Directory)
-            if (!empty($rede->netbios)){
+            if (!empty($rede->netbios)) {
                 $dhcp .= <<<HEREDOC
   option netbios-name-servers {$rede->netbios};
 
 HEREDOC;
             }
 
-            if (!empty($rede->ntp)){
+            if (!empty($rede->ntp)) {
                 $dhcp .= <<<HEREDOC
   option ntp-servers {$rede->ntp};
 
 HEREDOC;
             }
 
-            if (!empty($rede->dns)){
+            if (!empty($rede->dns)) {
                 $dhcp .= <<<HEREDOC
   option domain-name-servers {$rede->dns};
 
 HEREDOC;
             }
 
-            if (!empty($rede->ad_domain)){
+            if (!empty($rede->ad_domain)) {
                 $dhcp .= <<<HEREDOC
   option domain-name {$rede->ad_domain};
 
@@ -90,7 +87,7 @@ HEREDOC;
 NOWDOC;
 
             $equipamentos = $rede->equipamentos;
-            foreach($equipamentos as $equipamento) {
+            foreach ($equipamentos as $equipamento) {
                 $dhcp .= <<<HEREDOC
     host equipamento{$equipamento->id} {
        hardware ethernet {$equipamento->macaddress};
