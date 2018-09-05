@@ -5,6 +5,11 @@
 @stop
 
 @section('content')
+<div>
+    <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-success">Editar</a>
+</div>
+<br>
+
 <div class="card">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><b>Rede</b>: {{ $rede->iprede }}/{{ $rede->cidr }}</li>
