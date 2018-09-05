@@ -16,5 +16,5 @@ Route::get('/dhcpd.conf', 'DhcpController@dhcpd');
 Route::get('/freeradius/authorize', 'FreeradiusController@build');
 
 # outros
-Route::get('/equipamentos/search', 'EquipamentoController@search');
+Route::post('/equipamentos/search', 'EquipamentoController@search');
 Route::get('/equipamentos/naoalocados', 'EquipamentoController@naoAlocados');
