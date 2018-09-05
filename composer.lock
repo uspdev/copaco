@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "40868deae577ed0f27fe89bf92af2a29",
+    "content-hash": "37dd4e172c0d927516507b5456850bd1",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2679,16 +2679,16 @@
         },
         {
             "name": "uspdev/patrimonio",
-            "version": "1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/patrimonio.git",
-                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810"
+                "reference": "79d58e7bf49995d1598fb323ab58573ce9e11f29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/patrimonio/zipball/3beb3d747fb7109c8ea57ba5e002e269a89d6810",
-                "reference": "3beb3d747fb7109c8ea57ba5e002e269a89d6810",
+                "url": "https://api.github.com/repos/uspdev/patrimonio/zipball/79d58e7bf49995d1598fb323ab58573ce9e11f29",
+                "reference": "79d58e7bf49995d1598fb323ab58573ce9e11f29",
                 "shasum": ""
             },
             "type": "library",
@@ -2710,7 +2710,7 @@
             ],
             "description": "biblioteca que busca informações públicas sobre bens patrimoniais da USP",
             "homepage": "https://github.com/uspdev/patrimonio",
-            "time": "2018-04-10T09:23:19+00:00"
+            "time": "2018-07-04T14:39:01+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
