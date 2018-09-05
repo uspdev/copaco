@@ -32,7 +32,11 @@
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
                 <td>{{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }}</td>
                 <td>{{ $equipamento->ip or '' }}</td>
-                <td>{{ $equipamento->rede->nome or '' }}</td>
+                <td><i>{{ $equipamento->rede->nome or '' }}</i>
+                    @isset ($equipamento->rede->iprede)
+                        <a href="/redes/{{$equipamento->rede->id}}">{{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}</a>
+                    @endisset
+                </td>
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
