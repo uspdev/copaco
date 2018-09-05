@@ -10,10 +10,10 @@ $factory->define(App\Rede::class, function (Faker $faker) {
         'dns'       => $faker->ipv4,
         'ntp'       => $faker->ipv4,
         'netbios'   => $faker->domainName,
-        'cidr'      => $faker->numberBetween(21,30),
-        'vlan'      => $faker->unique()->numberBetween(10,100),
+        'cidr'      => $faker->numberBetween(21, 30),
+        'vlan'      => $faker->unique()->numberBetween(10, 100),
         'ad_domain' => $faker->domainName,
 #        'last_modify_by' => ,
-#        'user_id'   => 
+#        'user_id'   =>
     ];
 });

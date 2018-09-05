@@ -5,13 +5,12 @@ use Faker\Generator as Faker;
 
 use App\Utils\NetworkOps;
 
-
 $factory->define(App\Equipamento::class, function (Faker $faker) {
 
     // Cria uma rede e seleciona um ip aleatoriamente da mesma
     $rede = factory(App\Rede::class)->create();
     $op = new NetworkOps;
-    $ips = $op->getRange($rede->iprede,$rede->cidr);
+    $ips = $op->getRange($rede->iprede, $rede->cidr);
     $ip_selecionado = $ips[rand(0, count($ips)-1)];
 
     return [

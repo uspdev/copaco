@@ -13,7 +13,7 @@ class DevUserSeeder extends Seeder
     {
         $now = date("Y-m-d H:i:s");
         $pass = str_random(40);
-        $dev_id = random_int(1000000,9999999);
+        $dev_id = random_int(1000000, 9999999);
         
         echo "Seu developer id é: " . $dev_id . PHP_EOL;
         echo "Configure-o em seu arquivo .env" . PHP_EOL;
@@ -26,6 +26,7 @@ class DevUserSeeder extends Seeder
                 'password' => bcrypt($pass),
                 "created_at" => $now,
                 "updated_at" => $now,
-            ]);
+            ]
+        );
     }
 }

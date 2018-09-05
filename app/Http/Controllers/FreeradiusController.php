@@ -12,7 +12,6 @@ use IPTools\IP;
 use IPTools\Network;
 use IPTools\Range;
 
-
 class FreeradiusController extends Controller
 {
     public function build()
@@ -20,13 +19,11 @@ class FreeradiusController extends Controller
         $ops = new NetworkOps;
         $build = "";
 
-        $redes = Rede::all(); 
-        foreach($redes as $rede){
-            
-            if(isset($rede->vlan) && !empty($rede->vlan)) {
-
-                foreach($rede->equipamentos as $equipamento) {
-                    $macaddress = strtolower(str_replace(':','',$equipamento->macaddress));
+        $redes = Rede::all();
+        foreach ($redes as $rede) {
+            if (isset($rede->vlan) && !empty($rede->vlan)) {
+                foreach ($rede->equipamentos as $equipamento) {
+                    $macaddress = strtolower(str_replace(':', '', $equipamento->macaddress));
                     $build .= "$macaddress   Cleartext-Password := $macaddress\n";
                     $build .= "    Tunnel-Type = \"VLAN\"\n";
                     $build .= "    Tunnel-Medium-Type = \"IEEE-802\",\n";
