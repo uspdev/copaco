@@ -13,6 +13,8 @@ Funcionalidades:
     node
     php7+
     php-bcmath
+    php-ldap
+    php-curl
 
 Procure pela biblioteca em sua distribuição.
 
