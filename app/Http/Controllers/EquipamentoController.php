@@ -183,7 +183,7 @@ class EquipamentoController extends Controller
 
     public function search(Request $request)
     {
-        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->pesquisar . '%')->get();
+        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->macaddress . '%')->get();
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
         }

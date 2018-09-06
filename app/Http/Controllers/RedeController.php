@@ -6,7 +6,7 @@ use App\Rede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use App\Rules\DNS;
+use App\Rules\DomainOrIp;
 use App\Rules\PertenceRede;
 
 class RedeController extends Controller
@@ -26,7 +26,6 @@ class RedeController extends Controller
     public function index()
     {
         $redes = Rede::all();
-
         return view('redes.index')->with('redes', $redes);
     }
 
@@ -49,27 +48,18 @@ class RedeController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+
+        $request->validate([
             'nome'      => 'required',
-            'iprede'    => 'required|ip',
+            'iprede'    => 'ip|required|different:gateway',
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
-            'gateway' => [
-                'required',
-                new PertenceRede($request->gateway, $request->iprede, $request->cidr),
-            ],
+            'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
+            'dns'       => [new DomainOrIp],
+            'netbios'   => [new DomainOrIp],
+            'ad_domain' => [new DomainOrIp],
+            'ntp'       => [new DomainOrIp],
         ]);
-        
-        if ($validator->fails()) {
-            return redirect('redes/create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-
-        if ($request->iprede == $request->gateway) {
-            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
-            return back();
-        }
 
         $rede = new Rede;
         $rede->nome     = $request->nome;
@@ -83,10 +73,6 @@ class RedeController extends Controller
         $rede->ad_domain= $request->ad_domain;
         $rede->user_id = \Auth::user()->id;
         $rede->last_modify_by = \Auth::user()->id;
-
-        $this->validate($request, ['gateway'=>'ip'], ['Um Gateway válido é requerido.']);
-       
-        $request->validate(['dns' => [new DNS]]);
         $rede->save();
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
         return redirect()->route('redes.index');
@@ -122,31 +108,20 @@ class RedeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Rede $rede)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'nome'      => 'required',
-            'iprede'    => 'required|ip',
+            'iprede'    => 'ip|required|different:gateway',
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
-            'gateway' => [
-                'required',
-                new PertenceRede($request->gateway, $request->iprede, $request->cidr),
-            ],
+            'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
+            'dns'       => [new DomainOrIp],
+            'netbios'   => [new DomainOrIp],
+            'ad_domain' => [new DomainOrIp],
+            'ntp'       => [new DomainOrIp],
         ]);
-        
-        if ($validator->fails()) {
-            return redirect("redes/$id/edit")
-                        ->withErrors($validator)
-                        ->withInput();
-        }
 
-        if ($request->iprede == $request->gateway) {
-            $request->session()->flash('alert-danger', 'O IP da rede deve ser diferente do Gateway.');
-            return back();
-        }
-
-        $rede = Rede::findOrFail($id);
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
@@ -158,11 +133,9 @@ class RedeController extends Controller
         $rede->vlan     = $request->vlan;
         $rede->ad_domain= $request->ad_domain;
         $rede->last_modify_by = \Auth::user()->id;
-
-        $request->validate(['dns' => [new DNS]]);
         $rede->save();
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
-        return redirect()->route('redes.index');
+        return redirect()->route('redes.show',['id' =>$rede]);
     }
 
     /**
