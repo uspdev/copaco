@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/uspdev/copaco.svg?branch=master)](https://travis-ci.org/uspdev/copaco)
+
 # Sistema de COntrole de PArque COmputacional
 
 Pequeno aplicativo desenvolvido em Laravel para promover a integração e paz entre os devs da USP! :penguin:
