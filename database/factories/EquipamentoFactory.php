@@ -19,13 +19,20 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
     $user_create = factory(App\User::class)->create();
     $user_modify = factory(App\User::class)->create();
 
+    // fixar IPs
+    $fixarip = $faker->boolean();
+    if(!$fixarip){
+        $ip_selecionado = null;
+    }
+
     return [
         'naopatrimoniado' => true,
         'patrimonio' => null,
         'descricaosempatrimonio' => $faker->paragraph(1),
         'macaddress' => $faker->unique()->macAddress,
         'local' => $faker->word,
-        'vencimento' => date("Y-m-d H:i:s", strtotime("+".rand(30, 360)."days")),
+        'vencimento' => date("Y-m-d", strtotime("+".rand(30, 360)."days")),
+        'fixarip' => $fixarip,
         'ip' => $ip_selecionado,
         'rede_id' => $rede->id,
         'last_modify_by' => $user_create->id,
