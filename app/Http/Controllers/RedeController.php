@@ -13,9 +13,7 @@ class RedeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except([
-            'index'
-        ]);
+        $this->middleware('auth');
     }
 
     /**
@@ -49,6 +47,7 @@ class RedeController extends Controller
     public function store(Request $request)
     {
 
+        // Validações
         $request->validate([
             'nome'      => 'required',
             'iprede'    => 'ip|required|different:gateway',
@@ -61,6 +60,7 @@ class RedeController extends Controller
             'ntp'       => [new DomainOrIp],
         ]);
 
+        // Persistência
         $rede = new Rede;
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
@@ -110,6 +110,7 @@ class RedeController extends Controller
      */
     public function update(Request $request, Rede $rede)
     {
+        // Validações
         $request->validate([
             'nome'      => 'required',
             'iprede'    => 'ip|required|different:gateway',
@@ -122,6 +123,7 @@ class RedeController extends Controller
             'ntp'       => [new DomainOrIp],
         ]);
 
+        // Persistência
         $rede->nome     = $request->nome;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
@@ -144,10 +146,9 @@ class RedeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Rede $rede)
     {
-        $rede = Rede::findOrFail($id);
-        // clean IPs
+        // Desaloca os equipamentos dessa rede 
         foreach ($rede->equipamentos as $equipamento) {
             $equipamento->ip = null;
             $equipamento->save();
