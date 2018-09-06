@@ -138,13 +138,19 @@ class EquipamentoController extends Controller
             'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
         ]);
 
+        // Tratamento da data de vencimento
+        if (empty(trim($request->vencimento))) {
+            $equipamento->vencimento = Carbon::now()->addYears(10);
+        } else {
+            $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
+        }
+
         // Persistência
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
-        $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
