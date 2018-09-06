@@ -15,6 +15,10 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
     // Não começa em zero para excluir gateway
     $ip_selecionado = $ips[rand(1, count($ips)-1)]; 
 
+    // usuários
+    $user_create = factory(App\User::class)->create();
+    $user_modify = factory(App\User::class)->create();
+
     return [
         'naopatrimoniado' => true,
         'patrimonio' => null,
@@ -23,6 +27,8 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
         'local' => $faker->word,
         'vencimento' => date("Y-m-d H:i:s", strtotime("+".rand(30, 360)."days")),
         'ip' => $ip_selecionado,
-        'rede_id' => $rede->id
+        'rede_id' => $rede->id,
+        'last_modify_by' => $user_create->id,
+        'user_id'   => $user_modify->id,
     ];
 });

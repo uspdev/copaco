@@ -11,6 +11,10 @@ $factory->define(App\Rede::class, function (Faker $faker) {
     $cidr = $faker->numberBetween(21, 30);
     $ips = $op->getRange($iprede, $cidr);
 
+    // usuários
+    $user_create = factory(App\User::class)->create();
+    $user_modify = factory(App\User::class)->create();
+
     return [
         'nome'      => $faker->unique()->numerify('Rede ###'),
         'iprede'    => $iprede,
@@ -21,7 +25,7 @@ $factory->define(App\Rede::class, function (Faker $faker) {
         'cidr'      => $cidr,
         'vlan'      => $faker->unique()->numberBetween(10, 100),
         'ad_domain' => $faker->domainName,
-#        'last_modify_by' => ,
-#        'user_id'   =>
+        'last_modify_by' => $user_create->id,
+        'user_id'   => $user_modify->id,
     ];
 });
