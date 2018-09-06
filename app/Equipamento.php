@@ -14,4 +14,9 @@ class Equipamento extends Model
     {
         return $this->belongsTo('App\Rede');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
