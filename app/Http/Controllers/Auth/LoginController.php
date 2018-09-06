@@ -75,16 +75,14 @@ class LoginController extends Controller
         
         if (is_null($user)) {
             $user = new User;
-            $user->id = $userSenhaUnica->codpes;
-            $user->email = $userSenhaUnica->email;
-            $user->name = $userSenhaUnica->nompes;
-            $user->save();
-        } else {
-            $user->id = $userSenhaUnica->codpes;
-            $user->email = $userSenhaUnica->email;
-            $user->name = $userSenhaUnica->nompes;
-            $user->save();
         }
+
+        // bind do dados retornados
+        $user->id = $userSenhaUnica->codpes;
+        $user->email = $userSenhaUnica->email;
+        $user->name = $userSenhaUnica->nompes;
+        $user->save();
+ 
         
         Auth::login($user, true);
         return redirect('/');
