@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "52d77d213b0b9473de0fa77c96d3d954",
+    "content-hash": "ef7289b25ff5141aef8e05f61734b8aa",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2890,6 +2890,46 @@
             "description": "Senhaunica OAuth1 Provider for Laravel Socialite",
             "homepage": "https://github.com/uspdev/SenhaunicaSocialite",
             "time": "2018-04-18T17:16:29+00:00"
+        },
+        {
+            "name": "uspdev/the_force",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/uspdev/the_force.git",
+                "reference": "4861f89c2422f0e8073677bdc063b1bd9e531208"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/uspdev/the_force/zipball/4861f89c2422f0e8073677bdc063b1bd9e531208",
+                "reference": "4861f89c2422f0e8073677bdc063b1bd9e531208",
+                "shasum": ""
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Uspdev\\RebelAlliance\\JediServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Uspdev\\RebelAlliance\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "André Luiz Girol",
+                    "email": "andregirol@gmail.com"
+                }
+            ],
+            "description": "Shows the power of The Force",
+            "time": "2018-04-17T00:44:20+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
