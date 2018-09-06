@@ -23,7 +23,7 @@ class NetworkOps
     }
 
     public function pertenceRede($ip, $iprede, $cidr)
-    {
+    {   
         return Range::parse("{$iprede}/{$cidr}")->contains(new IP("{$ip}"));
     }
 

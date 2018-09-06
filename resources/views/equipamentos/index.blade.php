@@ -7,12 +7,22 @@
 @section('content')
     @include('messages.flash')
     @include('messages.errors')
- 
 <p>
     <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
         Adicionar Equipamento
     </a>
 </p>
+
+<form method="post" action="/equipamentos/search">
+    {{ csrf_field() }}
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Busca por MacAddress..." name="macaddress">
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-success"> Buscar </button>
+        </span>
+    </div><!-- /input-group -->
+</form>
+
 
 <div class="table-responsive">
     <table class="table table-striped">

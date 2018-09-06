@@ -8,14 +8,13 @@ use App\Rede;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
+use App\Rules\MacAddress;
 
 class EquipamentoController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except([
-            'index'
-        ]);
+        $this->middleware('auth');
     }
     
     /**
@@ -48,39 +47,39 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $equipamento = new Equipamento;
+        // Validações
+        $request->validate([
+            'patrimonio'    => ['nullable',new Patrimonio],
+            'ip'            => 'nullable|ip',
+            'macaddress'    => ['required','unique:equipamentos',new MacAddress],
+            'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
+        ]);
 
-        $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
-        $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
-        $this->validate(request(), ['macaddress' => 'required|unique:equipamentos']);
-        // $this->validate(request(), ['vencimento' => 'required|date|after:yesterday']);
-
-        $request->validate(['patrimonio' => [new Patrimonio]]);
-
+        // Aloca IP
         $ops = new NetworkOps;
-
         $aloca = $ops->aloca($request->rede_id, $request->ip);
-        $rede = $aloca['rede'];
-        $ip = $aloca['ip'];
 
         if (!empty($aloca['danger'])) {
             $request->session()->flash('alert-danger', $aloca['danger']);
         }
 
-        if (empty($request->vencimento)) {
+        // Tratamento da data de vencimento
+        $equipamento = new Equipamento;
+        if (empty(trim($request->vencimento))) {
             $equipamento->vencimento = Carbon::now()->addYears(10);
         } else {
             $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         }
 
+        // Persistência
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
-        $equipamento->ip = $ip;
+        $equipamento->ip = $aloca['ip'];
         $equipamento->fixarip = $request->fixarip;
-        $equipamento->rede_id = $rede;
+        $equipamento->rede_id = $aloca['rede'];
         $equipamento->user_id = \Auth::user()->id;
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
@@ -115,7 +114,7 @@ class EquipamentoController extends Controller
     public function edit(Equipamento $equipamento)
     {
         /* Rota gerada pelo laravel:
-        http://devserver:porta/equiapmento/{id}/edit
+            http://devserver:porta/equiapmento/{id}/edit
         */
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         $redes = Rede::all();
@@ -131,10 +130,15 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, Equipamento $equipamento)
     {
-        $mensagem = ['macaddress.regex' => 'O Formato do MAC ADDRESS tem que ser xx:xx:xx:xx:xx:xx"'];
-        $this->validate(request(), ['macaddress' => 'regex:/([a-fA-F0-9]{2}[:]?){6}/'], $mensagem);
-        $request->validate(['patrimonio' => [new Patrimonio]]);
+        // Validações
+        $request->validate([
+            'patrimonio'    => ['nullable',new Patrimonio],
+            'ip'            => 'nullable|ip',
+            'macaddress'    => ['required',"unique:equipamentos,id,{{$equipamento->id}}",new MacAddress],
+            'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
+        ]);
 
+        // Persistência
         $equipamento->naopatrimoniado = $request->naopatrimoniado;
         $equipamento->patrimonio = $request->patrimonio;
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
@@ -143,7 +147,6 @@ class EquipamentoController extends Controller
         $equipamento->vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
-
 
         // Aloca IP
         $ops = new NetworkOps;
@@ -183,7 +186,7 @@ class EquipamentoController extends Controller
 
     public function search(Request $request)
     {
-        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->pesquisar . '%')->get();
+        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->macaddress . '%')->get();
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
         }

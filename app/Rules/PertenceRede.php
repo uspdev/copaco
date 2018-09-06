@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use App\Utils\NetworkOps;
+use Respect\Validation\Validator as v;
 
 class PertenceRede implements Rule
 {
@@ -31,9 +32,13 @@ class PertenceRede implements Rule
      */
     public function passes($attribute, $value)
     {
-        $ops = new NetworkOps;
+        $op = new NetworkOps;
 
-        if ($ops->pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
+        if ( !v::ip()->validate($this->iprede) or !v::ip()->validate($this->gateway) or !v::intVal()->validate($this->cidr)) {
+            return false;
+        }
+
+        if ($op->pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
             return true;
         }
 
@@ -47,6 +52,6 @@ class PertenceRede implements Rule
      */
     public function message()
     {
-        return 'O IP de :attribute não está no intervalo da rede';
+        return 'O :attribute não está no range da rede';
     }
 }
