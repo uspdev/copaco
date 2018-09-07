@@ -101,6 +101,13 @@ No seu arquivo `.env`, configure as entradas:
 
 Assim é possível logar no sistema sem necessidade do token configurado no seu ambiente de desenvolvimento
 
+## Seeders que podem ajudar na produção de dados aleatórios:
+
+    php artisan migrate --seed
+
+## Testes TDD
+
+    ./vendor/bin/phpunit
 
 ## Contribuindo com o projeto
 
