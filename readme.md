@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/uspdev/copaco.svg?branch=master)](https://travis-ci.org/uspdev/copaco)
 
-
 ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/uspdev/copaco.svg) 
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed-raw/uspdev/copaco.svg)
 
