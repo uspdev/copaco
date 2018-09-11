@@ -14,6 +14,7 @@ Route::post('/logout', 'Auth\LoginController@logout');
 # APIs
 Route::get('/dhcpd.conf', 'DhcpController@dhcpd');
 Route::get('/freeradius/authorize', 'FreeradiusController@build');
+Route::get('/freeradius/sincronize', 'FreeradiusController@sincronize');
 
 # outros
 Route::post('/equipamentos/search', 'EquipamentoController@search');
