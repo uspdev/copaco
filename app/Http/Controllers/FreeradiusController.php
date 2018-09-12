@@ -46,19 +46,26 @@ class FreeradiusController extends Controller
         return response($build)->header('Content-Type', 'text/plain');
     }
 
-    public function sincronize() {
-    	   $redes = Rede::all();
-	   $host=getenv('FREERADIUS_HOST');
-	   $db=getenv('FREERADIUS_DB');
-    	   $pdo = new \PDO("mysql:host={$host};dbname={$db}", getenv('FREERADIUS_USER'), getenv('FREERADIUS_PASSWD'));
-    	   foreach ($redes as $rede){
-           	   $sql = "INSERT INTO radgroupreply(groupname,attribute,op,value) VALUES (?,?,?,?)";
-    	   	   $stmt= $pdo->prepare($sql);
-    	   	   $stmt->execute([$rede->id,'Tunnel-Type',':=','VLAN']);
-    	   	   $stmt->execute([$rede->id,'Tunnel-Medium-Type',':=','IEEE-802']);
-    	   	   $stmt->execute([$rede->id,'Tunnel-Private-Group-Id',':=',$rede->vlan]);
-		   }
-	   return redirect('/');
+    public function sincronize()
+    {
+        $redes = Rede::all();
+        $host=getenv('FREERADIUS_HOST');
+        $db=getenv('FREERADIUS_DB');
+        $pdo = new \PDO("mysql:host={$host};dbname={$db}", getenv('FREERADIUS_USER'), getenv('FREERADIUS_PASSWD'));
+        foreach ($redes as $rede) {
+            $sql = "INSERT INTO radgroupreply(groupname,attribute,op,value) VALUES (?,?,?,?)";
+            $stmt= $pdo->prepare($sql);
+            $stmt->execute([$rede->id,'Tunnel-Type',':=','VLAN']);
+            $stmt->execute([$rede->id,'Tunnel-Medium-Type',':=','IEEE-802']);
+            $stmt->execute([$rede->id,'Tunnel-Private-Group-Id',':=',$rede->vlan]);
+            foreach ($rede->equipamentos as $equipamento) {
+                $sql = "INSERT INTO radusergroup(UserName,GroupName) VALUES (?,?)";
+                $stmt= $pdo->prepare($sql);
+                $stmt->execute([$equipamento->macaddress,$rede->id]);
+            }
+        }
+        return redirect('/');
     }
 
 }
+
