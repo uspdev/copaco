@@ -78,6 +78,20 @@ return [
             'prefix' => '',
         ],
 
+        'freeradius' => [
+            'driver' => 'mysql',
+            'host' => env('FREERADIUS_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('FREERADIUS_DB', 'forge'),
+            'username' => env('FREERADIUS_USER', 'forge'),
+            'password' => env('FREERADIUS_PASSWD', 'forge'),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
     ],
 
     /*
