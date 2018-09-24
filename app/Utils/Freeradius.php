@@ -92,12 +92,12 @@ class Freeradius
     public function cadastraOuAtualizaEquipamento($equipamento,$mac_antigo = null)
     {
         $fields = [
-            'UserName'  => $equipamento->macaddress,
+            'UserName'  => strtolower(str_replace(':','',$equipamento->macaddress)),
             'GroupName' => $equipamento->rede->id,
         ];
 
         $filter = [ 
-            'UserName' => $mac_antigo,
+            'UserName' => strtolower(str_replace(':','',$mac_antigo)),
         ];
 
         // Garante que a rede para esse equipamento também esteja cadastrada
