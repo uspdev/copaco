@@ -68,7 +68,9 @@ Para ter o font disponível usando o AdminLTE, utilize o comando:
 
     php artisan deploy:assets
 
-## Se for usar FreeRadius criar um segundo banco de dados com o [esquema](https://github.com/FreeRADIUS/freeradius-server/blob/master/raddb/mods-config/sql/main/mysql/schema.sql) e setar as variáveis no .env:
+## FreeRadius 
+
+Se for usar o Freeradius, criar um segundo banco de dados com o [esquema](https://github.com/FreeRADIUS/freeradius-server/blob/master/raddb/mods-config/sql/main/mysql/schema.sql) e setar as variáveis no .env:
 
     FREERADIUS_HABILITAR=True
     FREERADIUS_HOST=localhost
