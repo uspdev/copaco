@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 use App\Rede;
-use App\Equipamentos;
+use App\Equipamento;
 
 use App\Utils\NetworkOps;
 
@@ -46,25 +48,84 @@ class FreeradiusController extends Controller
         return response($build)->header('Content-Type', 'text/plain');
     }
 
-    public function sincronize()
+    public function sincronize(Request $request, Equipamento $equipamento = null, Rede $rede = null)
     {
-        $redes = Rede::all();
-        $host=getenv('FREERADIUS_HOST');
-        $db=getenv('FREERADIUS_DB');
-        $pdo = new \PDO("mysql:host={$host};dbname={$db}", getenv('FREERADIUS_USER'), getenv('FREERADIUS_PASSWD'));
-        foreach ($redes as $rede) {
-            $sql = "INSERT INTO radgroupreply(groupname,attribute,op,value) VALUES (?,?,?,?)";
-            $stmt= $pdo->prepare($sql);
-            $stmt->execute([$rede->id,'Tunnel-Type',':=','VLAN']);
-            $stmt->execute([$rede->id,'Tunnel-Medium-Type',':=','IEEE-802']);
-            $stmt->execute([$rede->id,'Tunnel-Private-Group-Id',':=',$rede->vlan]);
-            foreach ($rede->equipamentos as $equipamento) {
-                $sql = "INSERT INTO radusergroup(UserName,GroupName) VALUES (?,?)";
-                $stmt= $pdo->prepare($sql);
-                $stmt->execute([$equipamento->macaddress,$rede->id]);
+        if( getenv('FREERADIUS_HABILITAR') != 'True' ){
+            $request->session()->flash('alert-warning', 'Freeradius não habilitado, nenhuma ação feita!');
+            return redirect("/");
+        }
+
+        // caso não seja passado o equipamento ou rede, sincronizar geral 
+        if (is_null($equipamento) && is_null($rede)) {
+            $redes = Rede::all();
+            foreach ($redes as $rede) {
+                $this->cadastraVlan($rede);
+                foreach ($rede->equipamentos as $equipamento) {
+                    $this->cadastraEquipamento($equipamento);
+                }
+            }
+            $request->session()->flash('alert-success', 'Freeradius sincronizado com sucesso!');
+            return redirect("/");
+        }
+
+        // Falta tratar o caso de quando uma rede ou equipamento são passados como parametro
+    }
+
+    public function cadastraVlan($rede)
+    {
+        $records = 
+            [
+                [$rede->id,'Tunnel-Type',':=','VLAN'],
+                [$rede->id,'Tunnel-Medium-Type',':=','IEEE-802'],
+                [$rede->id,'Tunnel-Private-Group-Id',':=',$rede->vlan]
+            ];
+
+        foreach($records as $record) {
+
+            $fields = [
+                'groupname' => $record[0],
+                'attribute' => $record[1],
+                'op'        => $record[2],
+                'value'     => $record[3]
+            ];
+
+            $filter = [ 
+                'groupname' =>$rede->id,
+                'attribute' =>$record[1]
+            ];
+
+            // first, check if this record exist before insert
+            $check = DB::connection('freeradius')->table('radgroupreply')->select()->where($filter)->first();
+            if(is_null($check)){
+                DB::connection('freeradius')->table('radgroupreply')->insert($fields);
+            } else {
+                DB::connection('freeradius')->table('radgroupreply')->where($filter)->update($fields);
             }
         }
-        return redirect('/');
+    }
+
+    public function cadastraEquipamento($equipamento)
+    {
+        $fields = [
+            'UserName'  => $equipamento->macaddress,
+            'GroupName' => $equipamento->rede->id
+        ];
+
+        $filter = [ 
+            'UserName' => $equipamento->macaddress,
+        ];
+
+        // Garante que a rede para esse equipamento também esteja cadastrada
+        $this->cadastraVlan($equipamento->rede);
+
+        // first, check if this record exist before insert
+        $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
+        
+        if(is_null($check)){
+            DB::connection('freeradius')->table('radusergroup')->insert($fields);
+        } else {
+            DB::connection('freeradius')->table('radusergroup')->where($filter)->update($fields);
+        }
     }
 
 }
