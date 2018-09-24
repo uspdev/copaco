@@ -32,7 +32,8 @@
                 <th>Identificação/patrimônio</th>
                 <th>IP</th>
                 <th>Rede</th>
-                <th>Data de Vencimento</th>
+                <th>Vencimento</th>
+                <th>Usuári@</th>
                 <th colspan="2">Ações</th>
             </tr>
         </thead>
@@ -48,6 +49,7 @@
                     @endisset
                 </td>
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
+                <td><a href="/users/{{$equipamento->user->id}}">{{ $equipamento->user->id or '' }}</a></td>
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
                 </td>
