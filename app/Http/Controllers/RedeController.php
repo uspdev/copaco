@@ -8,12 +8,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use App\Rules\DomainOrIp;
 use App\Rules\PertenceRede;
+use App\Utils\Freeradius;
 
 class RedeController extends Controller
 {
+
+    public $freeradius;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->freeradius = new Freeradius;
     }
 
     /**
@@ -58,7 +63,7 @@ class RedeController extends Controller
             'netbios'   => [new DomainOrIp],
             'ad_domain' => [new DomainOrIp],
             'ntp'       => [new DomainOrIp],
-        ]);
+        ]);    
 
         // Persistência
         $rede = new Rede;
@@ -74,6 +79,12 @@ class RedeController extends Controller
         $rede->user_id = \Auth::user()->id;
         $rede->last_modify_by = \Auth::user()->id;
         $rede->save();
+
+        // Salva rede no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->cadastraOuAtualizaRede($rede);
+        }
+
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
         return redirect()->route('redes.index');
     }
@@ -136,6 +147,12 @@ class RedeController extends Controller
         $rede->ad_domain= $request->ad_domain;
         $rede->last_modify_by = \Auth::user()->id;
         $rede->save();
+
+        // Salva/update rede no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->cadastraOuAtualizaRede($rede);
+        } 
+
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
         return redirect()->route('redes.show',['id' =>$rede]);
     }
@@ -148,8 +165,17 @@ class RedeController extends Controller
      */
     public function destroy(Rede $rede)
     {
+        // deleta rede no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->deletaRede($rede);
+        } 
+
         // Desaloca os equipamentos dessa rede 
         foreach ($rede->equipamentos as $equipamento) {
+            // deleta equipamentos no freeRadius
+            if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+                $this->freeradius->deletaEquipamento($equipamento);
+            }
             $equipamento->ip = null;
             $equipamento->save();
         }

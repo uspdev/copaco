@@ -9,12 +9,19 @@ use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
 use App\Rules\MacAddress;
+use App\Utils\Freeradius;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class EquipamentoController extends Controller
 {
+    public $freeradius;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->freeradius = new Freeradius;
     }
     
     /**
@@ -84,6 +91,11 @@ class EquipamentoController extends Controller
         $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
+        // Salva equipamento no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento);
+        }
+
         if (!empty($aloca['danger'])) {
             $request->session()->flash('alert-danger', $aloca['danger']);
             return redirect("/equipamentos/$equipamento->id/edit");
@@ -134,9 +146,19 @@ class EquipamentoController extends Controller
         $request->validate([
             'patrimonio'    => ['nullable',new Patrimonio],
             'ip'            => 'nullable|ip',
-            'macaddress'    => ['required',"unique:equipamentos,id,{{$equipamento->id}}",new MacAddress],
-            'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
+            'macaddress'    => ['required',new MacAddress],
+
         ]);
+
+        // A validação do macaddress é mais complicada, pois tem que ignorar o MACaddress atual
+        Validator::make($request->all(), [
+            'macaddress' => [
+                Rule::unique('equipamentos')->ignore($equipamento->id),
+            ],
+        ]);
+
+        // mac antigo para o freeradius
+        $macaddress_antigo = $equipamento->macaddress;
 
         // Tratamento da data de vencimento
         if (empty(trim($request->vencimento))) {
@@ -173,6 +195,11 @@ class EquipamentoController extends Controller
             $equipamento->save();
         }
 
+        // Salva/update equipamento no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento,$macaddress_antigo);
+        }
+
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }
@@ -185,6 +212,11 @@ class EquipamentoController extends Controller
      */
     public function destroy(Equipamento $equipamento, Request $request)
     {
+        // deleta equipamento no freeRadius
+        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            $this->freeradius->deletaEquipamento($equipamento);
+        }
+
         $equipamento->delete();
         $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
         return redirect()->route('equipamentos.index');

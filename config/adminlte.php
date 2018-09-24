@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'USPdev - COPACO',
+    'title' => env('APP_NAME'),
 
     'title_prefix' => '',
 
@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>COPACO</b>',
+    'logo' => env('APP_NAME'),
 
-    'logo_mini' => '<b>C</b>PC',
+    'logo_mini' => env('APP_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -108,48 +108,28 @@ return [
     */
 
     'menu' => [
-        'RECURSOS',
+        'Minha Área',
         [
-            'text' => 'Blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'text' => 'Minha Conta',
+            'url'  => '/',
+#            'can'  => 'manage-blog',
         ],
+        [
+            'text' => 'Equipamentos',
+            'url'  => '/equipamentos',
+            'icon'        => 'desktop',
+        ],
+        'Administração',
         [
             'text'        => 'Redes',
             'url'         => '/redes',
             'icon'        => 'sitemap',
         ],
         [
-            'text'        => 'Equipamentos',
-            'url'         => '/equipamentos',
-            'icon'        => 'desktop',
-        ],
-        'RELATÓRIOS',
-        [
-            'text' => 'Equipamentos Vencidos',
-            'url'  => '#',
-            'icon' => 'calendar-times-o',
-            'icon_color' => 'red',
-        ],
-        [
-            'text' => 'Equipamentos não alocados',
-            'url'  => '#',
-            'icon' => 'frown-o',
-            'icon_color' => 'yellow',
-        ],
-
-        'ARQUIVOS DEPLOY',
-        [
-            'text' => 'dhcpd.conf',
-            'url'  => '/dhcpd.conf',
-            'icon' => 'server',
-        ],
-        [
-            'text' => 'freeRadius',
-            'icon' => 'superpowers',
-            'url' => '/freeradius/authorize',
-        ],
-
+            'text'        => 'Configurações',
+            'url'         => '/config',
+            'icon'        => 'file',
+        ], 
     ],
 
     /*
