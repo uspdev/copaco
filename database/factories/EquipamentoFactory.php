@@ -23,6 +23,7 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
     $fixarip = $faker->boolean();
     if(!$fixarip){
         $ip_selecionado = null;
+        $rede->id = null;
     }
 
     return [
