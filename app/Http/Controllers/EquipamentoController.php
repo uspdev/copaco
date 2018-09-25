@@ -29,9 +29,29 @@ class EquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $equipamentos = Equipamento::all();
+        $filters = [];
+        if(isset($request->macaddress)){
+            array_push($filters,['macaddress', 'LIKE', '%' . $request->macaddress . '%']);
+        }
+
+        if(isset($request->naoalocados)){
+            if($request->naoalocados=='true')
+                array_push($filters,['ip','=', null]);
+        }
+
+        if(isset($request->vencidos)){
+            if($request->vencidos=='true')
+                array_push($filters,['vencimento','<=', Carbon::now()]);
+        }
+
+        // fetch equipamentos
+        $equipamentos = Equipamento::where($filters)->get();
+        if ($equipamentos->isEmpty()) {
+            $request->session()->flash('alert-danger', 'Não há registros!');
+        }
+
         return view('equipamentos.index', compact('equipamentos'));
     }
 
@@ -92,7 +112,7 @@ class EquipamentoController extends Controller
         $equipamento->save();
 
         // Salva equipamento no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if( getenv('FREERADIUS_HABILITAR') == 'True' && !is_null($equipamento->rede_id)){
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento);
         }
 
@@ -196,7 +216,7 @@ class EquipamentoController extends Controller
         }
 
         // Salva/update equipamento no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if( getenv('FREERADIUS_HABILITAR') == 'True' && !is_null($equipamento->rede_id)){
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento,$macaddress_antigo);
         }
 
@@ -220,20 +240,5 @@ class EquipamentoController extends Controller
         $equipamento->delete();
         $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
         return redirect()->route('equipamentos.index');
-    }
-
-    public function search(Request $request)
-    {
-        $equipamentos = Equipamento::where('macaddress', 'LIKE', '%' . $request->macaddress . '%')->get();
-        if ($equipamentos->isEmpty()) {
-            $request->session()->flash('alert-danger', 'Não há registros com esta busca.');
-        }
-        return view('equipamentos.index', compact('equipamentos'));
-    }
-
-    public function naoAlocados()
-    {
-        $equipamentos = Equipamento::WhereNull('ip')->get();
-        return view('equipamentos.index', compact('equipamentos'));
     }
 }

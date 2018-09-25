@@ -6,10 +6,6 @@ Route::get('/', 'IndexController@index');
 Route::resource('/equipamentos', 'EquipamentoController');
 Route::resource('/redes', 'RedeController');
 
-# outros
-Route::post('/equipamentos/search', 'EquipamentoController@search');
-Route::get('/equipamentos/nao-alocados', 'EquipamentoController@naoAlocados');
-
 # rotas para a senha única
 Route::get('/login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');

@@ -13,17 +13,31 @@
     </a>
 </p>
 
-<form method="post" action="/equipamentos/search">
-    {{ csrf_field() }}
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Busca por MacAddress..." name="macaddress">
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-success"> Buscar </button>
-        </span>
-    </div><!-- /input-group -->
-</form>
+<div class="panel panel-default">
+  <div class="panel-heading">Filtros</div>
+  <div class="panel-body">
+
+    <form method="get" action="/equipamentos">
+        <div>
+            <label class="checkbox-inline"><input type="checkbox" name="vencidos" value="true">Vencidos</label>
+            <label class="checkbox-inline"><input type="checkbox" name="naoalocados" value="true">Não Alocados</label>
+        </div>
+        <br>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="MacAddress..." name="macaddress">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-success"> Buscar </button>
+            </span>
+        </div><!-- /input-group -->
+    </form>
 
 
+  </div>
+</div>
+
+
+
+<br>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
