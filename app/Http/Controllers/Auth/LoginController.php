@@ -65,25 +65,25 @@ class LoginController extends Controller
         # busca o usuário local
         $user = User::find($userSenhaUnica->codpes);
         
-        # restrição só para admins
-        $admins = explode(',', trim(env('CODPES_ADMINS')));
-        
-        if (!in_array($userSenhaUnica->codpes, $admins)) {
-            session()->flash('alert-danger', 'Usuario sem permissao de acesso!');
-            return redirect('/');
-        }
-        
         if (is_null($user)) {
             $user = new User;
         }
-
+        
+        # role admin
+        $admins = explode(',', trim(env('CODPES_ADMINS')));
+        if (in_array($userSenhaUnica->codpes, $admins)) {
+            $user->roles = 'admin,member';
+        }
+        else {
+            $user->roles = 'member';
+        }
+        
         // bind do dados retornados
         $user->id = $userSenhaUnica->codpes;
         $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
         $user->save();
  
-        
         Auth::login($user, true);
         return redirect('/');
     }
