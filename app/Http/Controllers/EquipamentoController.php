@@ -50,9 +50,11 @@ class EquipamentoController extends Controller
         }
 
         // usuário logago, admin vê todos
-        if( !(Auth::user()->role('admin')) ){
+        /*
+        if( !(Auth::user()->hasRole('admin')) ){
             array_push($filters,['user_id','=', Auth::user()->id]);
         }
+        */
 
         // fetch equipamentos
         $equipamentos = Equipamento::where($filters)->get();
@@ -228,7 +230,7 @@ class EquipamentoController extends Controller
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento,$macaddress_antigo);
         }
 
-        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
+        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }
 

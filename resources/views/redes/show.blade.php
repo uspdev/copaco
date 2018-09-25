@@ -5,6 +5,9 @@
 @stop
 
 @section('content')
+    @include('messages.flash')
+    @include('messages.errors')
+
 <div>
     <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-success">Editar</a>
 </div>

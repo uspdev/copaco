@@ -124,13 +124,19 @@ return [
             'text'        => 'Redes',
             'url'         => '/redes',
             'icon'        => 'sitemap',
-            'can'         => 'admin',
+#            'can'         => 'admin',
         ],
         [
             'text'        => 'Configurações',
             'url'         => '/config',
             'icon'        => 'file',
-            'can'         => 'admin',
+#            'can'         => 'admin',
+        ],
+        [
+            'text'        => 'Grupos',
+            'url'         => '/roles',
+            'icon'        => 'group',
+#            'can'         => 'admin',
         ], 
     ],
 
