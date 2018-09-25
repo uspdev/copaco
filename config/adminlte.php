@@ -124,11 +124,13 @@ return [
             'text'        => 'Redes',
             'url'         => '/redes',
             'icon'        => 'sitemap',
+            'can'         => 'admin',
         ],
         [
             'text'        => 'Configurações',
             'url'         => '/config',
             'icon'        => 'file',
+            'can'         => 'admin',
         ], 
     ],
 

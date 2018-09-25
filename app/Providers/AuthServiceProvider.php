@@ -5,6 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use Illuminate\Support\Facades\Auth;
+
+use App\Policies\EquipamentoPolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+       # 'App\Model' => 'App\Policies\ModelPolicy',
+        Equipamento::class => EquipamentoPolicy::class,
     ];
 
     /**
@@ -25,6 +30,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        # equipamentos policy
+        Gate::resource('equipamentos', 'App\Policies\EquipamentoPolicy');
+
+        # Usuário comum
+        Gate::define('member', function($user) {
+            return $user->role('member');
+        });
+
+        # admin 
+        Gate::define('admin', function ($user) {
+            return $user->role('admin');
+        });
+
     }
 }

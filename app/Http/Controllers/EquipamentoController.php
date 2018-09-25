@@ -11,6 +11,9 @@ use App\Rules\Patrimonio;
 use App\Rules\MacAddress;
 use App\Utils\Freeradius;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
@@ -44,6 +47,11 @@ class EquipamentoController extends Controller
         if(isset($request->vencidos)){
             if($request->vencidos=='true')
                 array_push($filters,['vencimento','<=', Carbon::now()]);
+        }
+
+        // usuário logago, admin vê todos
+        if( !(Auth::user()->role('admin')) ){
+            array_push($filters,['user_id','=', Auth::user()->id]);
         }
 
         // fetch equipamentos
@@ -133,8 +141,8 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {
+        $this->authorize('equipamentos.view', $equipamento);
         return view('equipamentos.show', compact('equipamento'));
-        ;
     }
 
     /**
@@ -145,9 +153,7 @@ class EquipamentoController extends Controller
      */
     public function edit(Equipamento $equipamento)
     {
-        /* Rota gerada pelo laravel:
-            http://devserver:porta/equiapmento/{id}/edit
-        */
+        $this->authorize('equipamentos.update', $equipamento);
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         $redes = Rede::all();
         return view('equipamentos.edit', compact('equipamento', 'redes'));
@@ -162,6 +168,8 @@ class EquipamentoController extends Controller
      */
     public function update(Request $request, Equipamento $equipamento)
     {
+        $this->authorize('equipamentos.update', $equipamento);
+
         // Validações
         $request->validate([
             'patrimonio'    => ['nullable',new Patrimonio],
@@ -232,6 +240,7 @@ class EquipamentoController extends Controller
      */
     public function destroy(Equipamento $equipamento, Request $request)
     {
+        $this->authorize('equipamentos.delete', $equipamento);
         // deleta equipamento no freeRadius
         if( getenv('FREERADIUS_HABILITAR') == 'True' ){
             $this->freeradius->deletaEquipamento($equipamento);

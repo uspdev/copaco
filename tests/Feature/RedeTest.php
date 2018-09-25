@@ -24,7 +24,7 @@ class RedeTest extends TestCase
         // Deleta usuário do banco
         $rede->delete();
     }
-
+/*
     public function testCrudRede()
     {
         // Verifica se o cadastro de rede é restrito
@@ -91,7 +91,7 @@ class RedeTest extends TestCase
 
         // Apaga usuário criado para testes
         $user->delete();
-        
     }
+*/
 
 }

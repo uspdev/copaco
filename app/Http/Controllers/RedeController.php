@@ -17,7 +17,7 @@ class RedeController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('can:admin');
         $this->freeradius = new Freeradius;
     }
 
