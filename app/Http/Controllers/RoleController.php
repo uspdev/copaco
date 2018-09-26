@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Role;
+use App\Rede;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
@@ -25,7 +31,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('roles.create');
+        $redes = Rede::all();
+        return view('roles.create',compact('redes'));
     }
 
     /**
@@ -38,13 +45,22 @@ class RoleController extends Controller
     {
         // Validações
         $request->validate([
-            'nome'      => 'required',
-        ]);    
+            'nome'      => 'required|unique:roles',
+        ]);
 
         // Persistência
         $role = new Role;
         $role->nome = $request->nome;
+        if(!empty($request->grupoadmin)) $role->grupoadmin = true;
         $role->save();
+
+        // redes
+        if(!empty($request->redes)){
+            $role->redes()->sync($request->redes);
+        }
+        else {
+            $role->redes()->detach();
+        }
 
         $request->session()->flash('alert-success', 'Grupo cadastrado com sucesso!');
         return redirect()->route('roles.index');
@@ -69,7 +85,8 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        return view('roles.edit', compact('role'));
+        $redes = Rede::all();
+        return view('roles.edit', compact('role','redes'));
     }
 
     /**
@@ -83,11 +100,26 @@ class RoleController extends Controller
     {
         // Validações
         $request->validate([
-            'nome'      => 'required',
-        ]);    
+            'nome'      => 'required|unique:roles,nome,'. $role->id
+
+        ]);
+
+        // redes
+        if(!empty($request->redes)){
+            $role->redes()->sync($request->redes);
+        }
+        else {
+            $role->redes()->detach();
+        }
 
         // Persistência
         $role->nome = $request->nome;
+
+        if(!empty($request->grupoadmin)) 
+            $role->grupoadmin = true;
+        else
+            $role->grupoadmin = false;
+
         $role->save();
 
         $request->session()->flash('alert-success', 'Grupo atualizado com sucesso!');
@@ -102,6 +134,13 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // Remove pessoas desse grupo
+        $role->users()->detach();
+
+        // Remove redes desse grupo
+        $role->redes()->detach();
+
+        // Remove grupo
         $role->delete();
         return redirect()->route('roles.index')->with('alert-danger', 'Grupo deletado!');
     }

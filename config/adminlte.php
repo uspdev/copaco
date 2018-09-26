@@ -112,31 +112,38 @@ return [
         [
             'text' => 'Minha Conta',
             'url'  => '/',
-#            'can'  => 'manage-blog',
+            'can'  => 'admin',
         ],
         [
             'text' => 'Equipamentos',
             'url'  => '/equipamentos',
-            'icon'        => 'desktop',
+            'icon' => 'desktop',
+            'can'  => 'equipamentos.create',
         ],
         'Administração',
         [
             'text'        => 'Redes',
             'url'         => '/redes',
             'icon'        => 'sitemap',
-#            'can'         => 'admin',
+            'can'         => 'admin',
         ],
         [
             'text'        => 'Configurações',
             'url'         => '/config',
             'icon'        => 'file',
-#            'can'         => 'admin',
+            'can'         => 'admin',
         ],
         [
             'text'        => 'Grupos',
             'url'         => '/roles',
             'icon'        => 'group',
-#            'can'         => 'admin',
+            'can'         => 'admin',
+        ], 
+        [
+            'text'        => 'Pessoas',
+            'url'         => '/users',
+            'icon'        => 'home',
+            'can'         => 'admin',
         ], 
     ],
 

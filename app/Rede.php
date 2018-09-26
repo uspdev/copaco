@@ -15,4 +15,14 @@ class Rede extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function roles()
+    {
+      return $this->belongsToMany(Role::class,'role_rede');
+    }
+
+    public function hasRole($role)
+    {
+      return null !== $this->roles()->where('nome', $role)->first();
+    }
 }

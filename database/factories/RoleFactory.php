@@ -4,6 +4,6 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Role::class, function (Faker $faker) {
     return [
-        'nome' => $faker->word,
+        'nome' => $faker->unique()->word,
     ];
 });

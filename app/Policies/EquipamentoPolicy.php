@@ -40,12 +40,12 @@ class EquipamentoPolicy
     public function delete(User $user, Equipamento $equipamento)
     {
         $owner = $user->id === $equipamento->user_id;
-        $admin = $user->role('admin');
         return $owner || $this->is_superAdmin;
     }
 
-    public function create(User $user, Equipamento $equipamento)
+    public function create(User $user)
     {
         return true;
     }
+
 }
