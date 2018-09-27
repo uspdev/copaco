@@ -55,30 +55,24 @@ class EquipamentoController extends Controller
         if( !Gate::allows('admin') ) {
             // mostrar apenas equipamentos dos grupos que os usuário logado pertence e é do tipo grupoadmin
             $user = Auth::user();
-          //  $admin_algum_grupo = false;
             foreach($user->roles()->get() as $role){       
                 foreach($role->redes()->get() as $rede){
                     if($role->grupoadmin) {
                         array_push($Orfilters,['rede_id','=', $rede->id]);
-                     //   $admin_algum_grupo = true;
                     }
                 }
             }
-
-            // se o camarada não administra nenhum grupo e não é SUPERADMIN, ele só vai ver os equipamentos dele
-           // if( !$admin_algum_grupo ){
-                array_push($Orfilters,['user_id','=', $user->id]);
-          //  }
+            array_push($Orfilters,['user_id','=', $user->id]);
         }
-        
+
         // fetch equipamentos
         $equipamentos = Equipamento::where($filters);
 
         foreach ($Orfilters as $or) {
             $equipamentos = $equipamentos->orWhere([$or]); 
         }
-        
-        // debug SQL        
+
+        // debug SQL
         //dd($equipamentos->toSql());
         $equipamentos = $equipamentos->get();
 
@@ -122,13 +116,19 @@ class EquipamentoController extends Controller
             'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
         ]);
 
+        // Se a opção de fixar ip for falsa, ignorar ip de chegada
+        if(!$request->fixarip){
+            $request->ip = null;
+        }
+
         // Se o usuário não permissão na rede, cadastrar sem rede
         $user = Auth::user();
         $redes = $user->redesComAcesso();
         if(!$redes->contains('id',$request->rede_id)) {
             $request->rede_id = null;
             $request->ip = null;
-           // $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+            // flahs comentado, pois está aparecendo quando nenhuma rede é selecionada, abrir issue
+            // $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
         }
 
         // Aloca IP
@@ -221,6 +221,11 @@ class EquipamentoController extends Controller
             'macaddress'    => 'unique:equipamentos,macaddress,'. $equipamento->id
 
         ]);
+
+        // Se a opção de fixar ip for falsa, ignorar ip de chegada
+        if(!$request->fixarip){
+            $request->ip = null;
+        }
 
         // Se o usuário não permissão na rede, cadastrar sem
         $user = Auth::user();
