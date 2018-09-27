@@ -18,6 +18,12 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('can:admin');
+    }
+
     public function index()
     {
         $roles = Role::all();

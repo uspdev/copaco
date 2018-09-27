@@ -67,7 +67,7 @@ class EquipamentoController extends Controller
 
             // se o camarada não administra nenhum grupo e não é SUPERADMIN, ele só vai ver os equipamentos dele
             if( !$admin_algum_grupo ){
-                //array_push($Orfilters,['user_id','=', $user->id]);
+                array_push($filters,['user_id','=', $user->id]);
             }
         }
         
@@ -97,7 +97,11 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
-        $redes = Rede::all();
+        $this->authorize('equipamentos.create');
+
+        // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
         return view('equipamentos.create', compact('redes'));
     }
 
@@ -109,6 +113,7 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('equipamentos.view');
         // Validações
         $request->validate([
             'patrimonio'    => ['nullable',new Patrimonio],
@@ -116,6 +121,15 @@ class EquipamentoController extends Controller
             'macaddress'    => ['required','unique:equipamentos',new MacAddress],
             'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
         ]);
+
+        // Se o usuário não permissão na rede, cadastrar sem rede
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+        if(!$redes->contains('id',$request->rede_id)) {
+            $request->rede_id = null;
+            $request->ip = null;
+            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+        }
 
         // Aloca IP
         $ops = new NetworkOps;
@@ -143,7 +157,6 @@ class EquipamentoController extends Controller
         $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id = $aloca['rede'];
         $equipamento->user_id = \Auth::user()->id;
-        $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
         // Salva equipamento no freeRadius
@@ -181,8 +194,11 @@ class EquipamentoController extends Controller
     public function edit(Equipamento $equipamento)
     {
         $this->authorize('equipamentos.update', $equipamento);
+
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
-        $redes = Rede::all();
         return view('equipamentos.edit', compact('equipamento', 'redes'));
     }
 
@@ -206,6 +222,15 @@ class EquipamentoController extends Controller
 
         ]);
 
+        // Se o usuário não permissão na rede, cadastrar sem
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+        if(!$redes->contains('id',$request->rede_id)) {
+            $request->rede_id = null;
+            $request->ip = null;
+            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+        }
+
         // mac antigo para o freeradius
         $macaddress_antigo = $equipamento->macaddress;
 
@@ -222,7 +247,7 @@ class EquipamentoController extends Controller
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
-        $equipamento->last_modify_by = \Auth::user()->id;
+        $equipamento->user_id = \Auth::user()->id;
         $equipamento->save();
 
         // Aloca IP

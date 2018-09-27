@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::resource('equipamentos', 'App\Policies\EquipamentoPolicy');
 
         # admin 
-        Gate::define('admin', function () {
+        Gate::define('admin', function ($user) {
             $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
             return Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
         });
