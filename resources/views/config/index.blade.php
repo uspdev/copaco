@@ -11,6 +11,7 @@
 <div>
     <form action="/dhcpd.conf" method="post">
         {{csrf_field()}}
+        <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
         <button class="btn btn-success" type="submit">Gerar dhcpd.conf</button>
     </form>
 </div>
@@ -18,8 +19,9 @@
 <br />
 
 <div>
-    <form action="/freeradius/file" method="post">
+    <form action="/freeradius/authorize-file" method="post">
         {{csrf_field()}}
+        <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
         <button class="btn btn-success" type="submit">Gerar authorize para freeradius</button>
     </form>
 </div>

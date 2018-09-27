@@ -12,16 +12,31 @@
     @include ('messages.errors')
     
         @auth
-            <h3><b>Olá {{ Auth::user()->name }},</b></h3>
-            Acesse as opções no menu ao lado
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>{{ Auth::user()->name }}</b>
+                @can('admin')
+                  ( você é super administrador )
+                @endcan
+              </div>
+
+                <div class="panel-body">
+                    <b>Meus grupos:</b>
+                    <ul class="list-group">
+    
+                        @forelse (Auth::user()->roles()->get() as $role)
+                            <li class="list-group-item"> {{ $role->nome }} </li>
+                        @empty
+                            <li class="list-group-item">Não está em nenhum grupo </li>
+                        @endforelse
+                    </ul>
+
+                </div>
+            </div>
+            <h4></h4>
+
+
         @else
-            Você ainda não fez seu login com a senha única USP <a href="/login"> Faça seu Login! </a>
+            Você ainda não fez seu <a href="/login"> login</a>!
         @endauth
-        <h3>Com o Copaco você pode</h3>
-        <ul>
-            <li>Cadastrar computadores, APs, switches </li>
-            <li>Cadastrar rede...</li>
-            <li>...</li>
-        </ul>
     
 @stop
