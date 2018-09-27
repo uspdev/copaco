@@ -128,7 +128,7 @@ class EquipamentoController extends Controller
         if(!$redes->contains('id',$request->rede_id)) {
             $request->rede_id = null;
             $request->ip = null;
-            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+           // $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
         }
 
         // Aloca IP
@@ -228,7 +228,7 @@ class EquipamentoController extends Controller
         if(!$redes->contains('id',$request->rede_id)) {
             $request->rede_id = null;
             $request->ip = null;
-            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+            //$request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
         }
 
         // mac antigo para o freeradius
