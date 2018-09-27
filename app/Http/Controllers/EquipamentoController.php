@@ -55,20 +55,20 @@ class EquipamentoController extends Controller
         if( !Gate::allows('admin') ) {
             // mostrar apenas equipamentos dos grupos que os usuário logado pertence e é do tipo grupoadmin
             $user = Auth::user();
-            $admin_algum_grupo = false;
+          //  $admin_algum_grupo = false;
             foreach($user->roles()->get() as $role){       
                 foreach($role->redes()->get() as $rede){
                     if($role->grupoadmin) {
                         array_push($Orfilters,['rede_id','=', $rede->id]);
-                        $admin_algum_grupo = true;
+                     //   $admin_algum_grupo = true;
                     }
                 }
             }
 
             // se o camarada não administra nenhum grupo e não é SUPERADMIN, ele só vai ver os equipamentos dele
-            if( !$admin_algum_grupo ){
-                array_push($filters,['user_id','=', $user->id]);
-            }
+           // if( !$admin_algum_grupo ){
+                array_push($Orfilters,['user_id','=', $user->id]);
+          //  }
         }
         
         // fetch equipamentos
