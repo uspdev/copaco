@@ -16,13 +16,16 @@ class DhcpController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except([
-            'dhcpd'
-        ]);
+        $this->middleware('auth')->except(['dhcpd']);
     }
 
-    public function dhcpd()
+    public function dhcpd(Request $request)
     {
+        if($request->consumer_deploy_key != env('CONSUMER_DEPLOY_KEY'))
+        {
+            return response('Unauthorized action.', 403);
+        }
+
         $ops = new NetworkOps;
 
         $dhcp = <<<'NOWDOC'

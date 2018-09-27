@@ -22,12 +22,16 @@ class FreeradiusController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:admin');
+        $this->middleware('can:admin')->except(['file']);;
         $this->freeradius = new Freeradius;
     }
 
-    public function file()
+    public function file(Request $request)
     {
+        if($request->consumer_deploy_key != env('CONSUMER_DEPLOY_KEY'))
+        {
+            return response('Unauthorized action.', 403);
+        }
         $file = $this->freeradius->file();
         return response($file)->header('Content-Type', 'text/plain');
     }

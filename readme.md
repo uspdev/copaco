@@ -55,9 +55,11 @@ php artisan migrate
 
 Caso falte alguma dependência, siga as instruções do `composer`.
 
-Os IDs listados na variável *SUPERADMIN_IDS* terão permissão total no sistema:
+Configurar os *SUPERADMINS* que terão permissão total no sistema:
 
-    SUPERADMIN_IDS=123,geraldo,562782
+    SUPERADMINS_IDS=1,23
+    SUPERADMINS_SENHAUNICA=5385361,123
+    SUPERADMINS_LDAP=admin,xuxa
 
 ## Compile os assests com npm
 
@@ -117,6 +119,18 @@ Assim é possível logar no sistema sem necessidade do token configurado no seu 
 ## Testes TDD
 
     ./vendor/bin/phpunit
+
+Criar uma chave no .env para requisições no servidores dhcp e freeradius, exemplo:
+
+    CONSUMER_DEPLOY_KEY=d34dhd892nfAzt1OMC0x
+
+Exemplo de como consumir um dhcpd.conf:
+
+    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000/dhcpd.conf
+
+Exemplo de como consumir um mods-config/files/authorize para freeradius:
+
+    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000//freeradius/authorize-file
 
 ## Contribuindo com o projeto
 

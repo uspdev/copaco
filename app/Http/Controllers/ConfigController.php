@@ -13,6 +13,7 @@ class ConfigController extends Controller
 
     public function index()
     {
-        return view('config/index');
+        $consumer_deploy_key = env('CONSUMER_DEPLOY_KEY');
+        return view('config/index',compact('consumer_deploy_key'));
     }
 }
