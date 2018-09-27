@@ -4,6 +4,8 @@ namespace App\Policies;
 
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 
 use App\Equipamento;
@@ -21,8 +23,7 @@ class EquipamentoPolicy
      */
     public function __construct()
     {
-        $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
-        $this->is_superAdmin = Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
+        $this->is_superAdmin = Gate::allows('admin') ;
     }
 
     public function update(User $user, Equipamento $equipamento)

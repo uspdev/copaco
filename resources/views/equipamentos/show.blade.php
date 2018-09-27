@@ -16,8 +16,9 @@
     <li class="list-group-item"><b>Vencimento:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</li>
     <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome or '' }}</li>
     <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip or '' }}</li>
-    <li class="list-group-item"><b>Cadastrado por:</b> {{ $equipamento->user_id }} em {{ $equipamento->created_at }}</li>
-    <li class="list-group-item"><b>Modificado por:</b> {{ $equipamento->last_modify_by }} em {{ $equipamento->updated_at }}</li>
+    <li class="list-group-item"><b>Responsável</b>: {{ $equipamento->user->name }}</li>
+    <li class="list-group-item"><b>Cadastrado em:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $equipamento->created_at)->format('d/m/Y - H:i:s') }}</li>
+    <li class="list-group-item"><b>Modificado em: </b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $equipamento->updated_at)->format('d/m/Y - H:i:s') }}</li>
   </ul>
 </div>
 

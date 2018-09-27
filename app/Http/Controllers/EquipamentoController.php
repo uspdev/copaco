@@ -107,7 +107,8 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('equipamentos.view');
+        $this->authorize('equipamentos.create');
+
         // Validações
         $request->validate([
             'patrimonio'    => ['nullable',new Patrimonio],

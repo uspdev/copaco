@@ -63,17 +63,16 @@ class LoginController extends Controller
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
         # busca o usuário local
-        $user = User::find($userSenhaUnica->codpes);
+        $user = User::where('username_senhaunica',$userSenhaUnica->codpes)->first();
         
         if (is_null($user)) {
             $user = new User;
         }
         
         // bind do dados retornados
-        $user->id = $userSenhaUnica->codpes;
+        $user->username_senhaunica = $userSenhaUnica->codpes;
         $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
-        $user->method = 'senhaunica';
         $user->save();
  
         Auth::login($user, true);
