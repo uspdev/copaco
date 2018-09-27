@@ -35,8 +35,6 @@
   </div>
 </div>
 
-
-
 <br>
 <div class="table-responsive">
     <table class="table table-striped">
@@ -59,11 +57,24 @@
                 <td>{{ $equipamento->ip or '' }}</td>
                 <td><i>{{ $equipamento->rede->nome or '' }}</i>
                     @isset ($equipamento->rede->iprede)
-                        {{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}
+                        @can('admin')
+                            <a href="/redes/{{$equipamento->rede->id}}">{{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}</a>
+                        @elsecannot('admin')
+                            {{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}
+                        @endcan
                     @endisset
                 </td>
+
                 <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
-                <td><a href="/users/{{$equipamento->user->id}}">{{ $equipamento->user->id or '' }}</a></td>
+
+                <td>
+                    @can('admin')
+                        <a href="/users/{{$equipamento->user->id}}">{{ $equipamento->user->id or '' }}</a>
+                    @elsecannot('admin')
+                        {{ $equipamento->user->id or '' }}
+                    @endcan
+                </td>
+
                 <td>
                     <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
                 </td>
