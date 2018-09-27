@@ -5,6 +5,8 @@ Route::get('/', 'IndexController@index');
 # resources
 Route::resource('/equipamentos', 'EquipamentoController');
 Route::resource('/redes', 'RedeController');
+Route::resource('/roles', 'RoleController');
+Route::resource('/users', 'UserController');
 
 # rotas para a senha única
 Route::get('/login', 'Auth\LoginController@redirectToProvider')->name('login');
@@ -16,4 +18,3 @@ Route::get('/config', 'ConfigController@index');
 Route::post('/dhcpd.conf', 'DhcpController@dhcpd');
 Route::post('/freeradius/file', 'FreeradiusController@file');
 Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
-

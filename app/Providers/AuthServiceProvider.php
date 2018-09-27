@@ -33,15 +33,10 @@ class AuthServiceProvider extends ServiceProvider
         # equipamentos policy
         Gate::resource('equipamentos', 'App\Policies\EquipamentoPolicy');
 
-        # Usuário comum
-        Gate::define('member', function($user) {
-            return $user->role('member');
-        });
-
         # admin 
         Gate::define('admin', function ($user) {
-            return $user->role('admin');
+            $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
+            return Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
         });
-
     }
 }

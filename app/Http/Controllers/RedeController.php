@@ -106,9 +106,8 @@ class RedeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Rede $rede)
     {
-        $rede = Rede::findOrFail($id);
         return view('redes.edit', compact('rede'));
     }
 

@@ -44,8 +44,6 @@ Editar o arquivo `.env`
     SENHAUNICA_KEY=
     SENHAUNICA_SECRET=
     SENHAUNICA_CALLBACK_ID=
-
-    CODPES_ADMINS=
 ```
 
 Rode as migrations
@@ -57,14 +55,18 @@ php artisan migrate
 
 Caso falte alguma dependência, siga as instruções do `composer`.
 
+Os IDs listados na variável *SUPERADMIN_IDS* terão permissão total no sistema:
+
+    SUPERADMIN_IDS=123,geraldo,562782
+
 ## Compile os assests com npm
 
-    npm install  
+    npm install
     npm run dev
 
 ## Publicando Assets do AdminLTE
 
-Para ter o font disponível usando o AdminLTE, utilize o comando:
+Para ter a font disponível usando o AdminLTE, utilize o comando:
 
     php artisan deploy:assets
 

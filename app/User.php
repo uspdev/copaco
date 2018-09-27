@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use Illuminate\Support\Facades\Gate;
+use App\Rede;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -27,8 +30,41 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function role($role) {
-        $roles = explode(',',$this->roles);
-        return in_array($role,$roles);
+    public function roles()
+    {
+      return $this->belongsToMany(Role::class);
     }
+
+    /**
+    * Check multiple roles
+    * @param array $roles
+    */
+    public function hasAnyRole($roles)
+    {
+      return null !== $this->roles()->whereIn('nome', $roles)->first();
+    }
+    /**
+    * Check one role
+    * @param string $role
+    */
+    public function hasRole($role)
+    {
+      return null !== $this->roles()->where('nome', $role)->first();
+    }
+
+    public function redesComAcesso()
+    {
+        $redes = [];
+        if( !Gate::allows('admin') ) {
+            foreach($this->roles()->get() as $role){       
+                foreach($role->redes()->get() as $rede){
+                    array_push($redes,$rede);
+                }
+            }
+        } else {
+            $redes = Rede::all();
+        }
+        return collect($redes);
+    }
+
 }

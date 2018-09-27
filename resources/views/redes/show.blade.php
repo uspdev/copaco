@@ -5,6 +5,9 @@
 @stop
 
 @section('content')
+    @include('messages.flash')
+    @include('messages.errors')
+
 <div>
     <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-success">Editar</a>
 </div>
@@ -21,6 +24,13 @@
         <li class="list-group-item"><b>Netbios</b>: {{ $rede->netbios }}</li>
         <li class="list-group-item"><b>Cadastrado por:</b> {{ $rede->user_id }} em {{ $rede->created_at }}</li>
         <li class="list-group-item"><b>Modificado por:</b> {{ $rede->last_modify_by }} em {{ $rede->updated_at }}</li>
+        <li class="list-group-item"><b>Grupos com permissão nessa rede:</b>
+            <ul>
+                @foreach ( $rede->roles()->get() as $role)        
+                    <li><a href="/roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
+                @endforeach
+            </ul>
+         </li>
     </ul>
 </div>
 <h4> Equipamentos alocados nesta rede: </h4>

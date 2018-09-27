@@ -34,6 +34,7 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
+        // Buscas
         $filters = [];
         if(isset($request->macaddress)){
             array_push($filters,['macaddress', 'LIKE', '%' . $request->macaddress . '%']);
@@ -49,13 +50,39 @@ class EquipamentoController extends Controller
                 array_push($filters,['vencimento','<=', Carbon::now()]);
         }
 
-        // usuário logago, admin vê todos
-        if( !(Auth::user()->role('admin')) ){
-            array_push($filters,['user_id','=', Auth::user()->id]);
-        }
+        //
+        $Orfilters = [];
+        if( !Gate::allows('admin') ) {
+            // mostrar apenas equipamentos dos grupos que os usuário logado pertence e é do tipo grupoadmin
+            $user = Auth::user();
+            $admin_algum_grupo = false;
+            foreach($user->roles()->get() as $role){       
+                foreach($role->redes()->get() as $rede){
+                    if($role->grupoadmin) {
+                        array_push($Orfilters,['rede_id','=', $rede->id]);
+                        $admin_algum_grupo = true;
+                    }
+                }
+            }
 
+            // se o camarada não administra nenhum grupo e não é SUPERADMIN, ele só vai ver os equipamentos dele
+            if( !$admin_algum_grupo ){
+                array_push($filters,['user_id','=', $user->id]);
+            }
+        }
+        
         // fetch equipamentos
-        $equipamentos = Equipamento::where($filters)->get();
+        $equipamentos = Equipamento::where($filters);
+
+        foreach ($Orfilters as $or) {
+            $equipamentos = $equipamentos->orWhere([$or]); 
+        }
+        
+        // debug SQL        
+        //dd($equipamentos->toSql());
+        $equipamentos = $equipamentos->get();
+
+
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
         }
@@ -70,7 +97,11 @@ class EquipamentoController extends Controller
      */
     public function create()
     {
-        $redes = Rede::all();
+        $this->authorize('equipamentos.create');
+
+        // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
         return view('equipamentos.create', compact('redes'));
     }
 
@@ -82,6 +113,7 @@ class EquipamentoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('equipamentos.view');
         // Validações
         $request->validate([
             'patrimonio'    => ['nullable',new Patrimonio],
@@ -89,6 +121,15 @@ class EquipamentoController extends Controller
             'macaddress'    => ['required','unique:equipamentos',new MacAddress],
             'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
         ]);
+
+        // Se o usuário não permissão na rede, cadastrar sem rede
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+        if(!$redes->contains('id',$request->rede_id)) {
+            $request->rede_id = null;
+            $request->ip = null;
+            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+        }
 
         // Aloca IP
         $ops = new NetworkOps;
@@ -116,7 +157,6 @@ class EquipamentoController extends Controller
         $equipamento->fixarip = $request->fixarip;
         $equipamento->rede_id = $aloca['rede'];
         $equipamento->user_id = \Auth::user()->id;
-        $equipamento->last_modify_by = \Auth::user()->id;
         $equipamento->save();
 
         // Salva equipamento no freeRadius
@@ -154,8 +194,11 @@ class EquipamentoController extends Controller
     public function edit(Equipamento $equipamento)
     {
         $this->authorize('equipamentos.update', $equipamento);
+
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
-        $redes = Rede::all();
         return view('equipamentos.edit', compact('equipamento', 'redes'));
     }
 
@@ -175,15 +218,18 @@ class EquipamentoController extends Controller
             'patrimonio'    => ['nullable',new Patrimonio],
             'ip'            => 'nullable|ip',
             'macaddress'    => ['required',new MacAddress],
+            'macaddress'    => 'unique:equipamentos,macaddress,'. $equipamento->id
 
         ]);
 
-        // A validação do macaddress é mais complicada, pois tem que ignorar o MACaddress atual
-        Validator::make($request->all(), [
-            'macaddress' => [
-                Rule::unique('equipamentos')->ignore($equipamento->id),
-            ],
-        ]);
+        // Se o usuário não permissão na rede, cadastrar sem
+        $user = Auth::user();
+        $redes = $user->redesComAcesso();
+        if(!$redes->contains('id',$request->rede_id)) {
+            $request->rede_id = null;
+            $request->ip = null;
+            $request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
+        }
 
         // mac antigo para o freeradius
         $macaddress_antigo = $equipamento->macaddress;
@@ -201,7 +247,7 @@ class EquipamentoController extends Controller
         $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
         $equipamento->macaddress = $request->macaddress;
         $equipamento->local = $request->local;
-        $equipamento->last_modify_by = \Auth::user()->id;
+        $equipamento->user_id = \Auth::user()->id;
         $equipamento->save();
 
         // Aloca IP
@@ -228,7 +274,7 @@ class EquipamentoController extends Controller
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento,$macaddress_antigo);
         }
 
-        $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
+        $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }
 
@@ -241,6 +287,7 @@ class EquipamentoController extends Controller
     public function destroy(Equipamento $equipamento, Request $request)
     {
         $this->authorize('equipamentos.delete', $equipamento);
+
         // deleta equipamento no freeRadius
         if( getenv('FREERADIUS_HABILITAR') == 'True' ){
             $this->freeradius->deletaEquipamento($equipamento);

@@ -5,6 +5,9 @@
 @stop
 
 @section('content')
+    @include('messages.flash')
+    @include('messages.errors')
+
 <div class="card">
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><b>Patrimoniado:</b> {{ $equipamento->naopatrimoniado ? "Sim" : "Não" }}</li>

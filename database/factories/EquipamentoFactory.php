@@ -36,7 +36,6 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
         'fixarip' => $fixarip,
         'ip' => $ip_selecionado,
         'rede_id' => $rede->id,
-        'last_modify_by' => $user_create->id,
         'user_id'   => $user_modify->id,
     ];
 });
