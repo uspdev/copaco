@@ -35,7 +35,15 @@ class AuthServiceProvider extends ServiceProvider
 
         # admin 
         Gate::define('admin', function ($user) {
-            $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
+            $admins_id = explode(',', trim(env('SUPERADMINS_IDS')));
+            $admins_senhaunica = explode(',', trim(env('SUPERADMINS_SENHAUNICA')));
+            $admins_ldap = explode(',', trim(env('SUPERADMINS_LDAP')));
+
+            return in_array(Auth::user()->id, $admins_id) ||
+                                   in_array(Auth::user()->username_senhaunica, $admins_senhaunica) ||
+                                   in_array(Auth::user()->username_senhaunica, $admins_ldap);
+
+                $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
             return Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
         });
     }

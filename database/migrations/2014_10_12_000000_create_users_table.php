@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password')->nullable();
-            $table->string('method'); # last method login: ldap, senhaunica or local.
+            $table->string('username_senhaunica')->nullable();
+            $table->string('username_ldap')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -45,7 +45,7 @@
                 <th>IP</th>
                 <th>Rede</th>
                 <th>Vencimento</th>
-                <th>Usuári@</th>
+                <th>Responsável</th>
                 <th colspan="2">Ações</th>
             </tr>
         </thead>
@@ -69,9 +69,9 @@
 
                 <td>
                     @can('admin')
-                        <a href="/users/{{$equipamento->user->id}}">{{ $equipamento->user->id or '' }}</a>
+                        <a href="/users/{{$equipamento->user->id}}">{{ $equipamento->user->name or '' }}</a>
                     @elsecannot('admin')
-                        {{ $equipamento->user->id or '' }}
+                        {{ $equipamento->user->name or '' }}
                     @endcan
                 </td>
 
