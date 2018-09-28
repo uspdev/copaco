@@ -91,19 +91,24 @@ class Freeradius
 
     public function cadastraOuAtualizaEquipamento($equipamento,$mac_antigo = null)
     {
+        // Garante que a rede para esse equipamento também esteja cadastrada
+        $this->cadastraOuAtualizaRede($equipamento->rede);
+        
+        // corrige mac-address
+        $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
+        $mac_antigo = $this->formataMacAddr($mac_antigo);
+
+        // 1. Popula tabela radusergroup
         $fields = [
-            'UserName'  => strtolower(str_replace(':','',$equipamento->macaddress)),
+            'UserName'  => $equipamento->macaddress,
             'GroupName' => $equipamento->rede->id,
         ];
 
         $filter = [ 
-            'UserName' => strtolower(str_replace(':','',$mac_antigo)),
+            'UserName' => $mac_antigo,
         ];
-
-        // Garante que a rede para esse equipamento também esteja cadastrada
-        $this->cadastraOuAtualizaRede($equipamento->rede);
         
-        // first, check if this record exist before insert
+        // radusergroup: first, check if this record exist before insert
         $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
         
         if(is_null($mac_antigo) || is_null($check)){
@@ -111,14 +116,52 @@ class Freeradius
         } else {               
             DB::connection('freeradius')->table('radusergroup')->where($filter)->update($fields);
         }
+
+        // 2. popula tabela radcheck
+
+        $fields = [
+            'UserName'  => $equipamento->macaddress,
+            'Attribute' => 'Cleartext-Password',
+            'Value'     => $equipamento->macaddress,
+            'Op'        => ':=',
+        ];
+
+        $filter = [ 
+            'UserName' => $mac_antigo,
+        ];
+
+        $check = DB::connection('freeradius')->table('radcheck')->select()->where($filter)->first();
+        
+        if(is_null($mac_antigo) || is_null($check)){
+            DB::connection('freeradius')->table('radcheck')->insert($fields);
+        } else {               
+            DB::connection('freeradius')->table('radcheck')->where($filter)->update($fields);
+        }
+
     }
 
     public function deletaEquipamento($equipamento)
     {
+        // 1. deleta da tabela radusergroup
+        $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
         $filter = [ 
             'UserName' => $equipamento->macaddress,
         ];
         DB::connection('freeradius')->table('radusergroup')->where($filter)->delete();
+
+        // 2. deleta da tabela radcheck
+        DB::connection('freeradius')->table('radcheck')->where($filter)->delete();
+    }
+
+    public function formataMacAddr($macaddr)
+    {
+        $macaddr = str_replace(':',env('FREERADIUS_MACADDR_SEPARATOR'),$macaddr);
+        if( env('FREERADIUS_MACADDR_CASE') == 'lower'){
+            $macaddr = strtolower($macaddr);
+        } else if ( env('FREERADIUS_MACADDR_CASE') == 'upper') {
+            $macaddr = strtoupper($macaddr);
+        }
+        return $macaddr;
     }
 
 }
