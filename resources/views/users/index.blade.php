@@ -26,7 +26,16 @@
                 <td><a href="/users/{{ $user->id }}">{{ $user->id }}</a></td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->method }}</td>
+                <td>
+                    <ul>
+                        @if($user->username_senhaunica)
+                            <li> <i>Senha Única </i>-  Número USP: {{$user->username_senhaunica}}</li>
+                        @endif
+                        @if($user->username_ldap)
+                            <li>ldap</li>
+                        @endif
+                    </ul>
+                </td>
                 <td>
                     <ul>
                     @forelse ( $user->roles()->get() as $role)        

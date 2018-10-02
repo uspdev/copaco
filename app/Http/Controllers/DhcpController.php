@@ -39,8 +39,9 @@ NOWDOC;
 
         $redes = Rede::all();
         foreach ($redes as $rede) {
-            $ips = $ops->getRange($rede->iprede, $rede->cidr);
-            $range_begin = $ips[1];
+            // aqui estamos assumindo que o gateway é o primeiro do range
+            $ips = $ops->getRange($rede->iprede, $rede->cidr, true);
+            $range_begin = $ips[2];
             $range_end = $ips[count($ips)-2];
             $broadcast = end($ips);
 
@@ -50,42 +51,42 @@ NOWDOC;
             $dhcp .= <<<HEREDOC
 
   subnet {$rede->iprede} netmask {$mask} {
-  range {$range_begin} {$range_end};
-  option routers {$rede->gateway};
-  option broadcast-address {$broadcast};
+    range {$range_begin} {$range_end};
+    option routers {$rede->gateway};
+    option broadcast-address {$broadcast};
 
 HEREDOC;
             //Opcionais: Netbios, NTP, DNS e Domain (Active Directory)
             if (!empty($rede->netbios)) {
                 $dhcp .= <<<HEREDOC
-  option netbios-name-servers {$rede->netbios};
+    option netbios-name-servers {$rede->netbios};
 
 HEREDOC;
             }
 
             if (!empty($rede->ntp)) {
                 $dhcp .= <<<HEREDOC
-  option ntp-servers {$rede->ntp};
+    option ntp-servers {$rede->ntp};
 
 HEREDOC;
             }
 
             if (!empty($rede->dns)) {
                 $dhcp .= <<<HEREDOC
-  option domain-name-servers {$rede->dns};
+    option domain-name-servers {$rede->dns};
 
 HEREDOC;
             }
 
             if (!empty($rede->ad_domain)) {
                 $dhcp .= <<<HEREDOC
-  option domain-name {$rede->ad_domain};
+    option domain-name {$rede->ad_domain};
 
 HEREDOC;
             }
 
             $dhcp .= <<<'NOWDOC'
-  deny unknown-clients;
+    deny unknown-clients;
 
 NOWDOC;
 
