@@ -12,10 +12,15 @@ use App\Equipamento;
 class NetworkOps
 {
     // Um método que recebe o ip e cidr da rede e retorna um array com todos ips da mesma
-    public function getRange($iprede, $cidr)
+    public function getRange($iprede, $cidr, $include_broadcast = false)
     {
         $ips = [];
-        $hosts = Network::parse("{$iprede}/{$cidr}")->hosts;
+
+        if($include_broadcast)
+            $hosts = Network::parse("{$iprede}/{$cidr}");
+        else
+            $hosts = Network::parse("{$iprede}/{$cidr}")->hosts;
+
         foreach ($hosts as $ip) {
             array_push($ips, (string)$ip);
         }
