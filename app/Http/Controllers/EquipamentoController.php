@@ -74,8 +74,7 @@ class EquipamentoController extends Controller
 
         // debug SQL
         //dd($equipamentos->toSql());
-        $equipamentos = $equipamentos->get();
-
+        $equipamentos = $equipamentos->paginate(10);
 
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
