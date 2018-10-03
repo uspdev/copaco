@@ -19,31 +19,36 @@
 </div>
 
 <div class="form-group">
-    <label for="netbios">Netbios</label>
-    <input type="text" class="form-control" name="netbios" value="{{ $rede->netbios or old('netbios') }}" placeholder="Ex: ad.eca.usp.br">
-</div>
-
-<div class="form-group">
-    <label for="ntp">NTP</label>
-    <input type="text" class="form-control" name="ntp" value="{{ $rede->ntp or old('ntp') }}" placeholder="Ex: ntp.usp.br">
-</div>
-
-
- <div class="form-group">
     <label for="vlan">VLAN</label>
     <input type="text" class="form-control" name="vlan" value="{{ $rede->vlan or old('vlan') }}" placeholder="Ex: 1587">
 </div>
 
-<div class="form-group">
-    <label for="dns">DNS</label>
-    <input type="text" class="form-control" name="dns" value="{{ $rede->dns or old('dns') }}" placeholder="Ex: 143.107.253.3, 143.107.253.5">
-</div>
+<div class="panel panel-default">
+    <div class="panel-heading">Configurações Opcionais para DHCP</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="netbios">Netbios</label>
+                <input type="text" class="form-control" name="netbios" value="{{ $rede->netbios or old('netbios') }}" placeholder="Ex: ad.eca.usp.br, mydomain.usp.br">
+            </div>
 
-<div class="form-group">
-    <label for="ad_domain">Domain Active Directory</label>
-    <input type="text" class="form-control" name="ad_domain" value="{{ $rede->ad_domain or old('ad_domain') }}"placeholder="mydomain.usp.br">
-</div>
+            <div class="form-group">
+                <label for="ntp">NTP</label>
+                <input type="text" class="form-control" name="ntp" value="{{ $rede->ntp or old('ntp') }}" placeholder="Ex: ntp.usp.br, ntp.fflch.usp.br">
+            </div>
 
-<div class="form-group">
-    <input type="submit" class="btn btn-primary" value="Enviar Dados">
+            <div class="form-group">
+                <label for="dns">DNS</label>
+                <input type="text" class="form-control" name="dns" value="{{ $rede->dns or old('dns') }}" placeholder="Ex: 143.107.253.3, 143.107.253.5">
+            </div>
+
+            <div class="form-group">
+                <label for="ad_domain">Domain Active Directory</label>
+                <input type="text" class="form-control" name="ad_domain" value="{{ $rede->ad_domain or old('ad_domain') }}"placeholder="Ex: mydomain.usp.br, mydomain1.usp.br">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Enviar Dados">
+            </div>
+        </div>
+    </div>
 </div>

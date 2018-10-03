@@ -12,9 +12,10 @@ class DomainOrIp implements Rule
      *
      * @return void
      */
-    public function __construct()
+    private $field;
+    public function __construct($field = null)
     {
-        //
+        $this->field = $field;
     }
 
     /**
@@ -26,10 +27,12 @@ class DomainOrIp implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ( v::domain()->validate($value) or v::ip()->validate($value) ) {
-            return true;
+        $values = explode(',',$value);
+        foreach($values as $v)
+        if ( !(v::domain()->validate(trim($v)) or v::ip()->validate(trim($v)) or empty($v) )) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
@@ -39,6 +42,6 @@ class DomainOrIp implements Rule
      */
     public function message()
     {
-        return 'Um Domínio ou IP válido é requerido.';
+        return $this->field . ': Domínio(s) ou IP(s) válido(s) é(são) requerido(s)';
     }
 }

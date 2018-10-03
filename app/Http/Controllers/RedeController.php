@@ -59,10 +59,10 @@ class RedeController extends Controller
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new DomainOrIp],
-            'netbios'   => [new DomainOrIp],
-            'ad_domain' => [new DomainOrIp],
-            'ntp'       => [new DomainOrIp],
+            'dns'       => [new DomainOrIp('DNS')],
+            'netbios'   => [new DomainOrIp('NetBIOS')],
+            'ad_domain' => [new DomainOrIp('Active Directory Domain')],
+            'ntp'       => [new DomainOrIp('NTP')],
         ]);    
 
         // Persistência
@@ -127,10 +127,10 @@ class RedeController extends Controller
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new DomainOrIp],
-            'netbios'   => [new DomainOrIp],
-            'ad_domain' => [new DomainOrIp],
-            'ntp'       => [new DomainOrIp],
+            'dns'       => [new DomainOrIp('DNS')],
+            'netbios'   => [new DomainOrIp('NetBIOS')],
+            'ad_domain' => [new DomainOrIp('Active Directory Domain')],
+            'ntp'       => [new DomainOrIp('NTP')],
         ]);
 
         // Persistência
@@ -145,6 +145,7 @@ class RedeController extends Controller
         $rede->vlan     = $request->vlan;
         $rede->ad_domain= $request->ad_domain;
         $rede->last_modify_by = \Auth::user()->id;
+        $rede->touch();
         $rede->save();
 
         // Salva/update rede no freeRadius

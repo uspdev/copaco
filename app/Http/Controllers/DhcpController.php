@@ -7,6 +7,7 @@ use App\Rede;
 use App\Equipamentos;
 
 use App\Utils\NetworkOps;
+use App\Utils\Utils;
 
 use IPTools\IP;
 use IPTools\Network;
@@ -27,15 +28,18 @@ class DhcpController extends Controller
         }
 
         $ops = new NetworkOps;
+        $date = Utils::ItensUpdatedAt();
 
-        $dhcp = <<<'NOWDOC'
+        $dhcp = <<<HEREDOC
+# {$date}
+# build success
 ddns-update-style none;
 default-lease-time 86400;
 max-lease-time 86400;
 authoritative;
 shared-network "default" {
 
-NOWDOC;
+HEREDOC;
 
         $redes = Rede::all();
         foreach ($redes as $rede) {

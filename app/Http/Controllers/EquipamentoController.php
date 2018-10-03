@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Uspdev\dadosUsp;
 
 class EquipamentoController extends Controller
 {
@@ -74,8 +75,7 @@ class EquipamentoController extends Controller
 
         // debug SQL
         //dd($equipamentos->toSql());
-        $equipamentos = $equipamentos->get();
-
+        $equipamentos = $equipamentos->paginate(10);
 
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
@@ -183,6 +183,14 @@ class EquipamentoController extends Controller
     public function show(Equipamento $equipamento)
     {
         $this->authorize('equipamentos.view', $equipamento);
+
+        if ($equipamento->naopatrimoniado) {
+            $patrimonio = new dadosUsp;
+            $xml = $patrimonio->fetchNumpat($equipamento->patrimonio);
+            $info_patrimonio = $patrimonio->xml2array($xml);
+            $info_patrimonio;
+            return view('equipamentos.show', compact('equipamento','info_patrimonio'));
+        }
         return view('equipamentos.show', compact('equipamento'));
     }
 
