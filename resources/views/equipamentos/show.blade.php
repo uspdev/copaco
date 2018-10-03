@@ -10,7 +10,20 @@
 
 <div class="card">
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>Patrimoniado:</b> {{ $equipamento->naopatrimoniado ? "Sim" : "Não" }}</li>
+    @if($equipamento->naopatrimoniado)
+      <li class="list-group-item"> <b>Patrimônio:</b> {{$equipamento->patrimonio}}
+        <br><i>Dados no mercúrio:</i>
+        <ul>        
+          <li>Material: {{ $info_patrimonio['Nomsgpitmmat'] }}</li>
+          <li>Responsável: {{ $info_patrimonio['Nompes'] }}</li>
+          <li>Centro de despesa: {{ $info_patrimonio['Nomcendsp'] }}</li>
+          <li>Localização: {{ $info_patrimonio['Idfloc'] }}</li>
+        </ul>
+      </li>
+    @else
+      <li class="list-group-item"> <b>Descrição:</b> {{$equipamento->descricaosempatrimonio}} </li>
+    @endif
+
     <li class="list-group-item"><b>Mac Address:</b> {{ $equipamento->macaddress }}</li>
     <li class="list-group-item"><b>Local:</b> {{ $equipamento->local }}</li>
     <li class="list-group-item"><b>Vencimento:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</li>
