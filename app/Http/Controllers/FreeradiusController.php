@@ -46,6 +46,7 @@ class FreeradiusController extends Controller
         // Limpa as tabelas
         DB::connection('freeradius')->table('radusergroup')->delete();
         DB::connection('freeradius')->table('radgroupreply')->delete();
+        DB::connection('freeradius')->table('radcheck')->delete();
 
         // Re-inseri tudo novamente
         $redes = Rede::all();
