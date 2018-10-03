@@ -9,6 +9,7 @@
         "ext-bcmath": "*",
         "ext-curl": "*",
         "ext-ldap": "*",
+        "doctrine/dbal": "^2.8",
         "fideloper/proxy": "~4.0",
         "jeroennoten/laravel-adminlte": "^1.23",
         "laravel/framework": "5.6.*",
