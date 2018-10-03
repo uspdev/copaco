@@ -22,8 +22,9 @@
         <li class="list-group-item"><b>Domain Active Directory</b>: {{ $rede->ad_domain }}</li>
         <li class="list-group-item"><b>NTP</b>: {{ $rede->ntp }}</li>
         <li class="list-group-item"><b>Netbios</b>: {{ $rede->netbios }}</li>
-        <li class="list-group-item"><b>Cadastrado por:</b> {{ $rede->user_id }} em {{ $rede->created_at }}</li>
-        <li class="list-group-item"><b>Modificado por:</b> {{ $rede->last_modify_by }} em {{ $rede->updated_at }}</li>
+    <li class="list-group-item"><b>Responsável</b>: {{ $rede->user->name }}</li>
+    <li class="list-group-item"><b>Cadastrado em:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $rede->created_at)->format('d/m/Y - H:i:s') }}</li>
+    <li class="list-group-item"><b>Modificado em: </b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $rede->updated_at)->format('d/m/Y - H:i:s') }}</li>
         <li class="list-group-item"><b>Grupos com permissão nessa rede:</b>
             <ul>
                 @foreach ( $rede->roles()->get() as $role)        

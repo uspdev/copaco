@@ -145,6 +145,7 @@ class RedeController extends Controller
         $rede->vlan     = $request->vlan;
         $rede->ad_domain= $request->ad_domain;
         $rede->last_modify_by = \Auth::user()->id;
+        $rede->touch();
         $rede->save();
 
         // Salva/update rede no freeRadius
