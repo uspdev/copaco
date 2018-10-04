@@ -35,4 +35,33 @@
     </form>
 </div>
 
+<div>
+
+<br>
+<form action="/config" method="post">
+{{csrf_field()}}
+<div class="panel panel-default">
+    <div class="panel-heading">Configurações para DHCP</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="dhcp_global">Parâmetros globais</label>
+
+                @if(!is_null($configs->where('key','dhcp_global')->first()))
+                    <textarea rows="4" cols="50" class="form-control" name="dhcp_global">{{$configs->where('key','dhcp_global')->first()->value}}</textarea>
+                @else
+                    <textarea rows="4" cols="50" class="form-control" name="dhcp_global">ddns-update-style none;
+default-lease-time 86400;
+max-lease-time 86400;
+authoritative;</textarea>
+                @endif
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Enviar Dados">
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+
 @stop

@@ -15,6 +15,7 @@ Route::post('/logout', 'Auth\LoginController@logout');
 
 # config
 Route::get('/config', 'ConfigController@index');
+Route::post('/config', 'ConfigController@config');
 Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
 
 # APIs
