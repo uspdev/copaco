@@ -6,7 +6,8 @@ use App\Rede;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use App\Rules\DomainOrIp;
+use App\Rules\MultiplesIP;
+use App\Rules\Domain;
 use App\Rules\PertenceRede;
 use App\Utils\Freeradius;
 
@@ -59,10 +60,10 @@ class RedeController extends Controller
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new DomainOrIp('DNS')],
-            'netbios'   => [new DomainOrIp('NetBIOS')],
-            'ad_domain' => [new DomainOrIp('Active Directory Domain')],
-            'ntp'       => [new DomainOrIp('NTP')],
+            'dns'       => [new MultiplesIP('DNS')],
+            'netbios'   => [new MultiplesIP('NetBIOS')],
+            'ad_domain' => [new Domain('Active Directory Domain')],
+            'ntp'       => [new MultiplesIP('NTP')],
         ]);    
 
         // Persistência
@@ -127,10 +128,10 @@ class RedeController extends Controller
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new DomainOrIp('DNS')],
-            'netbios'   => [new DomainOrIp('NetBIOS')],
-            'ad_domain' => [new DomainOrIp('Active Directory Domain')],
-            'ntp'       => [new DomainOrIp('NTP')],
+            'dns'       => [new MultiplesIP('DNS')],
+            'netbios'   => [new MultiplesIP('NetBIOS')],
+            'ad_domain' => [new Domain('Active Directory Domain')],
+            'ntp'       => [new MultiplesIP('NTP')],
         ]);
 
         // Persistência

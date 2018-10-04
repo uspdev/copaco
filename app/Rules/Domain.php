@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Respect\Validation\Validator as v;
 
-class DomainOrIp implements Rule
+class Domain implements Rule
 {
     /**
      * Create a new rule instance.
@@ -27,9 +27,7 @@ class DomainOrIp implements Rule
      */
     public function passes($attribute, $value)
     {
-        $values = explode(',',$value);
-        foreach($values as $v)
-        if ( !(v::domain()->validate(trim($v)) or v::ip()->validate(trim($v)) or empty($v) )) {
+        if ( !(v::domain()->validate(trim($value)) or empty($value) )) {
             return false;
         }
         return true;
@@ -42,6 +40,6 @@ class DomainOrIp implements Rule
      */
     public function message()
     {
-        return $this->field . ': Domínio(s) ou IP(s) válido(s) é(são) requerido(s)';
+        return $this->field . ': Um domínio válido é requerido';
     }
 }
