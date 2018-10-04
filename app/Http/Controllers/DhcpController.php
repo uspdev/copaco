@@ -84,7 +84,7 @@ HEREDOC;
 
             if (!empty($rede->ad_domain)) {
                 $dhcp .= <<<HEREDOC
-    option domain-name {$rede->ad_domain};
+    option domain-name "{$rede->ad_domain}";
 
 HEREDOC;
             }
