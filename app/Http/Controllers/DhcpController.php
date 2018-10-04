@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Rede;
 use App\Equipamentos;
+use App\Config;
 
 use App\Utils\NetworkOps;
 use App\Utils\Utils;
@@ -30,13 +31,16 @@ class DhcpController extends Controller
         $ops = new NetworkOps;
         $date = Utils::ItensUpdatedAt();
 
+        $dhcp_global = Config::where('key','dhcp_global')->first();
+        if(is_null($dhcp_global)){
+            $dhcp_global = new Config;
+            $dhcp_global->value = '';
+        }
+
         $dhcp = <<<HEREDOC
 # {$date}
 # build success
-ddns-update-style none;
-default-lease-time 86400;
-max-lease-time 86400;
-authoritative;
+{$dhcp_global->value}
 shared-network "default" {
 
 HEREDOC;
