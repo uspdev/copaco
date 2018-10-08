@@ -43,8 +43,8 @@ class AuthServiceProvider extends ServiceProvider
                                    in_array(Auth::user()->username_senhaunica, $admins_senhaunica) ||
                                    in_array(Auth::user()->username_senhaunica, $admins_ldap);
 
-                $codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
-            return Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
+            //$codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
+            //return Auth::check() && in_array(Auth::user()->id, $codpesAdmins);
         });
     }
 }
