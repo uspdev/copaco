@@ -8,13 +8,16 @@
 
 # Sistema de COntrole de PArque COmputacional
 
-Pequeno aplicativo desenvolvido em Laravel para promover a integração e paz entre os devs da USP! :penguin:
+Sistema desenvolvido em Laravel para promover a integração e paz entre os devs da USP! :penguin:
+Tem por objetivo tornar a gerência dos equipamentos que navegam em sua rede mais eficiente e prática.
 
 Funcionalidades:
+
  - Cadastro de equipamentos com MAC Address
  - Cadastro de redes
  - Atribuição automática de IPs livres
  - Geração de `dhcpd.conf` com suporte a multi redes/subredes
+ - Geração de configuração para servidores freeradius, basicamente para entregarem a vlan correspondente ao MACaddress
 
 ## Instalação de bibliotecas e dependências
 
@@ -23,8 +26,6 @@ Funcionalidades:
     php-bcmath
     php-ldap
     php-curl
-
-Procure pela biblioteca em sua distribuição.
 
 ## Procedimentos de deploy
 
