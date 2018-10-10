@@ -112,7 +112,7 @@ return [
         [
             'text' => 'Minha Conta',
             'url'  => '/',
-            'can'  => 'admin',
+            'can'  => 'equipamentos.create',
         ],
         [
             'text' => 'Equipamentos',
