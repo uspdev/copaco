@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         
         // força https na produção
-        if (env('APP_ENV') === 'production') {
+        if (\App::environment('production')) {
             \URL::forceScheme('https');
         }
     }
