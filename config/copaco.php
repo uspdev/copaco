@@ -36,6 +36,7 @@ return [
     | DHCP e FreeRadius
     |--------------------------------------------------------------------------
     | consumer_deploy_key = parâmetro enviado para os servidores DHCP e FreeRadius
+    | freeradius_macaddr_case = 'upper','lower'
      */
     'consumer_deploy_key' => env('CONSUMER_DEPLOY_KEY', false),
 
