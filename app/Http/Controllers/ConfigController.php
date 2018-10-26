@@ -15,7 +15,7 @@ class ConfigController extends Controller
     public function index()
     {
         $configs = Config::all();
-        $consumer_deploy_key = env('CONSUMER_DEPLOY_KEY');
+        $consumer_deploy_key = config('copaco.consumer_deploy_key');
         return view('config/index',compact('consumer_deploy_key','configs'));
     }
 
