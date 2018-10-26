@@ -82,7 +82,7 @@ class RedeController extends Controller
         $rede->save();
 
         // Salva rede no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if (config('copaco.freeradius_habilitar')) {
             $this->freeradius->cadastraOuAtualizaRede($rede);
         }
 
@@ -150,12 +150,12 @@ class RedeController extends Controller
         $rede->save();
 
         // Salva/update rede no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if (config('copaco.freeradius_habilitar')) {
             $this->freeradius->cadastraOuAtualizaRede($rede);
-        } 
+        }
 
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
-        return redirect()->route('redes.show',['id' =>$rede]);
+        return redirect()->route('redes.show', ['id' => $rede]);
     }
 
     /**
@@ -167,14 +167,14 @@ class RedeController extends Controller
     public function destroy(Rede $rede)
     {
         // deleta rede no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if (config('copaco.freeradius_habilitar')) {
             $this->freeradius->deletaRede($rede);
         } 
 
         // Desaloca os equipamentos dessa rede 
         foreach ($rede->equipamentos as $equipamento) {
             // deleta equipamentos no freeRadius
-            if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+            if (config('copaco.freeradius_habilitar')) {
                 $this->freeradius->deletaEquipamento($equipamento);
             }
             $equipamento->ip = null;
