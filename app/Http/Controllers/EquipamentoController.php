@@ -27,7 +27,7 @@ class EquipamentoController extends Controller
         $this->middleware('auth');
         $this->freeradius = new Freeradius;
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -37,40 +37,40 @@ class EquipamentoController extends Controller
     {
         // Buscas
         $filters = [];
-        if(isset($request->macaddress)){
-            array_push($filters,['macaddress', 'LIKE', '%' . $request->macaddress . '%']);
+        if (isset($request->macaddress)) {
+            array_push($filters, ['macaddress', 'LIKE', '%' . $request->macaddress . '%']);
         }
 
-        if(isset($request->naoalocados)){
-            if($request->naoalocados=='true')
-                array_push($filters,['ip','=', null]);
+        if (isset($request->naoalocados)) {
+            if ($request->naoalocados == 'true')
+                array_push($filters, ['ip', '=', null]);
         }
 
-        if(isset($request->vencidos)){
-            if($request->vencidos=='true')
-                array_push($filters,['vencimento','<=', Carbon::now()]);
+        if (isset($request->vencidos)) {
+            if ($request->vencidos == 'true')
+                array_push($filters, ['vencimento', '<=', Carbon::now()]);
         }
 
         //
         $Orfilters = [];
-        if( !Gate::allows('admin') ) {
+        if (!Gate::allows('admin')) {
             // mostrar apenas equipamentos dos grupos que os usuário logado pertence e é do tipo grupoadmin
             $user = Auth::user();
-            foreach($user->roles()->get() as $role){       
-                foreach($role->redes()->get() as $rede){
-                    if($role->grupoadmin) {
-                        array_push($Orfilters,['rede_id','=', $rede->id]);
+            foreach ($user->roles()->get() as $role) {
+                foreach ($role->redes()->get() as $rede) {
+                    if ($role->grupoadmin) {
+                        array_push($Orfilters, ['rede_id', '=', $rede->id]);
                     }
                 }
             }
-            array_push($Orfilters,['user_id','=', $user->id]);
+            array_push($Orfilters, ['user_id', '=', $user->id]);
         }
 
         // fetch equipamentos
         $equipamentos = Equipamento::where($filters);
 
         foreach ($Orfilters as $or) {
-            $equipamentos = $equipamentos->orWhere([$or]); 
+            $equipamentos = $equipamentos->orWhere([$or]);
         }
 
         // debug SQL
@@ -111,21 +111,21 @@ class EquipamentoController extends Controller
 
         // Validações
         $request->validate([
-            'patrimonio'    => ['nullable',new Patrimonio],
-            'ip'            => 'nullable|ip',
-            'macaddress'    => ['required','unique:equipamentos',new MacAddress],
-            'vencimento'    => 'nullable|date_format:"d/m/Y"|after:today',
+            'patrimonio' => ['nullable', new Patrimonio],
+            'ip' => 'nullable|ip',
+            'macaddress' => ['required', 'unique:equipamentos', new MacAddress],
+            'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
         ]);
 
         // Se a opção de fixar ip for falsa, ignorar ip de chegada
-        if(!$request->fixarip){
+        if (!$request->fixarip) {
             $request->ip = null;
         }
 
         // Se o usuário não permissão na rede, cadastrar sem rede
         $user = Auth::user();
         $redes = $user->redesComAcesso();
-        if(!$redes->contains('id',$request->rede_id)) {
+        if (!$redes->contains('id', $request->rede_id)) {
             $request->rede_id = null;
             $request->ip = null;
             // flahs comentado, pois está aparecendo quando nenhuma rede é selecionada, abrir issue
@@ -161,7 +161,7 @@ class EquipamentoController extends Controller
         $equipamento->save();
 
         // Salva equipamento no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' && !is_null($equipamento->rede_id)){
+        if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento);
         }
 
@@ -189,7 +189,7 @@ class EquipamentoController extends Controller
             $xml = $patrimonio->fetchNumpat($equipamento->patrimonio);
             $info_patrimonio = $patrimonio->xml2array($xml);
             $info_patrimonio;
-            return view('equipamentos.show', compact('equipamento','info_patrimonio'));
+            return view('equipamentos.show', compact('equipamento', 'info_patrimonio'));
         }
         return view('equipamentos.show', compact('equipamento'));
     }
@@ -224,22 +224,22 @@ class EquipamentoController extends Controller
 
         // Validações
         $request->validate([
-            'patrimonio'    => ['nullable',new Patrimonio],
-            'ip'            => 'nullable|ip',
-            'macaddress'    => ['required',new MacAddress],
-            'macaddress'    => 'unique:equipamentos,macaddress,'. $equipamento->id
+            'patrimonio' => ['nullable', new Patrimonio],
+            'ip' => 'nullable|ip',
+            'macaddress' => ['required', new MacAddress],
+            'macaddress' => 'unique:equipamentos,macaddress,' . $equipamento->id
 
         ]);
 
         // Se a opção de fixar ip for falsa, ignorar ip de chegada
-        if(!$request->fixarip){
+        if (!$request->fixarip) {
             $request->ip = null;
         }
 
         // Se o usuário não permissão na rede, cadastrar sem
         $user = Auth::user();
         $redes = $user->redesComAcesso();
-        if(!$redes->contains('id',$request->rede_id)) {
+        if (!$redes->contains('id', $request->rede_id)) {
             $request->rede_id = null;
             $request->ip = null;
             //$request->session()->flash('alert-danger', 'Você não tem permissão nesta rede!');
@@ -268,24 +268,24 @@ class EquipamentoController extends Controller
         $ops = new NetworkOps;
         if (($equipamento->rede_id != $request->rede_id) || $equipamento->ip != $request->ip) {
             $aloca = $ops->aloca($request->rede_id, $request->ip);
-            $equipamento->rede_id= $aloca['rede'];
+            $equipamento->rede_id = $aloca['rede'];
             $equipamento->ip = $aloca['ip'];
             $equipamento->save();
-      
+
             if (!empty($aloca['danger'])) {
                 $request->session()->flash('alert-danger', $aloca['danger']);
                 return redirect("/equipamentos/$equipamento->id/edit");
             }
         } else {
             $equipamento->fixarip = $request->fixarip;
-            $equipamento->rede_id= $request->rede_id;
+            $equipamento->rede_id = $request->rede_id;
             $equipamento->ip = $request->ip;
             $equipamento->save();
         }
 
         // Salva/update equipamento no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' && !is_null($equipamento->rede_id)){
-            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento,$macaddress_antigo);
+        if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {
+            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento, $macaddress_antigo);
         }
 
         $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
@@ -303,7 +303,7 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.delete', $equipamento);
 
         // deleta equipamento no freeRadius
-        if( getenv('FREERADIUS_HABILITAR') == 'True' ){
+        if (config('copaco.freeradius_habilitar')) {
             $this->freeradius->deletaEquipamento($equipamento);
         }
 
