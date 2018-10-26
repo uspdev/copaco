@@ -28,8 +28,7 @@ class FreeradiusController extends Controller
 
     public function file(Request $request)
     {
-        if($request->consumer_deploy_key != env('CONSUMER_DEPLOY_KEY'))
-        {
+        if ($request->consumer_deploy_key != config('copaco.consumer_deploy_key')) {
             return response('Unauthorized action.', 403);
         }
         $file = $this->freeradius->file();
@@ -38,7 +37,7 @@ class FreeradiusController extends Controller
 
     public function sincronize(Request $request)
     {
-        if( getenv('FREERADIUS_HABILITAR') != 'True' ){
+        if (!config('copaco.freeradius_habilitar')) {
             $request->session()->flash('alert-warning', 'Freeradius não habilitado, nenhuma ação feita!');
             return redirect("/config");
         }
