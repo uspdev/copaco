@@ -32,7 +32,7 @@ class Freeradius
                 }
             }
         }
-    
+
         $build .= "DEFAULT Framed-Protocol == PPP\n";
         $build .= "    Framed-Protocol = PPP,\n";
         $build .= "    Framed-Compression = Van-Jacobson-TCP-IP\n\n";
@@ -49,30 +49,29 @@ class Freeradius
 
     public function cadastraOuAtualizaRede($rede)
     {
-        $records = 
-            [
-                [$rede->id,'Tunnel-Type',':=','VLAN'],
-                [$rede->id,'Tunnel-Medium-Type',':=','IEEE-802'],
-                [$rede->id,'Tunnel-Private-Group-Id',':=',$rede->vlan]
-            ];
+        $records = [
+            [$rede->id, 'Tunnel-Type', ':=', 'VLAN'],
+            [$rede->id, 'Tunnel-Medium-Type', ':=', 'IEEE-802'],
+            [$rede->id, 'Tunnel-Private-Group-Id', ':=', $rede->vlan]
+        ];
 
-        foreach($records as $record) {
+        foreach ($records as $record) {
 
             $fields = [
                 'groupname' => $record[0],
                 'attribute' => $record[1],
-                'op'        => $record[2],
-                'value'     => $record[3]
+                'op' => $record[2],
+                'value' => $record[3]
             ];
 
-            $filter = [ 
-                'groupname' =>$rede->id,
-                'attribute' =>$record[1]
+            $filter = [
+                'groupname' => $rede->id,
+                'attribute' => $record[1]
             ];
 
             // first, check if this record exist before insert
             $check = DB::connection('freeradius')->table('radgroupreply')->select()->where($filter)->first();
-            if(is_null($check)){
+            if (is_null($check)) {
                 DB::connection('freeradius')->table('radgroupreply')->insert($fields);
             } else {
                 DB::connection('freeradius')->table('radgroupreply')->where($filter)->update($fields);
@@ -82,14 +81,14 @@ class Freeradius
 
     public function deletaRede($rede)
     {
-        $filter = [ 
-            'groupname' =>$rede->id,
+        $filter = [
+            'groupname' => $rede->id,
         ];
 
         DB::connection('freeradius')->table('radgroupreply')->where($filter)->delete();
     }
 
-    public function cadastraOuAtualizaEquipamento($equipamento,$mac_antigo = null)
+    public function cadastraOuAtualizaEquipamento($equipamento, $mac_antigo = null)
     {
         // Garante que a rede para esse equipamento também esteja cadastrada
         $this->cadastraOuAtualizaRede($equipamento->rede);
@@ -100,41 +99,41 @@ class Freeradius
 
         // 1. Popula tabela radusergroup
         $fields = [
-            'UserName'  => $equipamento->macaddress,
+            'UserName' => $equipamento->macaddress,
             'GroupName' => $equipamento->rede->id,
         ];
 
-        $filter = [ 
+        $filter = [
             'UserName' => $mac_antigo,
         ];
         
         // radusergroup: first, check if this record exist before insert
         $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
-        
-        if(is_null($mac_antigo) || is_null($check)){
+
+        if (is_null($mac_antigo) || is_null($check)) {
             DB::connection('freeradius')->table('radusergroup')->insert($fields);
-        } else {               
+        } else {
             DB::connection('freeradius')->table('radusergroup')->where($filter)->update($fields);
         }
 
         // 2. popula tabela radcheck
 
         $fields = [
-            'UserName'  => $equipamento->macaddress,
+            'UserName' => $equipamento->macaddress,
             'Attribute' => 'Cleartext-Password',
-            'Value'     => $equipamento->macaddress,
-            'Op'        => ':=',
+            'Value' => $equipamento->macaddress,
+            'Op' => ':=',
         ];
 
-        $filter = [ 
+        $filter = [
             'UserName' => $mac_antigo,
         ];
 
         $check = DB::connection('freeradius')->table('radcheck')->select()->where($filter)->first();
-        
-        if(is_null($mac_antigo) || is_null($check)){
+
+        if (is_null($mac_antigo) || is_null($check)) {
             DB::connection('freeradius')->table('radcheck')->insert($fields);
-        } else {               
+        } else {
             DB::connection('freeradius')->table('radcheck')->where($filter)->update($fields);
         }
 
@@ -144,7 +143,7 @@ class Freeradius
     {
         // 1. deleta da tabela radusergroup
         $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
-        $filter = [ 
+        $filter = [
             'UserName' => $equipamento->macaddress,
         ];
         DB::connection('freeradius')->table('radusergroup')->where($filter)->delete();
@@ -155,11 +154,18 @@ class Freeradius
 
     public function formataMacAddr($macaddr)
     {
-        $macaddr = str_replace(':',env('FREERADIUS_MACADDR_SEPARATOR'),$macaddr);
-        if( env('FREERADIUS_MACADDR_CASE') == 'lower'){
-            $macaddr = strtolower($macaddr);
-        } else if ( env('FREERADIUS_MACADDR_CASE') == 'upper') {
+        $macaddr_separator = config('copaco.freeradius_macaddr_separator');
+        $macaddr_case = config('copaco.freeradius_macaddr_case');
+
+        // Adiciona o separador
+        $macaddr = str_replace(':', $macaddr_separator, $macaddr);
+
+        // UPPER ou lower?
+        if ($macaddr_case == 'upper') {
             $macaddr = strtoupper($macaddr);
+        } else {
+            // esse é o default no config/copaco
+            $macaddr = strtolower($macaddr);
         }
         return $macaddr;
     }

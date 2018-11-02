@@ -42,9 +42,9 @@ class LoginController extends Controller
     
     public function redirectToProvider()
     {
-        if (\App::environment('local') && env('SENHAUNICA_OVERRIDE')) {
+        if (\App::environment('local') && config('copaco.senha_unica_override')) {
             # busca o usuário dev
-            $dev_user = env('DEVELOPER_ID');
+            $dev_user = config('copaco.developer_id');
 
             # Se não encontra, retorna 404
             $user = User::findOrFail($dev_user);

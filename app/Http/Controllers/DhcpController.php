@@ -23,7 +23,7 @@ class DhcpController extends Controller
 
     public function dhcpd(Request $request)
     {
-        if($request->consumer_deploy_key != env('CONSUMER_DEPLOY_KEY'))
+        if($request->consumer_deploy_key != config('copaco.consumer_deploy_key'))
         {
             return response('Unauthorized action.', 403);
         }
