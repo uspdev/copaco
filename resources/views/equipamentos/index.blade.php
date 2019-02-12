@@ -24,7 +24,7 @@
         </div>
         <br>
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="MacAddress..." name="macaddress">
+            <input type="text" class="form-control" placeholder="Patrimônio, mac address, local ou descrição" name="search">
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-success"> Buscar </button>
             </span>
