@@ -39,6 +39,6 @@ class MacAddress implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Mac Address não é válido';
     }
 }
