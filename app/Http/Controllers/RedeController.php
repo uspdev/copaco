@@ -10,6 +10,7 @@ use App\Rules\MultiplesIP;
 use App\Rules\Domain;
 use App\Rules\PertenceRede;
 use App\Utils\Freeradius;
+use App\Rules\RedeCidr;
 
 class RedeController extends Controller
 {
@@ -56,7 +57,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'iprede'    => 'ip|required|different:gateway',
+            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr)],
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
@@ -124,7 +125,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'iprede'    => 'ip|required|different:gateway',
+            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
