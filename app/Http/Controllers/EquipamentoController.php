@@ -35,48 +35,52 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
-        // Buscas
-        $filters = [];
-        if (isset($request->macaddress)) {
-            array_push($filters, ['macaddress', 'LIKE', '%' . $request->macaddress . '%']);
-        }
+        // todos equipamentos
+        $equipamentos = Equipamento::where([]);
 
-        if (isset($request->naoalocados)) {
-            if ($request->naoalocados == 'true')
-                array_push($filters, ['ip', '=', null]);
-        }
-
-        if (isset($request->vencidos)) {
-            if ($request->vencidos == 'true')
-                array_push($filters, ['vencimento', '<=', Carbon::now()]);
-        }
-
-        //
-        $Orfilters = [];
+        // Filtrar equipamentos só das redes que o usuário tem acesso, com exceção do superAdmin
         if (!Gate::allows('admin')) {
-            // mostrar apenas equipamentos dos grupos que os usuário logado pertence e é do tipo grupoadmin
             $user = Auth::user();
+            $equipamentos->OrWhere('user_id', '=', $user->id);
             foreach ($user->roles()->get() as $role) {
-                foreach ($role->redes()->get() as $rede) {
-                    if ($role->grupoadmin) {
-                        array_push($Orfilters, ['rede_id', '=', $rede->id]);
-                    }
+                if ($role->grupoadmin) {
+                    $equipamentos->where(function($query) use ($role, $user) {
+                        foreach ($role->redes()->get() as $rede) {
+                            $query->OrWhere('rede_id', '=', $rede->id);
+                        }
+                        $query->OrWhere('user_id', '=', $user->id);
+                    });
                 }
             }
-            array_push($Orfilters, ['user_id', '=', $user->id]);
+        }
+ 
+        // search terms
+        if (isset($request->search)) {
+            $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local'];
+            $equipamentos->where(function($query) use ($request,$searchable_fields) {
+                foreach ($searchable_fields as $field) {
+                    $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
+                }
+            });
         }
 
-        // fetch equipamentos
-        $equipamentos = Equipamento::where($filters);
-
-        foreach ($Orfilters as $or) {
-            $equipamentos = $equipamentos->orWhere([$or]);
+        // Mostra apenas equipamentos sem rede
+        if (isset($request->naoalocados)) {
+            if ($request->naoalocados == 'true')
+                $equipamentos->where('ip', '=', null);
         }
 
-        // debug SQL
+        // Mostra apenas equipamentos vencidos
+        if (isset($request->vencidos)) {
+            if ($request->vencidos == 'true')
+                $equipamentos->where('vencimento', '<=', Carbon::now());
+        }
+
+        // Dica de ouro para debugar SQL gerado:
         //dd($equipamentos->toSql());
-        $equipamentos = $equipamentos->paginate(10);
 
+        //
+        $equipamentos = $equipamentos->paginate(10);
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
         }
