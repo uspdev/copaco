@@ -114,11 +114,13 @@ class Freeradius
             
             // radusergroup: first, check if this record exist before insert
             $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
+            
+            $radius_db = DB::connection('freeradius')->table('radusergroup');
 
             if (is_null($mac_antigo) || is_null($check)) {
-                DB::connection('freeradius')->table('radusergroup')->insert($fields);
+                $radius_db->insert($fields);
             } else {
-                DB::connection('freeradius')->table('radusergroup')->where($filter)->update($fields);
+                $radius_db->where($filter)->update($fields);
             }
 
             // 2. popula tabela radcheck
