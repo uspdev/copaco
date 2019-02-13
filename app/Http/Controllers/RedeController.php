@@ -57,7 +57,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr)],
+            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr)],
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
@@ -125,7 +125,8 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
+            // 'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
+            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr, $rede->id)],
             'cidr'      => 'required|numeric|min:20|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],

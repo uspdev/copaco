@@ -7,21 +7,19 @@ use App\Rede;
 
 class RedeCidr implements Rule
 {
-    private $iprede;
     private $cidr;
-    private $except;
+    private $rede_id;
 
     /**
      * Create a new rule instance.
      *
+     * @int rede_id - Id a ser ignorada ao executar RedeController@update()
      * @return void
      */
-    public function __construct($iprede, $cidr, $except=0)
+    public function __construct($cidr, $rede_id = 0)
     {
-        //
-        $this->iprede = $iprede;
+        $this->rede_id = $rede_id;
         $this->cidr = $cidr;
-        $this->except = $except;
     }
 
     /**
@@ -31,16 +29,13 @@ class RedeCidr implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($ip_rede, $value)
     {
-        //
-        $redes = Rede::all()->except($this->except);
-        foreach ($redes as $rede) {
-            if ($this->iprede == $rede->iprede && $this->cidr == $rede->cidr) {
-                return false;
-            }
-        }
-        return true;
+        $redes = Rede::where('iprede', $value)
+                    ->get()
+                    ->except($this->rede_id);
+        # Se NÃO contiver o cidr, retorna true
+        return !$redes->contains('cidr', $this->cidr);
     }
 
     /**
