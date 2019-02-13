@@ -29,8 +29,8 @@ return [
 
     # Admins
     'superadmins_ids' => env('SUPERADMINS_IDS'),
-    'super_admins_senha_unica' => env('SUPERADMINS_SENHAUNICA'),
-    'super_admins_ldap' => env('SUPERADMINS_LDAP'),
+    'superadmins_senhaunica' => env('SUPERADMINS_SENHAUNICA'),
+    'superadmins_ldap' => env('SUPERADMINS_LDAP'),
     /*
     |--------------------------------------------------------------------------
     | DHCP e FreeRadius
