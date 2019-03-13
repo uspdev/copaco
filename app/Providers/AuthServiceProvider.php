@@ -40,9 +40,9 @@ class AuthServiceProvider extends ServiceProvider
             $admins_ldap = explode(',', trim(config('copaco.superadmins_ldap')));
 
             return
-                in_array($user->id, $admins_id) ||
-                in_array($user->username_senhaunica, $admins_senhaunica) ||
-                in_array($user->username_senhaunica, $admins_ldap);
+                (in_array($user->id, $admins_id) and $user->id) or
+                (in_array($user->username_senhaunica, $admins_senhaunica) and $user->username_senhaunica) or
+                (in_array($user->username_senhaunica, $admins_ldap) and $user->username_ldap);
 
             //Auth::user()
             //$codpesAdmins = explode(',', trim(env('SUPERADMIN_IDS')));
