@@ -127,6 +127,6 @@ class NetworkOps
                 }
             }
         }
-        return ['rede'=>$rede_id, 'ip'=>$ip, 'danger' => utf8_encode($danger)];
+        return ['rede'=>$rede_id, 'ip'=>$ip, 'danger' => $danger];
     }
 }
