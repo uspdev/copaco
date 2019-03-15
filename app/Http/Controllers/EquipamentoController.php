@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Equipamento;
 use Carbon\Carbon;
 use App\Rede;
+use App\User;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
@@ -107,7 +108,23 @@ class EquipamentoController extends Controller
 
         /* aqui lidamos com o usuário */
         $user = Auth::user();
-        $user_id = $user->id;
+        if (Gate::allows('admin')) {
+            $user_id = $request->user_id;
+
+            /* se o usuário não existir, criamos
+               TODO: validar NUSP e obter esses dados do replicado
+            */
+            if (!User::where('id',$user_id)->first()) {
+                $u = new User;
+                $u->id = $user_id;
+                $u->name = $user_id;
+                $u->email = $user_id."@usp.br";
+                $u->save();
+            }
+        }
+        else {
+            $user_id = $user->id;
+        }
 
         /*  aqui a gente lida com obtenção de IP */
         $ip = $request->ip;

@@ -1,3 +1,10 @@
+@if (Gate::allows('admin'))
+<div class="form-group">
+    <label for="user_id">Número USP do Responsável</label>
+    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="3141592" value="{{ $equipamento->user_id or old('user_id') }}">
+</div>
+@endif
+
 <div class="form-group">
     <label>Possui Patrimônio?</label>
     <div class="form-check">
@@ -87,6 +94,7 @@
     </select>
 </div>
 
+@if (Gate::allows('admin'))
 <div class="form-group">
     <label>Definir IP manualmente?</label>
     <div class="form-check">
@@ -122,7 +130,6 @@
         <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip or old('ip')  }}" placeholder="Ex: 192.168.0.1">
     </div>
 </div>
-
+@endif
 
 <button type="submit" class="btn btn-primary">Enviar</button>
-
