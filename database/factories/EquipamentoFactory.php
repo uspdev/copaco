@@ -9,11 +9,9 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
 
     // Cria uma rede e seleciona um ip aleatoriamente da mesma
     $rede = factory(App\Rede::class)->create();
-    $op = new NetworkOps;
-    $ips = $op->getRange($rede->iprede, $rede->cidr);
 
     // Não começa em zero para excluir gateway
-    $ip_selecionado = $ips[rand(1, count($ips)-1)]; 
+    $ip_selecionado = NetworkOps::getRandomIP($rede->iprede, $rede->cidr);
 
     // usuários
     $user_create = factory(App\User::class)->create();
