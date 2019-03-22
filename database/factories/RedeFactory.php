@@ -6,10 +6,8 @@ use App\Utils\NetworkOps;
 $factory->define(App\Rede::class, function (Faker $faker) {
 
     // Seleciona o gateway como o primeiro ip da rede
-    $op = new NetworkOps;
     $iprede = $faker->unique()->ipv4;
     $cidr = $faker->numberBetween(21, 30);
-    $ips = $op->getRange($iprede, $cidr);
 
     // usuários
     $user_create = factory(App\User::class)->create();
@@ -18,7 +16,7 @@ $factory->define(App\Rede::class, function (Faker $faker) {
     return [
         'nome'      => $faker->unique()->numerify('Rede ###'),
         'iprede'    => $iprede,
-        'gateway'   => $ips[0],
+        'gateway'   => NetworkOps::findFirstIP($iprede, $cidr),
         'dns'       => $faker->ipv4,
         'ntp'       => $faker->ipv4,
         'netbios'   => $faker->domainName,

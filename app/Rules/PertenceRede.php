@@ -32,13 +32,11 @@ class PertenceRede implements Rule
      */
     public function passes($attribute, $value)
     {
-        $op = new NetworkOps;
-
         if ( !v::ip()->validate($this->iprede) or !v::ip()->validate($this->gateway) or !v::intVal()->validate($this->cidr)) {
             return false;
         }
 
-        if ($op->pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
+        if (NetworkOps::pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
             return true;
         }
 

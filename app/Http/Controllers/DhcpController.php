@@ -48,10 +48,12 @@ HEREDOC;
         $redes = Rede::all();
         foreach ($redes as $rede) {
             // aqui estamos assumindo que o gateway é o primeiro do range
-            $ips = $ops->getRange($rede->iprede, $rede->cidr, true);
-            $range_begin = $ips[2];
-            $range_end = $ips[count($ips)-2];
-            $broadcast = end($ips);
+            // não precisa. o servidor de DHCP é esperto
+            $iprede = $rede->iprede;
+            $cidr = $rede->cidr;
+            $range_begin = NetworkOps::findFirstIP($iprede, $cidr);
+            $range_end = NetworkOps::findLastIP($iprede, $cidr);
+            $broadcast = NetworkOps::findBroadcast($iprede, $cidr);
 
             $mask = (string)Network::parse("{$rede->iprede}/{$rede->cidr}")->netmask;
 

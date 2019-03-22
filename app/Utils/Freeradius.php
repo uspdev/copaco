@@ -19,7 +19,6 @@ class Freeradius
 {
     public function file()
     {
-        $ops = new NetworkOps;
         $build = "";
 
         $redes = Rede::all();

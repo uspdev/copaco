@@ -149,7 +149,6 @@ class EquipamentoController extends Controller
                 $ip == null => alocar automático
                 $ip != null => tentar alocar $ip
         */
-        $ops = new NetworkOps;
         $cadastra = false;
 
         /* cadastra se redes diferentes */
@@ -162,7 +161,7 @@ class EquipamentoController extends Controller
         }
 
         if ($cadastra) {
-            $aloca = $ops->aloca($rede_id, $ip);
+            $aloca = NetworkOps::aloca($rede_id, $ip);
             if (empty($aloca['danger'])) {
                 $rede_id = $aloca['rede'];
                 $ip = $aloca['ip'];
