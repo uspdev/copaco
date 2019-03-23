@@ -23,6 +23,9 @@ return [
     'senha_unica_secret' => env('SENHAUNICA_SECRET', false),
     'senha_unica_callback_id' => env('SENHAUNICA_CALLBACK_ID', false),
 
+    # Unidades autorizadas
+    'senha_unica_unidades' => env('SENHAUNICA_UNIDADES'),
+
     # Ambiente de desenvolvimento
     'senha_unica_override' => env('SENHAUNICA_OVERRIDE', false),
     'developer_id' => env('DEVELOPER_ID'),

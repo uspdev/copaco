@@ -7,6 +7,7 @@ use App\User;
 use Socialite;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -58,7 +59,7 @@ class LoginController extends Controller
         return Socialite::driver('senhaunica')->redirect();
     }
     
-    public function handleProviderCallback()
+    public function handleProviderCallback(Request $request)
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
         
@@ -68,8 +69,28 @@ class LoginController extends Controller
         if (is_null($user)) {
             $user = new User;
         }
-        
+
+        // precisamos saber se o usuário é autorizado
+        $unidades = explode(',', trim(config('copaco.senha_unica_unidades')));
+
+        if ($unidades) {
+            $login = false;
+            foreach ($userSenhaUnica->vinculo as $vinculo) {
+                if (in_array($vinculo['siglaUnidade'], $unidades)) {
+                    if ($vinculo['tipoVinculo'] != 'ALUNOGR') {
+                        $login = true;
+                    }
+                }
+            }
+        }
+
+        if (!$login) {
+            $request->session()->flash('alert-danger', 'Usuário sem acesso ao sistema.');
+            return redirect('/');
+        }
+
         // bind do dados retornados
+        $user->id = $userSenhaUnica->codpes;
         $user->username_senhaunica = $userSenhaUnica->codpes;
         $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
