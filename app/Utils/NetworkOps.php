@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Utils;
-
 use IPTools\IP;
 use IPTools\Network;
 use IPTools\Range;
@@ -11,34 +10,53 @@ use App\Equipamento;
 
 class NetworkOps
 {
-    // Um método que recebe o ip e cidr da rede e retorna um array com todos ips da mesma
-    public function getRange($iprede, $cidr, $include_broadcast = false)
+    public static function pertenceRede($ip, $iprede, $cidr)
     {
-        $ips = [];
-
-        if($include_broadcast)
-            $hosts = Network::parse("{$iprede}/{$cidr}");
-        else
-            $hosts = Network::parse("{$iprede}/{$cidr}")->hosts;
-
-        foreach ($hosts as $ip) {
-            array_push($ips, (string)$ip);
+        $broadcast = ip2long(NetworkOps::findBroadcast($iprede, $cidr));
+        $rede = ip2long($iprede);
+        if ($rede < ip2long($ip) and ip2long($ip) < $broadcast) {
+            return true;
         }
-        return $ips;
+        return false;
     }
 
-    public function pertenceRede($ip, $iprede, $cidr)
-    {   
-        return Range::parse("{$iprede}/{$cidr}")->contains(new IP("{$ip}"));
+    public static function findNetmask($cidr)
+    {
+        return long2ip(~0 << (32-$cidr));
     }
 
-    private function broadcast($iprede, $cidr) {
-        $netmask = ~0 << (32-$cidr);
+    public static function findBroadcast($iprede, $cidr)
+    {
+        $netmask = ip2long(NetworkOps::findNetmask($cidr));
         $rede = ip2long($iprede);
         return long2ip($rede ^ ~$netmask);
     }
 
-    public function nextIpAvailable($ips_alocados, $iprede, $cidr, $gateway)
+    public static function findFirstIP($iprede, $cidr)
+    {
+        if ($cidr > 30) {
+            return false;
+        }
+        return long2ip(ip2long($iprede)+1);
+    }
+
+    public static function findLastIP($iprede, $cidr)
+    {
+        if ($cidr > 30) {
+            return false;
+        }
+        $broadcast = ip2long(NetworkOps::findBroadcast($iprede, $cidr));
+        return long2ip($broadcast-1);
+    }
+
+    public static function getRandomIP($iprede, $cidr)
+    {
+        $min = ip2long($iprede);
+        $max = ip2long(NetworkOps::findBroadcast($iprede, $cidr));
+        return long2ip(rand($min+1, $max-1));
+    }
+
+    public static function nextIpAvailable($ips_alocados, $iprede, $cidr, $gateway)
     {
         /* guarda o gateway e os IPs em forma numérica */
         $ips_numericos = array();
@@ -50,7 +68,7 @@ class NetworkOps
 
         /* guarda os limites da rede em forma numérica */
         $min = ip2long($iprede);
-        $max = ip2long($this->broadcast($iprede, $cidr));
+        $max = ip2long(NetworkOps::findBroadcast($iprede, $cidr));
 
         for ($ip = $min+1; $ip < $max; $ip++) {
             if (!in_array($ip, $ips_numericos)) {
@@ -61,7 +79,7 @@ class NetworkOps
         return false;
     }
 
-    public function isIpAvailable(Rede $rede, $ip)
+    public static function isIpAvailable(Rede $rede, $ip)
     {
         $ips_alocados = $rede->equipamentos->pluck('ip')->all();
         if (in_array($ip, $ips_alocados)) {
@@ -71,7 +89,7 @@ class NetworkOps
         }
     }
 
-    public function aloca($rede_id, $ip)
+    public static function aloca($rede_id, $ip)
     {
         $danger = '';
 
@@ -96,7 +114,7 @@ class NetworkOps
                 $ips_alocados = [];
             }
 
-            $ip = $this->nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
+            $ip = NetworkOps::nextIpAvailable($ips_alocados, $rede->iprede, $rede->cidr, $rede->gateway);
 
             if ($ip === false) {
                 $danger = 'Acabaram os IPs dessa rede, equipamento não alocado!';
@@ -108,20 +126,20 @@ class NetworkOps
         // 2 - quando um ip é especificado e uma rede não
         if (!is_null($ip) && is_null($rede)) {
             $ip = null;
-            $danger = 'Rede não especificada, equipamento não alocado';
+            $danger = 'Rede não especificada, equipamento não alocado.';
         }
 
         // 3 - quando um ip e uma rede são especificados
         if (!is_null($ip) && !is_null($rede)) {
             # ip pertence a rede?
-            if (!$this->pertenceRede($ip, $rede->iprede, $rede->cidr)) {
-                $danger = 'ip não pertence à rede selecionada, equipamento não alocado';
+            if (!NetworkOps::pertenceRede($ip, $rede->iprede, $rede->cidr)) {
+                $danger = 'O IP não pertence à rede selecionada. Equipamento não alocado.';
                 $ip = null;
                 $rede_id = null;
             } else {
                 # verificar se ip está disponível
-                if (!$this->isIpAvailable($rede, $ip)) {
-                    $danger = 'ip não disponível na rede selecionada, equipamento não alocado';
+                if (!NetworkOps::isIpAvailable($rede, $ip)) {
+                    $danger = 'IP não disponível na rede selecionada. Equipamento não alocado.';
                     $ip = null;
                     $rede_id = null;
                 }
