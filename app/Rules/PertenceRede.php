@@ -16,10 +16,10 @@ class PertenceRede implements Rule
      *
      * @return void
      */
-    public function __construct($iprede, $gateway, $cidr)
+    public function __construct($gateway, $iprede, $cidr)
     {
-        $this->iprede = $iprede;
         $this->gateway = $gateway;
+        $this->iprede = $iprede;
         $this->cidr = $cidr;
     }
 
