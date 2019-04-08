@@ -58,9 +58,7 @@ Caso falte alguma dependência, siga as instruções do `composer`.
 
 Configurar os *SUPERADMINS* que terão permissão total no sistema:
 
-    SUPERADMINS_IDS=1,23
-    SUPERADMINS_SENHAUNICA=5385361,123
-    SUPERADMINS_LDAP=admin,xuxa
+    SUPERADMINS_USERNAMES=14234,zezinho,9876663
 
 ## Compile os assests com npm
 
