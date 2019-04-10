@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 @section('content_header')
-  <h1>{{ $user->id }} </h1>
+  <h1>{{ $user->username }} </h1>
 @stop
 
 @section('content')
@@ -12,7 +12,6 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><b>Nome:</b> {{ $user->name }}</li>
     <li class="list-group-item"><b>Email:</b> {{ $user->email }}</li>
-    <li class="list-group-item"><b>Método de autenticação:</b> {{ $user->method }}</li>
     <li class="list-group-item"><b>Grupos:</b>
         <ul>
             @foreach ( $user->roles()->get() as $role)        

@@ -62,7 +62,7 @@
                                 <a href="/logout"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 >
-                                {{ Auth::user()->id }} - {{ Auth::user()->name }}
+                                {{ Auth::user()->username }} - {{ Auth::user()->name }}
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
                                 </a>
                                 <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">

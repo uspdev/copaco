@@ -26,14 +26,9 @@ return [
     # Unidades autorizadas
     'senha_unica_unidades' => env('SENHAUNICA_UNIDADES'),
 
-    # Ambiente de desenvolvimento
-    'senha_unica_override' => env('SENHAUNICA_OVERRIDE', false),
-    'developer_id' => env('DEVELOPER_ID'),
-
     # Admins
-    'superadmins_ids' => env('SUPERADMINS_IDS'),
-    'superadmins_senhaunica' => env('SUPERADMINS_SENHAUNICA'),
-    'superadmins_ldap' => env('SUPERADMINS_LDAP'),
+    'superadmins_usernames' => env('SUPERADMINS_USERNAMES'),
+
     /*
     |--------------------------------------------------------------------------
     | DHCP e FreeRadius
