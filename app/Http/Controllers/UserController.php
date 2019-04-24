@@ -49,23 +49,23 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($username)
     {
+        $user = User::where('username', $username)->get();
         return view('users.show', compact('user'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit($username)
     {
         $roles = Role::all();
+        $user = User::where('username', $username)->get();
         return view('users.edit', compact('user','roles'));
     }
 
@@ -73,11 +73,11 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $username)
     {
+        $user = User::where('username', $username)->get();
         // redes
         if(!empty($request->roles)){
             $user->roles()->sync($request->roles);
@@ -97,8 +97,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy($username)
     {
+        $user = User::where('username', $username)->get();
         die('not implemented, bye!');
     }
 }
