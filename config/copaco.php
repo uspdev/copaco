@@ -11,7 +11,7 @@ return [
     | não provê um arquivo próprio de configuração
     |
  */
-
+    'codigo_acesso' => env('CODIGO_ACESSO', false),
     /*
     |--------------------------------------------------------------------------
     | Senha Única

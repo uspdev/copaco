@@ -1,12 +1,11 @@
-@extends('adminlte::page')
+@extends('master')
 
 @section('content_header')
     <h1>Configurações</h1>
 @stop
 
 @section('content')
-    @include('messages.flash')
-    @include('messages.errors')
+    @parent
 
 <div>
     <form action="/dhcpd.conf" method="post">
