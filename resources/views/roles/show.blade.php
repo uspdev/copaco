@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('master')
 
 @section('content_header')
   <h1>Grupo:{{ $role->nome }} </h1>
@@ -27,7 +27,7 @@
         <li class="list-group-item"><b>Pessoas</b>: 
             <ul>
             @foreach($role->users()->get() as $user)
-               <li> <a href="/users/{{ $user->id }}">{{ $user->name }}</a></li>
+               <li> <a href="/users/{{ $user->username }}">{{ $user->name }}</a></li>
             @endforeach
             </ul>
         </li>

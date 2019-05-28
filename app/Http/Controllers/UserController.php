@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function show($username)
     {
-        $user = User::where('username', $username)->get();
+        $user = User::where('username', $username)->first();
         return view('users.show', compact('user'));
     }
 
@@ -65,7 +65,7 @@ class UserController extends Controller
     public function edit($username)
     {
         $roles = Role::all();
-        $user = User::where('username', $username)->get();
+        $user = User::where('username', $username)->first();
         return view('users.edit', compact('user','roles'));
     }
 
@@ -77,7 +77,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $username)
     {
-        $user = User::where('username', $username)->get();
+        $user = User::where('username', $username)->first();
         // redes
         if(!empty($request->roles)){
             $user->roles()->sync($request->roles);
@@ -87,7 +87,7 @@ class UserController extends Controller
         }
 
         $request->session()->flash('alert-success', 'Pessoa atualizada com sucesso!');
-        return redirect()->route('users.show',['id' => $user]);
+        return redirect()->route('users.show',['username' => $user->username]);
 
     }
 
@@ -99,7 +99,7 @@ class UserController extends Controller
      */
     public function destroy($username)
     {
-        $user = User::where('username', $username)->get();
+        $user = User::where('username', $username)->first();
         die('not implemented, bye!');
     }
 }

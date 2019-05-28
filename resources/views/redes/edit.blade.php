@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('master')
 
 @section('content_header')
     <h1>Editar Rede</h1>

@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('master')
 
 @section('content')
+@parent
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -10,6 +11,20 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
                         @csrf
+
+                        <div class="form-group row">
+                            <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
+
+                                @if ($errors->has('username'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -58,6 +73,14 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+
+                       <div class="form-group row">
+                            <label for="codigo_acesso" class="col-md-4 col-form-label text-md-right">{{ __('Código de Acesso') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="codigo_acesso" type="text" class="form-control" name="codigo_acesso" required>
                             </div>
                         </div>
 

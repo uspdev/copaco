@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('master')
 
 @section('content_header')
   <h1>{{ $user->username }} </h1>
@@ -29,7 +29,7 @@
 <br>
 
     <div>
-        <a href="{{action('UserController@edit', $user->id)}}" class="btn btn-warning">Editar</a>
+        <a href="{{action('UserController@edit', $user->username )}}" class="btn btn-warning">Editar</a>
     </div>
 
 <br>

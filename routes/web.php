@@ -9,7 +9,7 @@ Route::resource('/roles', 'RoleController');
 Route::resource('/users', 'UserController');
 
 # rotas para a senha única
-Route::get('/login/usp', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/usp', 'Auth\LoginController@redirectToProvider')->name('loginusp');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -23,7 +23,6 @@ Route::post('/dhcpd.conf', 'DhcpController@dhcpd');
 Route::post('/freeradius/authorize-file', 'FreeradiusController@file');
 
 # Rotas para usuário local, podemos usar Auth::routes() 
-# ou liberar rota por rota  conforme formos testando as funcionalidades:
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');

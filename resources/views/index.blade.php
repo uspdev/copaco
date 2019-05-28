@@ -1,15 +1,11 @@
-@extends('adminlte::page')
-
-@section('title', 'USPdev - COPACO')
+@extends('master')
 
 @section('content_header')
     <h1>Sistema COntrole do PArque COmputacional</h1>
 @stop
 
 @section('content')
-    
-    @include ('messages.flash')
-    @include ('messages.errors')
+    @parent
     
         @auth
             <div class="panel panel-default">

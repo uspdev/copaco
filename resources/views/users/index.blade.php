@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('master')
 
 @section('content_header')
     <h1>Pessoas</h1>
@@ -22,7 +22,7 @@
         <tbody>
             @foreach($users as $user)
             <tr>
-                <td><a href="/users/{{ $user->id }}">{{ $user->username }}</a></td>
+                <td><a href="/users/{{ $user->username }}">{{ $user->username }}</a></td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
@@ -36,7 +36,7 @@
                 </td>
 
                 <td>
-                    <a href="{{action('UserController@edit', $user->id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('UserController@edit', $user->username)}}" class="btn btn-warning">Editar</a>
                 </td>
 
             </tr>
