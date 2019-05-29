@@ -41,6 +41,7 @@ $('#datepicker').datepicker({
     function formatMAC(e) {
         var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
             str = e.target.value.replace(/[^a-f0-9]/ig, "");
+            str = str.toUpperCase();
 
         while (r.test(str)) {
             str = str.replace(r, '$1' + ':' + '$2');

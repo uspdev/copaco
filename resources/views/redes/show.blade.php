@@ -55,12 +55,29 @@
   @foreach($rede->equipamentos as $equipamento)
     <tr>
       <th><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress}}</a></th>
-      <th>{{ $equipamento->ip}}</th>
+      <th>{{ $equipamento->ip }}</th>
     </tr>
     @endforeach
   </tdoby>
 </table>
 
+<h2>Alterações nessa rede</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Data</th>
+      <th scope="col">Usuário(a)</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach($changes as $change)
+    <tr>
+      <th> {{ $change['when'] }} </th>
+      <th> {{ $change['username'] }} </th>
+    </tr>
+    @endforeach
+  </tdoby>
+</table>
 @stop
 
 
