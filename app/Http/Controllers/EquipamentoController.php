@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Equipamento;
-use Carbon\Carbon;
 use App\Rede;
+use App\User;
 use Illuminate\Http\Request;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Uspdev\dadosUsp;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 
 class EquipamentoController extends Controller
 {
@@ -245,14 +249,27 @@ class EquipamentoController extends Controller
     {
         $this->authorize('equipamentos.view', $equipamento);
 
+        $logs = DB::table('equipamentos_changes')->where('equipamento_id', $equipamento->id)->orderBy('when', 'desc')->get();
+        $changes = Collection::make([]);
+        foreach($logs as $log){
+            $user = User::find($log->user_id);
+            $changes->push([
+                'when' => Carbon::createFromFormat('Y-m-d H:i:s', $log->when)->format('d/m/Y H:i'),
+                'username' => $user->username,
+                'name' => $user->name
+            ]);
+        }
+
+
         if ($equipamento->naopatrimoniado) {
             $patrimonio = new dadosUsp;
             $xml = $patrimonio->fetchNumpat($equipamento->patrimonio);
             $info_patrimonio = $patrimonio->xml2array($xml);
             $info_patrimonio;
-            return view('equipamentos.show', compact('equipamento', 'info_patrimonio'));
+            return view('equipamentos.show', compact('equipamento','changes','info_patrimonio'));
         }
-        return view('equipamentos.show', compact('equipamento'));
+
+        return view('equipamentos.show', compact('equipamento','changes'));
     }
 
     /**
@@ -289,6 +306,12 @@ class EquipamentoController extends Controller
         $resultado = $this->persisteEquipamento($equipamento, $request);
         $equipamento = $resultado['equipamento'];
         $erro = $resultado['erro'];
+
+        // gravar log das mudanças
+        DB::table('equipamentos_changes')->insert(
+            ['equipamento_id' => $equipamento->id, 'user_id' => \Auth::user()->id]
+        );
+
         if ($erro) {
 
             $request->session()->flash('alert-danger', $erro);
