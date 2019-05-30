@@ -44,7 +44,7 @@ class EquipamentoController extends Controller
             $equipamentos->OrWhere('user_id', '=', $user->id);
             foreach ($user->roles()->get() as $role) {
                 if ($role->grupoadmin) {
-                    $equipamentos->where(function($query) use ($role, $user) {
+                    $equipamentos->OrWhere(function($query) use ($role, $user) {
                         foreach ($role->redes()->get() as $rede) {
                             $query->OrWhere('rede_id', '=', $rede->id);
                         }
@@ -177,7 +177,6 @@ class EquipamentoController extends Controller
         $equipamento->rede_id = $rede_id;
         $equipamento->fixarip = $fixarip;
         $equipamento->ip = $ip;
-        $equipamento->user_id = $user_id;
         $equipamento->save();
 
         $data = [
@@ -214,7 +213,13 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.create');
 
         $resultado = $this->persisteEquipamento(new Equipamento, $request);
+
         $equipamento = $resultado['equipamento'];
+
+        $user = Auth::user();
+        $equipamento->user_id = $user->id;
+        $equipamento->save();
+
         $erro = $resultado['erro'];
         if ($erro) {
             $request->session()->flash('alert-danger', $erro);

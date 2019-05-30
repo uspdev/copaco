@@ -81,36 +81,6 @@ Se for usar o Freeradius, criar um segundo banco de dados com o [esquema](https:
     FREERADIUS_DB=freeradius
     FREERADIUS_PASSWD=freeradius
 
-## Setup para usuário local de desenvolvimento
-
-Caso você não possua o token de utilização da senha única, proceda da seguinte forma:
-
-No seu arquivo .env, verifique se o seu `APP_ENV` está configurado para **local**.
-
-Rode o comando de setup::
-
-    php artisan copaco:setup_dev
-
-Caso já tenha rodado o comando anteriormente, dê um refresh:
-
-    php artisan migrate:refresh
-
-Você deve ver a seguinte saída:
-
-```
-Gerando usuário para dev...
-Seeding: DevUserSeeder
-Seu developer id é: 11223344
-Configure-o em seu arquivo .env
-```
-
-No seu arquivo `.env`, configure as entradas:
-
-    SENHAUNICA_OVERRIDE=true
-    DEVELOPER_ID=<numero gerado pelo seeder>
-
-Assim é possível logar no sistema sem necessidade do token configurado no seu ambiente de desenvolvimento
-
 ## Seeders que podem ajudar na produção de dados aleatórios:
 
     php artisan migrate --seed

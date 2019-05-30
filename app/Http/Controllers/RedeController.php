@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Rede;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -11,6 +12,9 @@ use App\Rules\Domain;
 use App\Rules\PertenceRede;
 use App\Utils\Freeradius;
 use App\Rules\RedeCidr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 
 class RedeController extends Controller
 {
@@ -79,7 +83,6 @@ class RedeController extends Controller
         $rede->vlan     = $request->vlan;
         $rede->ad_domain= $request->ad_domain;
         $rede->user_id = \Auth::user()->id;
-        $rede->last_modify_by = \Auth::user()->id;
         $rede->save();
 
         // Salva rede no freeRadius
@@ -99,7 +102,18 @@ class RedeController extends Controller
      */
     public function show(Rede $rede)
     {
-        return view('redes.show', compact('rede'));
+        $logs = DB::table('redes_changes')->where('rede_id', $rede->id)->orderBy('when', 'desc')->get();
+        $changes = Collection::make([]);
+        foreach($logs as $log){
+            $user = User::find($log->user_id);
+            $changes->push([
+                'when' => Carbon::createFromFormat('Y-m-d H:i:s', $log->when)->format('d/m/Y H:i'),
+                'username' => $user->username,
+                'name' => $user->name
+            ]);
+        }
+        ;
+        return view('redes.show', compact('rede','changes'));
     }
 
     /**
@@ -147,9 +161,13 @@ class RedeController extends Controller
         $rede->cidr     = $request->cidr;
         $rede->vlan     = $request->vlan;
         $rede->ad_domain= $request->ad_domain;
-        $rede->last_modify_by = \Auth::user()->id;
         $rede->touch();
         $rede->save();
+
+        // gravar log das mudanças
+        $user = DB::table('redes_changes')->insert(
+            ['rede_id' => $rede->id, 'user_id' => \Auth::user()->id]
+        );
 
         // Salva/update rede no freeRadius
         if (config('copaco.freeradius_habilitar')) {
