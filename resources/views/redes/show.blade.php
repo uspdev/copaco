@@ -31,8 +31,6 @@
 
 
     <li class="list-group-item"><b>Responsável</b>: {{ $rede->user->name }}</li>
-    <li class="list-group-item"><b>Cadastrado em:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $rede->created_at)->format('d/m/Y - H:i:s') }}</li>
-    <li class="list-group-item"><b>Modificado em: </b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $rede->updated_at)->format('d/m/Y - H:i:s') }}</li>
         <li class="list-group-item"><b>Grupos com permissão nessa rede:</b>
             <ul>
                 @foreach ( $rede->roles()->get() as $role)        
@@ -73,7 +71,7 @@
   @foreach($changes as $change)
     <tr>
       <th> {{ $change['when'] }} </th>
-      <th> {{ $change['username'] }} </th>
+      <th> {{ $change['username'] }} - {{ $change['name'] }}</th>
     </tr>
     @endforeach
   </tdoby>

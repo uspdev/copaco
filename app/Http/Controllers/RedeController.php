@@ -112,7 +112,6 @@ class RedeController extends Controller
                 'name' => $user->name
             ]);
         }
-        ;
         return view('redes.show', compact('rede','changes'));
     }
 
@@ -165,7 +164,7 @@ class RedeController extends Controller
         $rede->save();
 
         // gravar log das mudanças
-        $user = DB::table('redes_changes')->insert(
+        DB::table('redes_changes')->insert(
             ['rede_id' => $rede->id, 'user_id' => \Auth::user()->id]
         );
 

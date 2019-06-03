@@ -45,7 +45,7 @@
                 <th>IP</th>
                 <th>Rede</th>
                 <th>Vencimento</th>
-                <th>Última alteração por</th>
+                <th>Responsável</th>
                 <th colspan="2">Ações</th>
             </tr>
         </thead>

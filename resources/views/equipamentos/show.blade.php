@@ -30,8 +30,7 @@
     <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome or '' }}</li>
     <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip or '' }}</li>
     <li class="list-group-item"><b>Responsável</b>: {{ $equipamento->user->name }}</li>
-    <li class="list-group-item"><b>Cadastrado em:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $equipamento->created_at)->format('d/m/Y - H:i:s') }}</li>
-    <li class="list-group-item"><b>Modificado em: </b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d H:i:s', $equipamento->updated_at)->format('d/m/Y - H:i:s') }}</li>
+
   </ul>
 </div>
 
@@ -51,6 +50,24 @@
     {{csrf_field()}} {{ method_field('delete') }}
     <button class="delete-item btn btn-danger" type="submit">Deletar</button>
 </form>
+
+<h2>Alterações nesse equipamento</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Data</th>
+      <th scope="col">Usuário(a)</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach($changes as $change)
+    <tr>
+      <th> {{ $change['when'] }} </th>
+      <th> {{ $change['username'] }} - {{ $change['name'] }}</th>
+    </tr>
+    @endforeach
+  </tdoby>
+</table>
 
 @stop
 
