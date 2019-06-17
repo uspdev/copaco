@@ -1,6 +1,13 @@
 @extends('master')
 
 @section('content')
+
+@if (config('copaco.somente_senhaunica'))
+    <script type="text/javascript">
+            window.location = "{{ route('loginusp') }}";//here double curly bracket
+    </script>
+@endif
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
