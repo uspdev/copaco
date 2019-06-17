@@ -25,7 +25,11 @@ class CodigoAcesso implements Rule
      */
     public function passes($attribute, $value)
     {
-        if($value != config('copaco.codigo_acesso')) {
+        if(config('copaco.somente_senhaunica')) {
+            return false;
+        }
+
+        if( $value != config('copaco.codigo_acesso') ) {
             return false;
         }
         return true;
@@ -38,6 +42,6 @@ class CodigoAcesso implements Rule
      */
     public function message()
     {
-        return 'Código de acesso inválido!';
+        return 'Código de acesso inválido ou o cadastro de usuário local não está habilitado';
     }
 }

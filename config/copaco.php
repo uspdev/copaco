@@ -10,8 +10,9 @@ return [
     | externas. Novas diretivas devem ser criadas aqui se a release do desenvolvedor
     | não provê um arquivo próprio de configuração
     |
- */
+    */
     'codigo_acesso' => env('CODIGO_ACESSO', false),
+    'somente_senhaunica' => env('SOMENTE_SENHAUNICA', false),
     /*
     |--------------------------------------------------------------------------
     | Senha Única
