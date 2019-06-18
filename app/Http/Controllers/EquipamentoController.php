@@ -39,28 +39,11 @@ class EquipamentoController extends Controller
      */
     public function index(Request $request)
     {
-        // todos equipamentos
-        $equipamentos = Equipamento::where([]);
-
-        // Filtrar equipamentos só das redes que o usuário tem acesso, com exceção do superAdmin
-        if (!Gate::allows('admin')) {
-            $user = Auth::user();
-            $equipamentos->OrWhere('user_id', '=', $user->id);
-            foreach ($user->roles()->get() as $role) {
-                if ($role->grupoadmin) {
-                    $equipamentos->OrWhere(function($query) use ($role, $user) {
-                        foreach ($role->redes()->get() as $rede) {
-                            $query->OrWhere('rede_id', '=', $rede->id);
-                        }
-                        $query->OrWhere('user_id', '=', $user->id);
-                    });
-                }
-            }
-        }
+        $equipamentos = Equipamento::allowed();
  
         // search terms
         if (isset($request->search)) {
-            $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local'];
+            $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
             $equipamentos->where(function($query) use ($request,$searchable_fields) {
                 foreach ($searchable_fields as $field) {
                     $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
