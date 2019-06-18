@@ -67,7 +67,7 @@ class EquipamentoController extends Controller
         //dd($equipamentos->toSql());
 
         //
-        $equipamentos = $equipamentos->paginate(10);
+        $equipamentos = $equipamentos->orderBy('updated_at','DESC')->paginate(20);
         if ($equipamentos->isEmpty()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
         }
