@@ -50,13 +50,3 @@
 </div>
 
 @stop
-
-@section('js')
-<script type="text/javascript">
-    $(function () {
-        $(".delete-item").on("click", function(){
-            return confirm("Tem certeza?");
-        });
-    });
-</script>
-@stop
