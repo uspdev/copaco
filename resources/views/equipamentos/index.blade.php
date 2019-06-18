@@ -52,14 +52,14 @@
             @foreach($equipamentos as $equipamento)
             <tr>
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
-                <td>{{ $equipamento->descricaosempatrimonio or $equipamento->patrimonio }}</td>
-                <td>{{ $equipamento->ip or '' }}</td>
-                <td><i>{{ $equipamento->rede->nome or '' }}</i>
+                <td>{{ $equipamento->descricaosempatrimonio ?? $equipamento->patrimonio }}</td>
+                <td>{{ $equipamento->ip ?? '' }}</td>
+                <td><i>{{ $equipamento->rede->nome ?? '' }}</i>
                     @isset ($equipamento->rede->iprede)
                         @can('admin')
-                            <a href="/redes/{{$equipamento->rede->id}}">{{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}</a>
+                            <a href="/redes/{{$equipamento->rede->id}}">{{ $equipamento->rede->iprede ?? '' }}/{{ $equipamento->rede->cidr ?? '' }}</a>
                         @elsecannot('admin')
-                            {{ $equipamento->rede->iprede or '' }}/{{ $equipamento->rede->cidr or '' }}
+                            {{ $equipamento->rede->iprede ?? '' }}/{{ $equipamento->rede->cidr ?? '' }}
                         @endcan
                     @endisset
                 </td>
@@ -68,9 +68,9 @@
 
                 <td>
                     @can('admin')
-                        <a href="/users/{{$equipamento->user->username}}">{{ $equipamento->user->name or '' }}</a>
+                        <a href="/users/{{$equipamento->user->username}}">{{ $equipamento->user->name ?? '' }}</a>
                     @elsecannot('admin')
-                        {{ $equipamento->user->name or '' }}
+                        {{ $equipamento->user->name ?? '' }}
                     @endcan
                 </td>
 

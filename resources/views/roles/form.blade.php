@@ -1,6 +1,6 @@
 <div class="form-group">
     <label for="nome">Nome</label>
-    <input type="text" class="form-control" name="nome" value="{{ $role->nome or old('nome')  }}" placeholder="Ex: Departamento de Música" required >
+    <input type="text" class="form-control" name="nome" value="{{ $role->nome ?? old('nome')  }}" placeholder="Ex: Departamento de Música" required >
 </div>
 
 <div class="form-group">
@@ -19,7 +19,7 @@ vizualizem e administrem os equipamentos do mesmo.
 </div>
 
 <div class="form-group">
-    <label for="rede">Redes do grupo <i>{{ $role->nome or old('nome') }}:</i></label>
+    <label for="rede">Redes do grupo <i>{{ $role->nome ?? old('nome') }}:</i></label>
     <br>
     @foreach($redes->sortBy('nome') as $rede)
 

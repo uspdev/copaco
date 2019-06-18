@@ -4,7 +4,7 @@
         <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1"
             @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
                 checked
-            @elseif ((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1))
+            @elseif ((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1))
                 checked
             @endif >
         <label class="form-check-label" for="check-sim">Sim</label>
@@ -27,10 +27,10 @@
         hidden
     @endif >
     <label for="patrimonio">Patrimônio</label>
-    <input name="patrimonio" type="text" class="form-control" value="{{ $equipamento->patrimonio or old('patrimonio') }}" placeholder="Ex: 001.586985"
+    <input name="patrimonio" type="text" class="form-control" value="{{ $equipamento->patrimonio ?? old('patrimonio') }}" placeholder="Ex: 001.586985"
         @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
             required
-        @elseif (((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
+        @elseif (((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
             required
         @endif >
 </div>
@@ -38,12 +38,12 @@
 <div class="form-group" id="sempatrimonio"
     @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
         hidden
-    @elseif (((old('naopatrimoniado') == null) or (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
+    @elseif (((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
         hidden
     @endif >
     <label for="descricaosempatrimonio">Descrição para não patrimoniados</label>
     <input name="descricaosempatrimonio" type="text" class="form-control"
-        value="{{ $equipamento->descricaosempatrimonio or old('descricaosempatrimonio') }}" placeholder="Ex: Professor visitante Joãozinho"
+        value="{{ $equipamento->descricaosempatrimonio ?? old('descricaosempatrimonio') }}" placeholder="Ex: Professor visitante Joãozinho"
         @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
             required
         @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
@@ -54,18 +54,18 @@
 <div class="form-group">
     <label for="macaddress">Mac Address</label>
     <input type="text" class="form-control" id="macaddress" name="macaddress" placeholder="Ex: 00:45:8A:AA:90:88" 
-           value="{{ $equipamento->macaddress or old('macaddress') }}">
+           value="{{ $equipamento->macaddress ?? old('macaddress') }}">
 </div>
 
 <div class="form-group">
     <label for="local">Local</label>
-    <input type="text" class="form-control" id="local" name="local" value="{{ $equipamento->local or old('local') }}" placeholder="Ex: Sala 10">
+    <input type="text" class="form-control" id="local" name="local" value="{{ $equipamento->local ?? old('local') }}" placeholder="Ex: Sala 10">
 </div>
 
 <div class="form-group">
     <label  for="vencimento">Vencimento</label>
     <input type="text" class="form-control" id="datepicker" name="vencimento" 
-           value="{{ $equipamento->vencimento or old('vencimento')  }}" autocomplete="off"> 
+           value="{{ $equipamento->vencimento ?? old('vencimento')  }}" autocomplete="off"> 
 </div>
 
 <div class="form-group">
@@ -119,7 +119,7 @@
     @endif >
     <label class="col-sm-2 col-form-label" for="ip">IP</label>
     <div class="col-sm-7">
-        <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip or old('ip')  }}" placeholder="Ex: 192.168.0.1">
+        <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip ?? old('ip')  }}" placeholder="Ex: 192.168.0.1">
     </div>
 </div>
 
