@@ -21,7 +21,6 @@ Funcionalidades:
 
 ## Instalação de bibliotecas e dependências
 
-    node
     php7+
     php-bcmath
     php-ldap
@@ -59,11 +58,6 @@ Caso falte alguma dependência, siga as instruções do `composer`.
 Configurar os *SUPERADMINS* que terão permissão total no sistema:
 
     SUPERADMINS_USERNAMES=14234,zezinho,9876663
-
-## Compile os assests com npm
-
-    npm install
-    npm run dev
 
 ## Publicando Assets do AdminLTE
 

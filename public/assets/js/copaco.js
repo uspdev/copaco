@@ -60,3 +60,5 @@ $("input[name='fixarip']").change(function(){
     checked_nao('fixarip');
   }
 });
+
+
