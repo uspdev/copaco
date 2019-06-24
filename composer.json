@@ -11,11 +11,11 @@
         "ext-ldap": "*",
         "doctrine/dbal": "^2.8",
         "fideloper/proxy": "~4.0",
-        "jeroennoten/laravel-adminlte": "^1.25",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "~1.0",
         "respect/validation": "^1.1",
         "s1lentium/iptools": "^1.1",
+        "uspdev/laravel-usp-theme": "^1.0",
         "uspdev/patrimonio": "^1.1",
         "uspdev/senhaunica-socialite": "^2.0",
         "uspdev/the_force": "^1.0"
