@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('laravel-usp-theme::master')
 
 @section('title', 'COPACO')
 
@@ -9,12 +9,14 @@
     </div>
 @stop
 
-@section('css')
+@section('styles')
+    @parent
     <link rel="stylesheet" href="{{ asset('assets/css/copaco.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css">
 @stop
 
-@section('js')
+@section('javascripts_bottom')
+@parent
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

@@ -18,7 +18,7 @@ class DeployAdminlteAssets extends Command
      *
      * @var string
      */
-    protected $description = 'Faz o deploy dos assets do AdminLTE na pasta /public/vendor';
+    protected $description = 'Faz o deploy dos assets na pasta /public/vendor';
 
     /**
      * Create a new command instance.
@@ -41,7 +41,7 @@ class DeployAdminlteAssets extends Command
 
         // Calling the service provider
         $this->call('vendor:publish', [
-            '--provider' => 'JeroenNoten\LaravelAdminLte\ServiceProvider',
+            '--provider' => 'Uspdev\UspTheme\ServiceProvider',
             '--tag' => 'assets'
         ]);
     }
