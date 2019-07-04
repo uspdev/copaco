@@ -12,6 +12,7 @@
   <ul class="list-group list-group-flush">
     @if($equipamento->naopatrimoniado)
       <li class="list-group-item"> <b>Patrimônio:</b> {{$equipamento->patrimonio}}
+{{--
         <br><i>Dados no mercúrio:</i>
         <ul>        
           <li>Material: {{ $info_patrimonio['Nomsgpitmmat'] }}</li>
@@ -20,6 +21,7 @@
           <li>Localização: {{ $info_patrimonio['Idfloc'] }}</li>
         </ul>
       </li>
+--}}
     @else
       <li class="list-group-item"> <b>Descrição:</b> {{$equipamento->descricaosempatrimonio}} </li>
     @endif

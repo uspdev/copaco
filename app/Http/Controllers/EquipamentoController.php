@@ -86,7 +86,7 @@ class EquipamentoController extends Controller
     {
         $erro = '';
         $request->validate([
-            'patrimonio' => ['nullable', new Patrimonio],
+            #'patrimonio' => ['nullable', new Patrimonio],
             'macaddress' => ['required', 'unique:equipamentos,macaddress,'.$equipamento->id, new MacAddress],
             'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
             'ip' => 'nullable|ip',
@@ -243,7 +243,7 @@ class EquipamentoController extends Controller
             ]);
         }
 
-
+/*
         if ($equipamento->naopatrimoniado) {
             $patrimonio = new dadosUsp;
             $xml = $patrimonio->fetchNumpat($equipamento->patrimonio);
@@ -251,7 +251,7 @@ class EquipamentoController extends Controller
             $info_patrimonio;
             return view('equipamentos.show', compact('equipamento','changes','info_patrimonio'));
         }
-
+*/
         return view('equipamentos.show', compact('equipamento','changes'));
     }
 

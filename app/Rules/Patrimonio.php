@@ -30,10 +30,12 @@ class Patrimonio implements Rule
             return true;
         }
 
+        /*
         $patrimonio = new dadosUsp;
         if ($patrimonio->stabem($value) == false) {
             return false;
         }
+        */
         return true;
     }
 
