@@ -27,6 +27,11 @@ class MacAddress implements Rule
     public function passes($attribute, $value)
     {
         if ( v::macAddress()->validate($value) ) {
+            /* Neste momento o mac é válido, mas se tiver -
+             * o dhcp não sobe */
+            if (strpos($value, '-') !== false){
+                return false;
+            }
             return true;
         }
         return false;
