@@ -47,6 +47,16 @@
             </div>
 
             <div class="form-group">
+                <label for="unknown_clients">Entregar IP para hosts desconhecidos? (allow unknown-clients)</label>
+                <input type="checkbox" class="" name="unknown_clients" value="1"
+                @if (isset($rede->id) and ($rede->unknown_clients === 1))
+                    checked
+                @elseif (old('unknown_clients') == 1)
+                    checked
+                @endif >
+            </div>
+
+            <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Enviar Dados">
             </div>
         </div>
