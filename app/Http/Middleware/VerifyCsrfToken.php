@@ -13,7 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'dhcpd.conf',
-        'freeradius/authorize-file'
-        '/api/equipamentos/{patrimonio}/ip'
+        'freeradius/authorize-file',
+        '/api/equipamentos/*/ip'
     ];
 }
