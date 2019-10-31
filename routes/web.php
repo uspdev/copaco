@@ -21,6 +21,8 @@ Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
 # APIs
 Route::post('/dhcpd.conf', 'DhcpController@dhcpd');
 Route::post('/freeradius/authorize-file', 'FreeradiusController@file');
+# Essas rotas são temporárias...
+Route::post('/api/equipamentos/{patrimonio}/ip', 'EquipamentosApiController@ip');
 
 # Rotas para usuário local, podemos usar Auth::routes() 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

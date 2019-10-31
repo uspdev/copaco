@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Rede;
-use App\Equipamentos;
+use App\Equipamento;
 use App\Config;
 
 use App\Utils\NetworkOps;
