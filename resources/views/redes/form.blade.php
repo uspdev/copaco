@@ -26,6 +26,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">Configurações Opcionais para DHCP</div>
         <div class="panel-body">
+
             <div class="form-group">
                 <label for="netbios">Netbios</label>
                 <input type="text" class="form-control" name="netbios" value="{{ $rede->netbios ?? old('netbios') }}" placeholder="Ex: 10.0.0.4, 10.3.3.2">
@@ -47,18 +48,19 @@
             </div>
 
             <div class="form-group">
-                <label for="unknown_clients">Entregar IP para hosts desconhecidos? (allow unknown-clients)</label>
-                <input type="checkbox" class="" name="unknown_clients" value="1"
-                @if (isset($rede->id) and ($rede->unknown_clients === 1))
-                    checked
-                @elseif (old('unknown_clients') == 1)
-                    checked
-                @endif >
-            </div>
+                <label for="dhcp_global">Opções para subnet do dhcp</label>
+
+                @isset($rede->dhcpd_subnet_options)
+                    <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ $rede->dhcpd_subnet_options ?? old('dhcpd_subnet_options') }}</textarea>
+                @else
+                    <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ "deny unknown-clients;" ?? old('dhcpd_subnet_options') }}</textarea>
+                @endisset
+            </div> 
 
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Enviar Dados">
             </div>
+
         </div>
     </div>
 </div>

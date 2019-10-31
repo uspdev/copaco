@@ -39,7 +39,9 @@
 <br>
 <form action="/config" method="post">
 {{csrf_field()}}
+
 <div class="panel panel-default">
+
     <div class="panel-heading">Configurações para DHCP</div>
         <div class="panel-body">
             <div class="form-group">

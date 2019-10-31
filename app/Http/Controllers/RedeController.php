@@ -60,7 +60,6 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'unknown_clients' => 'boolean',
             'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr)],
             'cidr'      => 'required|numeric|min:8|max:30',
             'vlan'      => 'numeric',
@@ -73,7 +72,7 @@ class RedeController extends Controller
         // Persistência
         $rede = new Rede;
         $rede->nome     = $request->nome;
-        $rede->unknown_clients = $request->has('unknown_clients');
+        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
         $rede->iprede   = $request->iprede;
         $rede->dns      = $request->dns;
         $rede->gateway  = $request->gateway;
@@ -146,13 +145,12 @@ class RedeController extends Controller
             'dns'       => [new MultiplesIP('DNS')],
             'netbios'   => [new MultiplesIP('NetBIOS')],
             'ad_domain' => [new Domain('Active Directory Domain')],
-            'unknown_clients' => 'boolean',
             'ntp'       => [new MultiplesIP('NTP')],
         ]);
 
         // Persistência
         $rede->nome     = $request->nome;
-        $rede->unknown_clients = $request->has('unknown_clients');
+        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
         $rede->dns      = $request->dns;

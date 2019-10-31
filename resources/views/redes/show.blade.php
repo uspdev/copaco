@@ -26,13 +26,7 @@
         <li class="list-group-item"><b>NTP</b>: {{ $rede->ntp }}</li>
         <li class="list-group-item"><b>DNS</b>: {{ $rede->dns }}</li>
         <li class="list-group-item"><b>Domain Active Directory</b>: {{ $rede->ad_domain }}</li>
-        <li class="list-group-item"><b> Esta rede entrega IP para hosts desconhecidos ? (allow unknown-clients)</b>:
-            @if ($rede->unknown_clients === 1)
-                sim
-            @else
-                não
-            @endif
-        </li>
+        <li class="list-group-item"><b> Opções dhcp da subnet: </b>: {{ $rede->dhcpd_subnet_options }} </li>
     </div>
 </div>
 

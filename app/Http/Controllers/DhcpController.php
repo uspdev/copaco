@@ -94,12 +94,8 @@ HEREDOC;
 
 HEREDOC;
             }
-            if($rede->unknown_clients === 1)
-                $type = 'allow unknown-clients';
-            else 
-                $type = 'deny unknown-clients';
             $dhcp .= <<<NOWDOC
-    {$type};
+    {$rede->dhcpd_subnet_options};
 
 NOWDOC;
 
