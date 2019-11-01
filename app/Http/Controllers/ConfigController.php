@@ -21,10 +21,18 @@ class ConfigController extends Controller
 
     public function config(Request $request)
     {
+        /* Persiste dhcp_global */
         $config = Config::where('key','dhcp_global')->first();
         if(is_null($config)) $config = new Config;
         $config->key = 'dhcp_global';
         $config->value = $request->dhcp_global;
+        $config->save();
+
+        /* Persiste dhcp_global */
+        $config = Config::where('key','shared_network')->first();
+        if(is_null($config)) $config = new Config;
+        $config->key = 'shared_network';
+        $config->value = $request->shared_network;
         $config->save();
 
         $request->session()->flash('alert-success', 'Configuração atualizada com sucesso!');

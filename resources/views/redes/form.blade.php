@@ -58,6 +58,25 @@
             </div> 
 
             <div class="form-group">
+                <label for="shared_network">shared-network</label>
+                <select name="shared_network" class="form-control">
+                    <option value="" selected="">Escolha uma shared-network:</option>
+                    @foreach($shared_networks as $shared_network)
+                        @if(old('shared_network')=='' and isset($rede->shared_network))
+                            <option value="{{ $rede->shared_network }}" {{ ( $rede->shared_network == $shared_network) ? 'selected' : ''}}>
+                                {{ $shared_network}}
+                            </option>                
+                        @else
+                            <option value="{{ $shared_network }}" {{ (old('shared_network') == $shared_network) ? 'selected' : ''}}>
+                                {{ $shared_network}}
+                            </option>   
+                        @endif
+
+                    @endforeach()
+                </select>
+            </div>
+
+            <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Enviar Dados">
             </div>
 

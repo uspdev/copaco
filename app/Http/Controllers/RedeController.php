@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Rede;
 use App\User;
+use App\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -45,8 +46,14 @@ class RedeController extends Controller
      */
     public function create()
     {
-        //
-        return view('redes.create');
+        $shared_networks = Config::where('key','shared_network')->first();
+        if(!is_null($shared_networks)){
+            $shared_networks = array_map('trim', explode(',', $shared_networks->value));
+        } else {
+            $shared_networks = ['default'];
+        }
+        
+        return view('redes.create',compact('configs','shared_networks'));
     }
 
     /**
@@ -72,6 +79,7 @@ class RedeController extends Controller
         // Persistência
         $rede = new Rede;
         $rede->nome     = $request->nome;
+        $rede->shared_network     = $request->shared_network;
         $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
         $rede->iprede   = $request->iprede;
         $rede->dns      = $request->dns;
@@ -122,7 +130,14 @@ class RedeController extends Controller
      */
     public function edit(Rede $rede)
     {
-        return view('redes.edit', compact('rede'));
+        $shared_networks = Config::where('key','shared_network')->first();
+        if(!is_null($shared_networks)){
+            $shared_networks = array_map('trim', explode(',',$shared_networks->value));
+        } else {
+            $shared_networks = ['default'];
+        }
+        
+        return view('redes.edit', compact('rede','shared_networks'));
     }
 
     /**
@@ -151,6 +166,7 @@ class RedeController extends Controller
         // Persistência
         $rede->nome     = $request->nome;
         $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
+        $rede->shared_network     = $request->shared_network;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
         $rede->dns      = $request->dns;

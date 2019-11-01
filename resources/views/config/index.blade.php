@@ -44,6 +44,7 @@
 
     <div class="panel-heading">Configurações para DHCP</div>
         <div class="panel-body">
+
             <div class="form-group">
                 <label for="dhcp_global">Parâmetros globais</label>
 
@@ -56,6 +57,22 @@ max-lease-time 86400;
 authoritative;</textarea>
                 @endif
             </div>
+
+
+            <div class="form-group">
+                <label for="dhcp_global">shared-networks (além da default):</label>
+
+                @if(!is_null($configs->where('key','shared_network')->first()))
+                    <input class="form-control" name="shared_network" value="{{$configs->where('key','shared_network')->first()->value}}">
+                @else
+                    <input class="form-control" name="shared_network">
+                @endif
+            <small id="emailHelp" class="form-text text-muted">Por padrão todas subnet são agrupadas em 
+            uma mesma shared-network chamada default. Esta opção serve para criar outras shared-network.
+            Use vírgula para separar as shared-networks. 
+            Exemplo: labs, externos </small>
+            </div>
+
 
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Enviar Dados">

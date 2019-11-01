@@ -95,7 +95,7 @@ HEREDOC;
 HEREDOC;
             }
             $dhcp .= <<<NOWDOC
-    {$rede->dhcpd_subnet_options};
+    {$rede->dhcpd_subnet_options}
 
 NOWDOC;
 
