@@ -52,8 +52,11 @@ class RedeController extends Controller
         } else {
             $shared_networks = ['default'];
         }
+
+        if (!in_array("default", $shared_networks)) 
+            array_push($shared_networks, "default");
         
-        return view('redes.create',compact('configs','shared_networks'));
+        return view('redes.create',compact('shared_networks'));
     }
 
     /**
@@ -67,6 +70,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
+            'shared_network'      => 'required',
             'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr)],
             'cidr'      => 'required|numeric|min:8|max:30',
             'vlan'      => 'numeric',
@@ -136,6 +140,9 @@ class RedeController extends Controller
         } else {
             $shared_networks = ['default'];
         }
+
+        if (!in_array("default", $shared_networks)) 
+            array_push($shared_networks, "default");
         
         return view('redes.edit', compact('rede','shared_networks'));
     }
@@ -152,6 +159,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
+            'shared_network'      => 'required',
             // 'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
             'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr, $rede->id)],
             'cidr'      => 'required|numeric|min:8|max:30',

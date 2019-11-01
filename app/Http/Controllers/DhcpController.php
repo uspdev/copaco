@@ -31,6 +31,7 @@ class DhcpController extends Controller
         $ops = new NetworkOps;
         $date = Utils::ItensUpdatedAt();
 
+/* Monta header do dhcpd.conf */
         $dhcp_global = Config::where('key','dhcp_global')->first();
         if(is_null($dhcp_global)){
             $dhcp_global = new Config;
@@ -40,15 +41,49 @@ class DhcpController extends Controller
         $dhcp = <<<HEREDOC
 # {$date}
 # build success
+
 {$dhcp_global->value}
-shared-network "default" {
 
 HEREDOC;
 
-        $redes = Rede::all();
+/* Verificamos se tem shared-networks extras cadastradas, em caso negativo
+ * vamos colocar tudo na default */
+        $shared_network = Config::where('key','shared_network')->first();
+        if(empty($shared_network)){
+            $redes = Rede::all();
+            $dhcp .= <<<HEREDOC
+
+shared-network "default" {
+HEREDOC;
+
+            $dhcp .= $this->BuildSharedNetwork($redes);
+            $dhcp .= '}';
+        }
+        else {
+            $shared_networks = array_map('trim', explode(',', $shared_network->value));
+            if (!in_array("default", $shared_networks)) 
+                array_push($shared_networks, "default");
+
+            foreach($shared_networks as $sn){
+                $redes = Rede::where('shared_network',$sn)->get();
+                if(!$redes->isEmpty()){
+                    $dhcp .= <<<HEREDOC
+
+shared-network "{$sn}" {
+HEREDOC;
+                    $dhcp .= $this->BuildSharedNetwork($redes);
+                    $dhcp .= '}';
+                }
+            }
+        }
+        return response($dhcp)->header('Content-Type', 'text/plain');
+    }
+
+    private function BuildSharedNetwork($redes){
+        $dhcp = '';
         foreach ($redes as $rede) {
-            // aqui estamos assumindo que o gateway é o primeiro do range
-            // não precisa. o servidor de DHCP é esperto
+            /* aqui estamos assumindo que o gateway é o primeiro do range
+             * não precisa. o servidor de DHCP é esperto */
             $iprede = $rede->iprede;
             $cidr = $rede->cidr;
             $range_begin = NetworkOps::findFirstIP($iprede, $cidr);
@@ -115,8 +150,8 @@ HEREDOC;
 NOWDOC;
         }
         $dhcp .= <<<'NOWDOC'
-}
 NOWDOC;
-        return response($dhcp)->header('Content-Type', 'text/plain');
+    return $dhcp;
     }
 }
+
