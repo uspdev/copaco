@@ -59,9 +59,9 @@ Configurar os *SUPERADMINS* que terão permissão total no sistema:
 
     SUPERADMINS_USERNAMES=14234,zezinho,9876663
 
-## Publicando Assets do AdminLTE
+## Publicando Assets 
 
-Para ter a font disponível usando o AdminLTE, utilize o comando:
+Para ter a front disponível utilize o comando:
 
     php artisan deploy:assets
 
