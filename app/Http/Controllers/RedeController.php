@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Rede;
 use App\User;
+use App\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -45,8 +46,17 @@ class RedeController extends Controller
      */
     public function create()
     {
-        //
-        return view('redes.create');
+        $shared_networks = Config::where('key','shared_network')->first();
+        if(!is_null($shared_networks)){
+            $shared_networks = array_map('trim', explode(',', $shared_networks->value));
+        } else {
+            $shared_networks = ['default'];
+        }
+
+        if (!in_array("default", $shared_networks)) 
+            array_push($shared_networks, "default");
+        
+        return view('redes.create',compact('shared_networks'));
     }
 
     /**
@@ -60,7 +70,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
-            'unknown_clients' => 'boolean',
+            'shared_network'      => 'required',
             'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr)],
             'cidr'      => 'required|numeric|min:8|max:30',
             'vlan'      => 'numeric',
@@ -73,7 +83,8 @@ class RedeController extends Controller
         // Persistência
         $rede = new Rede;
         $rede->nome     = $request->nome;
-        $rede->unknown_clients = $request->has('unknown_clients');
+        $rede->shared_network     = $request->shared_network;
+        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
         $rede->iprede   = $request->iprede;
         $rede->dns      = $request->dns;
         $rede->gateway  = $request->gateway;
@@ -123,7 +134,17 @@ class RedeController extends Controller
      */
     public function edit(Rede $rede)
     {
-        return view('redes.edit', compact('rede'));
+        $shared_networks = Config::where('key','shared_network')->first();
+        if(!is_null($shared_networks)){
+            $shared_networks = array_map('trim', explode(',',$shared_networks->value));
+        } else {
+            $shared_networks = ['default'];
+        }
+
+        if (!in_array("default", $shared_networks)) 
+            array_push($shared_networks, "default");
+        
+        return view('redes.edit', compact('rede','shared_networks'));
     }
 
     /**
@@ -138,6 +159,7 @@ class RedeController extends Controller
         // Validações
         $request->validate([
             'nome'      => 'required',
+            'shared_network'      => 'required',
             // 'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
             'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr, $rede->id)],
             'cidr'      => 'required|numeric|min:8|max:30',
@@ -146,13 +168,13 @@ class RedeController extends Controller
             'dns'       => [new MultiplesIP('DNS')],
             'netbios'   => [new MultiplesIP('NetBIOS')],
             'ad_domain' => [new Domain('Active Directory Domain')],
-            'unknown_clients' => 'boolean',
             'ntp'       => [new MultiplesIP('NTP')],
         ]);
 
         // Persistência
         $rede->nome     = $request->nome;
-        $rede->unknown_clients = $request->has('unknown_clients');
+        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
+        $rede->shared_network     = $request->shared_network;
         $rede->iprede   = $request->iprede;
         $rede->gateway  = $request->gateway;
         $rede->dns      = $request->dns;
