@@ -87,7 +87,7 @@
             @endforeach
         </tbody>
     </table>
-    {{ $equipamentos->links() }}
+    {{ $equipamentos->appends(request()->query())->links() }}
 </div>
 
 @stop
