@@ -12,6 +12,7 @@ Route::resource('/users', 'UserController');
 Route::get('/login/usp', 'Auth\LoginController@redirectToProvider')->name('loginusp');
 Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 # config
 Route::get('/config', 'ConfigController@index');
