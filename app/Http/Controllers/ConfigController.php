@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Config;
+use App\Rede;
+use App\Rules\MultiplesIP;
 
 class ConfigController extends Controller
 {
@@ -14,26 +16,33 @@ class ConfigController extends Controller
 
     public function index()
     {
+        $redes = Rede::all();
         $configs = Config::all();
         $consumer_deploy_key = config('copaco.consumer_deploy_key');
-        return view('config/index',compact('consumer_deploy_key','configs'));
+        return view('config/index',compact('consumer_deploy_key','configs','redes'));
     }
 
     public function config(Request $request)
     {
-        $keys = ['dhcp_global','shared_network','unique_iprede','unique_gateway','unique_cidr'];
+        $keys = ['dhcp_global','shared_network','unique_iprede','unique_gateway','unique_cidr','ips_reservados'];
         
         foreach($keys as $key) {
 
             if($key == 'unique_iprede' || $key == 'unique_gateway') {
                 $request->validate([
-                    $key    => ['ip'],
+                    $key => ['ip'],
                 ]);
             }
 
             if($key == 'unique_cidr') {
                 $request->validate([
-                    $key      => 'required|numeric|min:8|max:30', 
+                    $key => 'required|numeric|min:8|max:30', 
+                ]);
+            }
+
+            if($key == 'ips_reservados') {
+                $request->validate([
+                    $key => [new MultiplesIP('DNS')],
                 ]);
             }
 

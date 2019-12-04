@@ -117,6 +117,16 @@ authoritative;</textarea>
     </div>
 
 </div>
+    <div class="form-group">
+        <label for="ips_reservados">IPs reservados desta rede (separados por vírgula)</label>
+
+        @if(!is_null($configs->where('key','ips_reservados')->first()))
+            <input type="text" class="form-control" name="ips_reservados" value="{{$configs->where('key','ips_reservados')->first()->value}}">
+        @else
+            <input type="text" class="form-control" name="ips_reservados">
+        @endif
+
+    </div>
 <small class="form-text text-muted">Caso queira também gerar um dhcpd.conf sem segmentação de rede
 preencha os dados dessa única rede</small>
 

@@ -182,6 +182,13 @@ NOWDOC;
         $range_begin = NetworkOps::findFirstIP($iprede, $cidr);
         $range_end = NetworkOps::findLastIP($iprede, $cidr);
 
+        $ips_reservados = Config::where('key','ips_reservados')->first();
+        if(is_null($ips_reservados)){
+            $ips_alocados = [];
+        } else {
+            $ips_alocados = array_map('trim', explode(',',$ips_reservados->value));
+        }
+
         $ops = new NetworkOps;
         $date = Utils::ItensUpdatedAt();
 
@@ -212,12 +219,17 @@ NOWDOC;
 
         $equipamentos = Equipamento::all();
             foreach ($equipamentos as $equipamento) {
+                $ip = NetworkOps::nextIpAvailable($ips_alocados, $iprede, $cidr, $gateway);
+                if($ip){
+                array_push($ips_alocados, $ip);
                 $dhcp .= <<<HEREDOC
     host equipamento{$equipamento->id} {
        hardware ethernet {$equipamento->macaddress};
+       fixed-address {$ip};
     }
 
 HEREDOC;
+                }
             }
 
             $dhcp .= <<<NOWDOC
