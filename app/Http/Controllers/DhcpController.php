@@ -18,7 +18,7 @@ class DhcpController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['dhcpd']);
+        $this->middleware('auth')->except(['dhcpd','uniquedhcpd']);
     }
 
     /* Geração de dhcp de rede segmentada */
