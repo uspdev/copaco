@@ -21,6 +21,7 @@ Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
 
 # API, por era, ignorando app/Http/Middleware/VerifyCsrfToken.php
 Route::post('/dhcpd.conf', 'DhcpController@dhcpd');
+Route::post('/uniquedhcpd.conf', 'DhcpController@uniquedhcpd');
 Route::post('/freeradius/authorize-file', 'FreeradiusController@file');
 # Essas rotas são temporárias...
 Route::post('/api/equipamentos/{patrimonio}/ip', 'EquipamentosApiController@ip');

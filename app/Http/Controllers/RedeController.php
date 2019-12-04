@@ -79,7 +79,8 @@ class RedeController extends Controller
             'netbios'   => [new MultiplesIP('NetBIOS')],
             'ad_domain' => [new Domain('Active Directory Domain')],
             'ntp'       => [new MultiplesIP('NTP')],
-        ]);    
+        ]);
+ 
         // Persistência
         $rede = new Rede;
         $rede->nome     = $request->nome;

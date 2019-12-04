@@ -11,7 +11,17 @@
     <form action="/dhcpd.conf" method="post">
         {{csrf_field()}}
         <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
-        <button class="btn btn-success" type="submit">Gerar dhcpd.conf</button>
+        <button class="btn btn-success" type="submit">Gerar dhcpd.conf com subnets</button>
+    </form>
+</div>
+
+<br />
+
+<div>
+    <form action="/uniquedhcpd.conf" method="post">
+        {{csrf_field()}}
+        <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
+        <button class="btn btn-success" type="submit">Gerar dhcpd.conf único (sem subnets)</button>
     </form>
 </div>
 
@@ -73,10 +83,48 @@ authoritative;</textarea>
             Exemplo: labs, externos </small>
             </div>
 
+<div class="row">
+    <div class="col-sm form-group">
+        <label for="iprede">IP Rede</label>
 
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Enviar Dados">
-            </div>
+        @if(!is_null($configs->where('key','unique_iprede')->first()))
+            <input type="text" class="form-control" name="unique_iprede" value="{{$configs->where('key','unique_iprede')->first()->value}}">
+        @else
+            <input type="text" class="form-control" name="unique_iprede">
+        @endif
+    </div>
+
+    <div class="col-smform-group">
+        <label for="gateway">Gateway</label>
+
+        @if(!is_null($configs->where('key','unique_gateway')->first()))
+            <input type="text" class="form-control" name="unique_gateway" value="{{$configs->where('key','unique_gateway')->first()->value}}">
+        @else
+            <input type="text" class="form-control" name="unique_gateway">
+        @endif
+
+    </div>
+
+    <div class="col-sm form-group">
+        <label for="cidr">Cidr</label>
+
+        @if(!is_null($configs->where('key','unique_cidr')->first()))
+            <input type="text" class="form-control" name="unique_cidr" value="{{$configs->where('key','unique_cidr')->first()->value}}">
+        @else
+            <input type="text" class="form-control" name="unique_cidr">
+        @endif
+
+    </div>
+
+</div>
+<small class="form-text text-muted">Caso queira também gerar um dhcpd.conf sem segmentação de rede
+preencha os dados dessa única rede</small>
+
+<br>
+<div class="form-group">
+    <input type="submit" class="btn btn-primary" value="Enviar Dados">
+</div>
+
         </div>
     </div>
 </div>

@@ -21,6 +21,7 @@ class DhcpController extends Controller
         $this->middleware('auth')->except(['dhcpd']);
     }
 
+    /* Geração de dhcp de rede segmentada */
     public function dhcpd(Request $request)
     {
         if($request->consumer_deploy_key != config('copaco.consumer_deploy_key'))
@@ -79,6 +80,8 @@ HEREDOC;
         return response($dhcp)->header('Content-Type', 'text/plain');
     }
 
+
+    /* Método auxiliar para construir dhcpd.conf */
     private function BuildSharedNetwork($redes){
         $dhcp = '';
         foreach ($redes as $rede) {
@@ -152,6 +155,76 @@ NOWDOC;
         $dhcp .= <<<'NOWDOC'
 NOWDOC;
     return $dhcp;
+    }
+
+
+    /* Geração de dhcp para rede sem segmentação */
+    public function uniquedhcpd(Request $request)
+    {
+        if($request->consumer_deploy_key != config('copaco.consumer_deploy_key'))
+        {
+            return response('Unauthorized action.', 403);
+        }
+
+        $iprede = Config::where('key','unique_iprede')->first();
+        $gateway = Config::where('key','unique_gateway')->first();
+        $cidr = Config::where('key','unique_cidr')->first();
+
+        if(is_null($iprede) || is_null($iprede) || is_null($iprede)) {
+            return response('Not allowed. Missing network data', 403);
+        }
+
+        $iprede = $iprede->value;
+        $gateway = $gateway->value;
+        $cidr = $cidr->value;
+        $mask = NetworkOps::findNetmask($cidr);
+        $broadcast = NetworkOps::findBroadcast($iprede, $cidr);
+        $range_begin = NetworkOps::findFirstIP($iprede, $cidr);
+        $range_end = NetworkOps::findLastIP($iprede, $cidr);
+
+        $ops = new NetworkOps;
+        $date = Utils::ItensUpdatedAt();
+
+/* Monta header do dhcpd.conf */
+        $dhcp_global = Config::where('key','dhcp_global')->first();
+        if(is_null($dhcp_global)){
+            $dhcp_global = new Config;
+            $dhcp_global->value = '';
+        }
+
+        $dhcp = <<<HEREDOC
+# {$date}
+# build success
+
+{$dhcp_global->value}
+
+HEREDOC;
+
+            $dhcp .= <<<NOWDOC
+
+subnet {$iprede} netmask {$mask} {
+  range {$range_begin} {$range_end};
+  option routers {$gateway};
+  option broadcast-address {$broadcast};
+
+
+NOWDOC;
+
+        $equipamentos = Equipamento::all();
+            foreach ($equipamentos as $equipamento) {
+                $dhcp .= <<<HEREDOC
+    host equipamento{$equipamento->id} {
+       hardware ethernet {$equipamento->macaddress};
+    }
+
+HEREDOC;
+            }
+
+            $dhcp .= <<<NOWDOC
+}
+NOWDOC;
+
+        return response($dhcp)->header('Content-Type', 'text/plain');
     }
 }
 
