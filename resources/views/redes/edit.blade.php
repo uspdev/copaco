@@ -7,9 +7,10 @@
 
 @section('content')
 
-<div class="row">
     @include('messages.flash')
     @include('messages.errors')
+    
+<div class="row">
 
     <div class="col-md-6">
         <form method="post" action="{{ action('RedeController@update', $rede->id) }}">
