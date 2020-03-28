@@ -5,9 +5,11 @@
 @stop
 
 @section('content')
+@include('messages.flash')
+@include('messages.errors')
+        
     <div class="row">
-        @include('messages.flash')
-        @include('messages.errors')
+
 
         <div class="col-md-6">
             <form action="{{ url('equipamentos') }}" method="post">
