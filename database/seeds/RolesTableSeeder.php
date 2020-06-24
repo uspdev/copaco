@@ -11,7 +11,11 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        // User with no roles
+        $entrada = [
+            'nome' => 'Escola de Música',
+        ];
+        App\Role::create($entrada);
+
         factory(App\Role::class, 30)->create();
     }
 }

@@ -87,7 +87,7 @@ class UserController extends Controller
         }
 
         $request->session()->flash('alert-success', 'Pessoa atualizada com sucesso!');
-        return redirect()->route('users.show',['username' => $user->username]);
+        return redirect()->route('users.show',$user->username);
 
     }
 

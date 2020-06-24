@@ -199,7 +199,7 @@ class RedeController extends Controller
         }
 
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
-        return redirect()->route('redes.show', ['id' => $rede]);
+        return redirect()->route('redes.show', $rede->id);
     }
 
     /**
