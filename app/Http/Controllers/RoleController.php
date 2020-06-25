@@ -129,7 +129,7 @@ class RoleController extends Controller
         $role->save();
 
         $request->session()->flash('alert-success', 'Grupo atualizado com sucesso!');
-        return redirect()->route('roles.show',['id' =>$role]);
+        return redirect()->route('roles.show', $role->id);
     }
 
     /**

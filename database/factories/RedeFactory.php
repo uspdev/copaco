@@ -23,7 +23,7 @@ $factory->define(App\Rede::class, function (Faker $faker) {
         'cidr'      => $cidr,
         'vlan'      => $faker->unique()->numberBetween(10, 100),
         'ad_domain' => $faker->domainName,
-        'last_modify_by' => $user_create->id,
+        //'last_modify_by' => $user_create->id,
         'user_id'   => $user_modify->id,
     ];
 });
