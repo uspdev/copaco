@@ -17,7 +17,6 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-       # 'App\Model' => 'App\Policies\ModelPolicy',
         Equipamento::class => EquipamentoPolicy::class,
     ];
 
@@ -36,7 +35,6 @@ class AuthServiceProvider extends ServiceProvider
         # admin 
         Gate::define('admin', function ($user) {
             $admins = explode(',', trim(config('copaco.superadmins_usernames')));
-
             return ( in_array($user->username, $admins) and $user->username );
 
         });

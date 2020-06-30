@@ -8,8 +8,7 @@
 
 # Sistema de COntrole de PArque COmputacional
 
-Sistema desenvolvido em Laravel para promover a integração e paz entre os devs da USP! :penguin:
-Tem por objetivo tornar a gerência dos equipamentos que navegam em sua rede mais eficiente e prática.
+Sistema desenvolvido em Laravel e tem por objetivo tornar a gerência dos equipamentos que navegam em sua rede mais eficiente e prática.
 
 Funcionalidades:
 
@@ -17,7 +16,9 @@ Funcionalidades:
  - Cadastro de redes
  - Atribuição automática de IPs livres
  - Geração de `dhcpd.conf` com suporte a multi redes/subredes
- - Geração de configuração para servidores freeradius, basicamente para entregarem a vlan correspondente ao MACaddress
+ - Geração de `dhcpd.conf` com uma única subrede
+ - Geração de configuração para servidores freeradius, tanto por arquivo, quanto por banco de dados,
+ no contexto do mac-authentication, isto é, entrega de vlan correspondente ao MACaddress
 
 ## Instalação de bibliotecas e dependências
 
@@ -55,9 +56,21 @@ php artisan migrate
 
 Caso falte alguma dependência, siga as instruções do `composer`.
 
-Configurar os *SUPERADMINS* que terão permissão total no sistema:
+# Usuários
+
+O sistema trabalha tanto com usuário local, quanto integrado a bilbioteca de senha única da USP.
+Configurar os usernames do *SUPERADMINS*, isto é, pessoes que terão permissão total no sistema:
 
     SUPERADMINS_USERNAMES=14234,zezinho,9876663
+    
+O auto-cadastro de usuários com login local é permitido via um código de autorização
+que você deve infomar para as pessoas que poderão fazer esse autocadastro:
+
+    CODIGO_ACESSO='MEU-CODIGO-SECRETO'
+
+Se quiser usar apenas senha única e desativar o cadastro de login local:
+
+    SOMENTE_SENHAUNICA=true
 
 ## Publicando Assets 
 
@@ -74,26 +87,31 @@ Se for usar o Freeradius, criar um segundo banco de dados com o [esquema](https:
     FREERADIUS_USER=freeradius
     FREERADIUS_DB=freeradius
     FREERADIUS_PASSWD=freeradius
+    FREERADIUS_MACADDR_SEPARATOR='-'
+    FREERADIUS_MACADDR_CASE=lower
 
 ## Seeders que podem ajudar na produção de dados aleatórios:
 
-    php artisan migrate --seed
+    php artisan migrate:fresh --seed
 
 ## Testes TDD
 
     ./vendor/bin/phpunit
 
-Criar uma chave no .env para requisições no servidores dhcp e freeradius, exemplo:
+# Geração de arquivos para servidor dhcp e freeradius
+
+Crie uma chave no .env para autorizar as requisições:
 
     CONSUMER_DEPLOY_KEY=d34dhd892nfAzt1OMC0x
 
 Exemplo de como consumir um dhcpd.conf:
 
-    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000/dhcpd.conf
+    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000/api/dhcpd.conf
+    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000/api/uniquedhcpd.conf
 
-Exemplo de como consumir um mods-config/files/authorize para freeradius:
+Exemplo de como consumir um *mods-config/files/authorize* para freeradius:
 
-    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000//freeradius/authorize-file
+    curl -s -d "consumer_deploy_key=d34dhd892nfAzt1OMC0x" -X POST http://localhost:8000/api/freeradius/authorize_file
 
 ## Contribuindo com o projeto
 

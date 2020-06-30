@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Equipamento;
 
-class EquipamentosApiController extends Controller
+class EquipamentoController extends Controller
 {
 
+    /* Esse método não está bom... mas por ora resolve */
     public function ip(Request $request, $patrimonio)
     {
         if($request->consumer_deploy_key != config('copaco.consumer_deploy_key'))

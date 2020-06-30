@@ -22,17 +22,8 @@ class FreeradiusController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:admin')->except(['file']);;
+        $this->middleware('can:admin');
         $this->freeradius = new Freeradius;
-    }
-
-    public function file(Request $request)
-    {
-        if ($request->consumer_deploy_key != config('copaco.consumer_deploy_key')) {
-            return response('Unauthorized action.', 403);
-        }
-        $file = $this->freeradius->file();
-        return response($file)->header('Content-Type', 'text/plain');
     }
 
     public function sincronize(Request $request)
