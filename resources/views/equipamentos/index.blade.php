@@ -35,6 +35,9 @@
 </div>
 
 <br>
+
+{{$equipamentos->count()}}
+
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>

@@ -14,9 +14,8 @@ class UsersTableSeeder extends Seeder
         $entrada = [
             'name' => 'Gonzalo Ward',
             'email' => 'alvah.towne@example.com',
-            'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // hash para 'secret'
-            'remember_token' => 'tSRgR8J5fT',
-            'username' => 'rchristiansen',
+            'password' => bcrypt('secret'),
+            'username' => 'fulano',
         ];
         App\User::create($entrada);
 

@@ -25,7 +25,7 @@ $factory->define(App\Equipamento::class, function (Faker $faker) {
     }
 
     return [
-        'naopatrimoniado' => true,
+        'naopatrimoniado' => 0,
         'patrimonio' => null,
         'descricaosempatrimonio' => $faker->paragraph(1),
         'macaddress' => $faker->unique()->macAddress,

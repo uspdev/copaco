@@ -16,6 +16,6 @@ class RolesTableSeeder extends Seeder
         ];
         App\Role::create($entrada);
 
-        factory(App\Role::class, 30)->create();
+        factory(App\Role::class, 5)->create();
     }
 }
