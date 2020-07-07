@@ -11,28 +11,28 @@
 <a href="{{ route('redes.create') }}" class="btn btn-success">
     Adicionar Rede
 </a>
-
-
+<br>
+<br>
+<b>Nº de Redes Cadastradas:</b> {{$redes->count()}}
+<br><br>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Nome</th>
                 <th>IP Rede</th>
                 <th>Gateway</th>
-                <th>CIDR</th>
-                <th >Ações</th>
+                <th>Hosts</th>
+                <th colspan="2">Ações</th>
             </tr>
         </thead>
         <tbody>
             @foreach($redes as $rede)
             <tr>
-                <td>{{ $rede->id }}</td>
                 <td><a href="/redes/{{ $rede->id }}">{{ $rede->nome }}</a></td>
-                <td>{{ $rede->iprede }}</td>
+                <td>{{ $rede->iprede }}/{{ $rede->cidr }}</td>
                 <td>{{ $rede->gateway }}</td>
-                <td>{{ $rede->cidr }}</td>
+                <td>{{ $rede->equipamentos->count() }}</td>
                 <td>
                     <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>
                 </td>
@@ -48,5 +48,6 @@
         </tbody>
     </table>
 </div>
+{{ $redes->appends(request()->query())->links() }}
 
 @stop

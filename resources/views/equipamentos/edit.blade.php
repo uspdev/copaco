@@ -10,14 +10,14 @@
     
     <div class="row">
 
-    <div class="col-md-6">
-        <form action="{{ url('equipamentos'). '/' . $equipamento->id }}" method='post'>
-            {{ csrf_field() }} 
-            {{ method_field('patch') }}
-            @include('equipamentos.form')
-        </form>
+        <div class="col-md-6">
+            <form action="{{ url('equipamentos'). '/' . $equipamento->id }}" method='post'>
+                {{ csrf_field() }} 
+                {{ method_field('patch') }}
+                @include('equipamentos.form')
+            </form>
+        </div>
     </div>
-</div>
 
 @endsection
 

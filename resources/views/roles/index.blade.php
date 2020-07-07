@@ -11,8 +11,9 @@
 <a href="{{ route('roles.create') }}" class="btn btn-success">
     Adicionar Grupo
 </a>
-
-
+<br><br>
+<b>Nº de Grupos Cadastrados:</b> {{$roles->count()}}
+<br><br>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -40,7 +41,7 @@
         </tbody>
     </table>
 </div>
-
+{{ $roles->appends(request()->query())->links() }}
 @stop
 
 @section('js')

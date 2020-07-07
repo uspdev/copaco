@@ -18,6 +18,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/config', 'ConfigController@index');
 Route::post('/config', 'ConfigController@config');
 Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
+Route::get('/excel', 'EquipamentoController@excel')->name('excel');
 
 # API, por era, ignorando app/Http/Middleware/VerifyCsrfToken.php
 Route::post('/dhcpd.conf', 'DhcpController@dhcpd');

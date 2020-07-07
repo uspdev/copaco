@@ -8,14 +8,14 @@
     @parent
     
         @auth
-            <div class="panel panel-default">
-              <div class="panel-heading"><b>{{ Auth::user()->name }}</b>
-                @can('admin')
-                  ( você é super administrador )
-                @endcan
-              </div>
+            <div class="card">
+                <div class="card-header"><b>{{ Auth::user()->name }}</b>
+                  @can('admin')
+                    ( você é super administrador )
+                  @endcan
+                </div>
 
-                <div class="panel-body">
+                <div class="card-body">
                     <b>Meus grupos:</b>
                     <ul class="list-group">
     
@@ -28,8 +28,6 @@
 
                 </div>
             </div>
-            <h4></h4>
-
 
         @else
             Você ainda não fez seu <a href="/login"> login</a>!

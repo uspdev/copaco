@@ -8,14 +8,16 @@
     @include('messages.flash')
     @include('messages.errors')
 
+<b>Nº de Usuários Cadastrados:</b> {{$users->count()}}
+<br><br>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>username</th>
-                <th>nome</th>
-                <th>email</th>
-                <th>grupos</th>
+                <th>Nome de Usuário</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Grupos</th>
                 <th colspan="1">Ações</th>
             </tr>
         </thead>
@@ -44,6 +46,6 @@
         </tbody>
     </table>
 </div>
-
+{{ $users->appends(request()->query())->links() }}
 @stop
 
