@@ -3,9 +3,9 @@
 return [
     'title'=> env('APP_NAME'),
     'dashboard_url' => '/',
-    'logout_method' => 'POST',
+    'logout_method' => 'GET',
     'logout_url' => '/logout',
-    'login_url' => 'login',
+    'login_url' => '/login',
     'menu' => [
         [
             'text' => 'Minha Conta',

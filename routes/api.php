@@ -2,17 +2,8 @@
 
 use Illuminate\Http\Request;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::post('/dhcpd.conf', 'Api\DhcpController@dhcpd');
+Route::post('/uniquedhcpd.conf', 'Api\DhcpController@uniquedhcpd');
+Route::post('/freeradius/authorize_file', 'Api\FreeradiusController@authorize_file');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/equipamentos/{patrimonio}/ip', 'Api\EquipamentoController@ip');

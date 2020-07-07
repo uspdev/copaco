@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Rede;
@@ -16,11 +18,7 @@ use IPTools\Range;
 
 class DhcpController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['dhcpd','uniquedhcpd']);
-    }
-
+    
     /* Geração de dhcp de rede segmentada */
     public function dhcpd(Request $request)
     {
