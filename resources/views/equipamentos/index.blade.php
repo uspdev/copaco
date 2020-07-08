@@ -7,37 +7,57 @@
 @section('content')
     @include('messages.flash')
     @include('messages.errors')
-<p>
-    <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
-        Adicionar Equipamento
-    </a>
-</p>
 
-<div class="panel panel-default">
-  <div class="panel-heading">Filtros</div>
-  <div class="panel-body">
-
-    <form method="get" action="/equipamentos">
-        <div>
-            <label class="checkbox-inline"><input type="checkbox" name="vencidos" value="true">Vencidos</label>
-            <label class="checkbox-inline"><input type="checkbox" name="naoalocados" value="true">Não Alocados</label>
-        </div>
-        <br>
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Patrimônio, Mac Address, IP, Local ou descrição" name="search">
-            <span class="input-group-btn">
-                <button type="submit" class="btn btn-success"> Buscar </button>
-            </span>
-        </div><!-- /input-group -->
-    </form>
-
-  </div>
+<div class="row">
+    <div class="col-sm float-left">
+        <a href="{{ route('equipamentos.create') }}" class="btn btn-success">
+            Adicionar Equipamento
+        </a>
+    </div>
+    <div class="col-auto float-right">
+        <a href="/excel?vencidos={{ request()->vencidos }}&naoalocados={{ request()->naoalocados }}&rede={{ request()->rede }}&rede_id={{ request()->rede_id }}&search={{ request()->search }}" class="btn btn-primary"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar para Excel</a>
+    </div>
+</div>
+<br>
+<div class="card">
+    <div class="card-header">Filtros</div>
+    <div class="card-body">
+        <form method="get" action="/equipamentos">
+            <div>
+                <label class="checkbox-inline"><input type="checkbox" name="vencidos" value="true"> Vencidos</label>
+                <label class="checkbox-inline"><input type="checkbox" name="naoalocados" value="true"> Não Alocados</label>
+                <label class="checkbox-inline"><input type="checkbox" id="rede" name="rede" value="true"> Rede</label>
+                <select name="rede_id" class="form-control-sm" id="rede_id">
+                    <option value="" selected="">Escolha uma Rede</option>
+                    @foreach($redes->sortBy('nome') as $rede)
+                        @if(old('rede_id')=='' and isset($equipamento->rede_id))
+                            <option value="{{ $rede->id }}" {{ ( $equipamento->rede_id == $rede->id) ? 'selected' : ''}}>
+                                {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                            </option>                
+                        @else
+                            <option value="{{ $rede->id }}" {{ (old('rede_id') == $rede->id) ? 'selected' : ''}}>
+                                {{ $rede->nome }} | {{ $rede->iprede . '/' . $rede->cidr }}
+                            </option>   
+                        @endif
+                    @endforeach()
+                </select>
+            </div>
+            <br>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Patrimônio, Mac Address, IP, Local ou descrição" value="{{ Request()->search}}" name="search">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-success"> Buscar </button>
+                </span>
+            </div><!-- /input-group -->
+        </form>
+    </div>
 </div>
 
 <br>
-
-{{$equipamentos->count()}}
-
+<b>Nº de Equipamentos Cadastrados:</b> {{$equipamentos->count()}}
+<br><br>
+    {{ $equipamentos->appends(request()->query())->links() }}
+<br>
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>

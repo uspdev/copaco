@@ -16,6 +16,7 @@
         "laravel/framework": "^7.0",
         "laravel/helpers": "^1.2",
         "laravel/tinker": "^2.0",
+        "maatwebsite/excel": "^3.1",
         "respect/validation": "^2.0",
         "s1lentium/iptools": "^1.1",
         "uspdev/laravel-usp-theme": "^1.0",

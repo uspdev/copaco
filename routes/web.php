@@ -16,6 +16,7 @@ Route::get('/callback', 'Auth\LoginController@handleProviderCallback');
 Route::get('/config', 'ConfigController@index');
 Route::post('/config', 'ConfigController@config');
 Route::post('/freeradius/sincronize', 'FreeradiusController@sincronize');
+Route::get('/excel', 'EquipamentoController@excel')->name('excel');
 
 # Rotas para usuário local, podemos usar Auth::routes() 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');

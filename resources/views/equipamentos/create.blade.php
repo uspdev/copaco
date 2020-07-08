@@ -9,8 +9,6 @@
 @include('messages.errors')
         
     <div class="row">
-
-
         <div class="col-md-6">
             <form action="{{ url('equipamentos') }}" method="post">
             {{ csrf_field() }}

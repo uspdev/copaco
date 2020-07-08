@@ -22,9 +22,10 @@ class RedesTableSeeder extends Seeder
             'vlan'      => '1587',
             'ad_domain' => 'musica.usp.br',
             'user_id'   => '1',
+            'shared_network' => 'default',
         ];
         App\Rede::create($entrada);
 
-        factory(App\Rede::class, 30)->create();
+        factory(App\Rede::class, 10)->create();
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Excel;
+use App\Exports\ExcelExport;
+
 use App\Equipamento;
 use App\Rede;
 use App\User;
@@ -37,14 +40,15 @@ class EquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $equipamentos = Equipamento::allowed();
- 
+
+    private function search(){
+        $request = request();
+        //$equipamentos = Equipamento::allowed();
+        $query = Equipamento::orderby('updated_at','DESC');
         // search terms
         if (isset($request->search)) {
             $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
-            $equipamentos->where(function($query) use ($request,$searchable_fields) {
+            $query->where(function($query) use ($request,$searchable_fields) {
                 foreach ($searchable_fields as $field) {
                     $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
                 }
@@ -54,25 +58,37 @@ class EquipamentoController extends Controller
         // Mostra apenas equipamentos sem rede
         if (isset($request->naoalocados)) {
             if ($request->naoalocados == 'true')
-                $equipamentos->where('ip', '=', null);
+                $query->where('ip', '=', null);
         }
 
         // Mostra apenas equipamentos vencidos
         if (isset($request->vencidos)) {
             if ($request->vencidos == 'true')
-                $equipamentos->where('vencimento', '<=', Carbon::now());
+                $query->where('vencimento', '<=', Carbon::now());
+        }
+
+        //Mostra apenas os equipamentos selecionados de acordo com a rede
+        if (isset($request->rede)) {
+            if ($request->rede == 'true')
+                $query->where('rede_id', '=', $request->rede_id);
         }
 
         // Dica de ouro para debugar SQL gerado:
         //dd($equipamentos->toSql());
 
         //
-        $equipamentos = $equipamentos->orderBy('updated_at','DESC')->paginate(20);
-        if ($equipamentos->isEmpty()) {
+        if (!$query->count()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
         }
+        return $query;
+    }
 
-        return view('equipamentos.index', compact('equipamentos'));
+    public function index()
+    {
+        $query = $this->search();
+        $equipamentos = $query->paginate(20);
+        $redes = Rede::all();
+        return view(('equipamentos.index'), compact('equipamentos','redes'));
     }
 
     /**
@@ -329,4 +345,14 @@ class EquipamentoController extends Controller
         $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
         return redirect()->route('equipamentos.index');
     }
+
+    public function excel(Excel $excel){
+        $headings = ['patrimonio','descricaosempatrimonio','macaddress','local','vencimento','ip'];
+        $query = $this->search();
+        $equipamentos = $query->get($headings)->toArray();
+        $export = new ExcelExport($equipamentos, $headings);
+        return $excel->download($export, 'equipamentos.xlsx');
+    }
+
+
 }
