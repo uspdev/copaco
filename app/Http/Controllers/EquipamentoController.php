@@ -45,6 +45,13 @@ class EquipamentoController extends Controller
         $request = request();
         //$equipamentos = Equipamento::allowed();
         $query = Equipamento::orderby('updated_at','DESC');
+
+        if (!Gate::allows('admin') && $request->rede == null) {
+            $redes = Auth::user()->redesComAcesso();
+            foreach($redes as $rede){
+                $query->orWhere('rede_id', $rede->id);
+            }
+        }
         // search terms
         if (isset($request->search)) {
             $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
@@ -87,7 +94,12 @@ class EquipamentoController extends Controller
     {
         $query = $this->search();
         $equipamentos = $query->paginate(20);
-        $redes = Rede::all();
+        if (Gate::allows('admin')) {
+            $redes = Rede::all();
+        }
+        else{
+            $redes = Auth::user()->redesComAcesso();
+        }
         return view(('equipamentos.index'), compact('equipamentos','redes'));
     }
 

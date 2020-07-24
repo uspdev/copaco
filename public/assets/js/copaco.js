@@ -1,14 +1,3 @@
-$(document).ready(function() {
-  $("#rede_id").hide();
-});
-
-$("input[name='rede']").change(function(){
-  if (this.checked)
-      $("#rede_id").show();
-    else
-      $("#rede_id").hide();
-});
-
 $("input[name='naopatrimoniado']").change(function(){
   if($(this).val() == 1){
     checked_sim('naopatrimoniado');
