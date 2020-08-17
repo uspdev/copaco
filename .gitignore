@@ -25,4 +25,4 @@ public/vendor/
 
 /public/vendor/adminlte
 !public/assets
-#.phpunit.result.cache
+.phpunit.result.cache
