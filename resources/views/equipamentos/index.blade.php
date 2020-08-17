@@ -26,7 +26,6 @@
             <div>
                 <label class="checkbox-inline"><input type="checkbox" name="vencidos" value="true" @if(Request()->vencidos == 'true') checked @endif> Vencidos</label>
                 <label class="checkbox-inline"><input type="checkbox" name="naoalocados" value="true" @if(Request()->naoalocados == 'true') checked @endif> Não Alocados</label>
-                <label class="checkbox-inline"><input type="checkbox" id="rede" name="rede" value="true" @if(Request()->rede == 'true') checked @endif> Rede</label>
                 <select name="rede_id" class="form-control-sm" id="rede_id">
                     <option value="" selected="">Escolha uma Rede</option>
                     @foreach($redes->sortBy('nome') as $rede)

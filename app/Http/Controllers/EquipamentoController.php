@@ -40,24 +40,13 @@ class EquipamentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
     private function search(){
         $request = request();
 
+        $query = Equipamento::allowed();
 
-        Auth::user()->redesComAcesso();
-
-        //$equipamentos = Equipamento::allowed();
-        $query = Equipamento::orderby('updated_at','DESC');
-
-        if (!Gate::allows('admin') && $request->rede == null) {
-            $redes = Auth::user()->redesComAcesso();
-            foreach($redes as $rede){
-                $query->orWhere('rede_id', $rede->id);
-            }
-        }
         // search terms
-        if (isset($request->search)) {
+        if (!is_null($request->search)) {
             $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
             $query->where(function($query) use ($request,$searchable_fields) {
                 foreach ($searchable_fields as $field) {
@@ -67,43 +56,32 @@ class EquipamentoController extends Controller
         }
 
         // Mostra apenas equipamentos sem rede
-        if (isset($request->naoalocados)) {
-            if ($request->naoalocados == 'true')
-                $query->where('ip', '=', null);
+        if (!is_null($request->naoalocados)) {
+            $query->where('ip', '=', null);
         }
 
         // Mostra apenas equipamentos vencidos
-        if (isset($request->vencidos)) {
-            if ($request->vencidos == 'true')
-                $query->where('vencimento', '<=', Carbon::now());
+        if (!is_null($request->vencidos)) {
+            $query->where('vencimento', '<=', Carbon::now());
         }
 
         //Mostra apenas os equipamentos selecionados de acordo com a rede
-        if (isset($request->rede)) {
-            if ($request->rede == 'true')
-                $query->where('rede_id', '=', $request->rede_id);
+        if (!is_null($request->rede_id)) {
+            $query = $query->where('rede_id', $request->rede_id);
         }
 
-        // Dica de ouro para debugar SQL gerado:
-        //dd($equipamentos->toSql());
-
-        //
+        // quando não há registros
         if (!$query->count()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
         }
+
         return $query;
     }
 
     public function index()
     {
-        $query = $this->search();
-        $equipamentos = $query->paginate(20);
-        if (Gate::allows('admin')) {
-            $redes = Rede::all();
-        }
-        else{
-            $redes = Auth::user()->redesComAcesso();
-        }
+        $equipamentos = $this->search()->paginate(20);
+        $redes = Rede::allowed()->get();
         return view(('equipamentos.index'), compact('equipamentos','redes'));
     }
 
@@ -138,7 +116,7 @@ class EquipamentoController extends Controller
             $ip = null;
         }
 
-        $redes = $user->redesComAcesso();
+        $redes = Rede::allowed()->get();
         if (!$redes->contains('id', $rede_id)) {
             $rede_id = null;
             $ip = null;
@@ -176,8 +154,8 @@ class EquipamentoController extends Controller
         }
 
         /*  tratamento da data de vencimento. default: 10 anos
-            TODO: colocar no .env um default e usar de lá.
-        */
+         *   TODO: colocar no .env um default e usar de lá.
+         */
         if (empty(trim($request->vencimento))) {
             $vencimento = Carbon::now()->addYears(10);
         }
@@ -217,7 +195,7 @@ class EquipamentoController extends Controller
 
         // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
         $user = Auth::user();
-        $redes = $user->redesComAcesso();
+        $redes = Rede::allowed()->get();
         return view('equipamentos.create', compact('redes'));
     }
 
@@ -298,7 +276,7 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.update', $equipamento);
 
         $user = Auth::user();
-        $redes = $user->redesComAcesso();
+        $redes = Rede::allowed()->get();
 
         $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         return view('equipamentos.edit', compact('equipamento', 'redes'));
@@ -363,9 +341,9 @@ class EquipamentoController extends Controller
     }
 
     public function excel(Excel $excel){
+        /* Falta acertar as permissões */
         $headings = ['patrimonio','descricaosempatrimonio','macaddress','local','vencimento','ip'];
-        $query = $this->search();
-        $equipamentos = $query->get($headings)->toArray();
+        $equipamentos = $this->search()->get($headings)->toArray();
         $export = new ExcelExport($equipamentos, $headings);
         return $excel->download($export, 'equipamentos.xlsx');
     }
