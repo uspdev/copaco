@@ -43,6 +43,10 @@ class EquipamentoController extends Controller
 
     private function search(){
         $request = request();
+
+
+        Auth::user()->redesComAcesso();
+
         //$equipamentos = Equipamento::allowed();
         $query = Equipamento::orderby('updated_at','DESC');
 

@@ -36,7 +36,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('admin', function ($user) {
             $admins = explode(',', trim(config('copaco.superadmins_usernames')));
             return ( in_array($user->username, $admins) and $user->username );
-
         });
     }
 }

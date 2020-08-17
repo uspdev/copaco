@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":217:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:3:{s:51:"Tests\Feature\EquipamentoTest::testModelEquipamento";d:0.144;s:37:"Tests\Feature\RedeTest::testModelRede";d:0.021;s:37:"Tests\Feature\UserTest::testModelUser";d:0.017;}}}
