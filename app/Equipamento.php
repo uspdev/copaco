@@ -78,10 +78,17 @@ class Equipamento extends Model
         return $query;
     }
 
-    public function setEquipamento(Equipamento $equipamento, $validated){
+    public function setEquipamento(Equipamento $equipamento, $validated,$action){
         $validated['vencimento'] = $this->getDataVencimento($validated);
         $resultado = $this->setRede($validated, $this->getIpRede($validated));
-        $equipamento = Equipamento::create($validated);
+        if($action == 'store'){
+            $user = Auth::user();
+            $validated['user_id'] = $user->id;
+            $equipamento = Equipamento::create($validated);
+        }
+        else{
+            $equipamento->update($validated);
+        }
         $data = [
             'equipamento' => $equipamento,
             'erro' => $resultado,

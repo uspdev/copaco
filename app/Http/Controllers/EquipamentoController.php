@@ -45,17 +45,22 @@ class EquipamentoController extends Controller
         $request = request();
 
         $query = Equipamento::allowed();
-
         // search terms
         if (!is_null($request->search)) {
-            $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
-            $query->where(function($query) use ($request,$searchable_fields) {
-                foreach ($searchable_fields as $field) {
-                    $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
+            //Busca por responsável
+            if (!is_null($request->search)) {
+                $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
+                $query->where(function($query) use ($request,$searchable_fields) {
+                    foreach ($searchable_fields as $field) {
+                        $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
+                    }
+                });
+                $query2 = User::where('name', 'LIKE', "%$request->search%")->get();
+                foreach($query2 as $q){
+                    $query->orWhere('user_id','=', $q->id);
                 }
-            });
+            }
         }
-
         // Mostra apenas equipamentos sem rede
         if (!is_null($request->naoalocados)) {
             $query->where('ip', '=', null);
@@ -112,12 +117,8 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.create');
         $equipamento = new Equipamento;
         $validated = $request->validated();     
-        $resultado = $equipamento->setEquipamento($equipamento, $validated);
+        $resultado = $equipamento->setEquipamento($equipamento, $validated,'store');
         $equipamento = $resultado['equipamento'];
-
-        $user = Auth::user();
-        $equipamento->user_id = $user->id;
-        $equipamento->save();
 
         $erro = $resultado['erro'];
         if ($erro) {
@@ -197,18 +198,16 @@ class EquipamentoController extends Controller
 
         // mac antigo para o freeradius
         $macaddress_antigo = $equipamento->macaddress;
-
-        $resultado = $this->persisteEquipamento($equipamento, $request);
+        $validated = $request->validated();     
+        $resultado = $equipamento->setEquipamento($equipamento, $validated,'update');
         $equipamento = $resultado['equipamento'];
         $erro = $resultado['erro'];
-
         // gravar log das mudanças
         DB::table('equipamentos_changes')->insert(
-            ['equipamento_id' => $equipamento->id, 'user_id' => \Auth::user()->id]
+            ['equipamento_id' => $equipamento->id, 'user_id' => Auth::user()->id]
         );
 
         if ($erro) {
-
             $request->session()->flash('alert-danger', $erro);
             return redirect("/equipamentos/$equipamento->id/edit");
         }

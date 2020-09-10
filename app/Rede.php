@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Gate;
 
 class Rede extends Model
 {  
+    protected $guarded = ['id'];
+
     public function equipamentos()
     {
         return $this->hasMany('App\Equipamento');
