@@ -1,22 +1,28 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
+use App\Models\Role;
+use App\Models\Equipamento;
+use App\Models\User;
 
 class Rede extends Model
 {  
+    use HasFactory;
+
     protected $guarded = ['id'];
 
     public function equipamentos()
     {
-        return $this->hasMany('App\Equipamento');
+        return $this->hasMany(Equipamento::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     public function roles()

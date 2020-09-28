@@ -47,10 +47,10 @@
   <div class="col-6 col-md-4">
     <div class="row float-right">
       <div class="col-auto">
-        <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
+        <a href="{{action('App\Http\Controllers\EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
       </div>
       <div class="col-auto">
-        <form action="{{action('EquipamentoController@destroy', $equipamento->id)}}" method="post">
+        <form action="{{action('App\Http\Controllers\EquipamentoController@destroy', $equipamento->id)}}" method="post">
           {{csrf_field()}} {{ method_field('delete') }}
           <button class="delete-item btn btn-danger" type="submit">Deletar</button>
         </form>

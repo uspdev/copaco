@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Rede;
+use App\Models\Rede;
 
 class EquipamentoRequest extends FormRequest
 {

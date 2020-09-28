@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Rede;
+use App\Models\Rede;
 
 class RedeCidr implements Rule
 {

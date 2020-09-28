@@ -27,13 +27,13 @@
             <tr>
                 <td><a href="/roles/{{ $role->id }}">{{ $role->nome }}</a></td>
                 <td>
-                    <a href="{{action('RoleController@edit', $role->id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('App\Http\Controllers\RoleController@edit', $role->id)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                 </td>
                 <td>
-                    <form action="{{action('RoleController@destroy', $role->id)}}" method="post">
+                    <form action="{{action('App\Http\Controllers\RoleController@destroy', $role->id)}}" method="post">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
-                        <button class="delete-item btn btn-danger" type="submit">Deletar</button>
+                        <button class="delete-item btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i></button>
                     </form>
                 </td>
             </tr>

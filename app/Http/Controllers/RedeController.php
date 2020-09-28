@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Rede;
-use App\User;
-use App\Config;
+use App\Models\Rede;
+use App\Models\User;
+use App\Models\Config;
 use Illuminate\Http\Request;
 use App\Http\Requests\RedeRequest;
 use Illuminate\Support\Facades\Validator;

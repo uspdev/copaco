@@ -1,27 +1,31 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\Rede;
+use App\Models\Rede;
+use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
 class Equipamento extends Model
 {
+    use HasFactory;
+
     protected $guarded = [
         'id',
     ];
     
     public function rede()
     {
-        return $this->belongsTo('App\Rede');
+        return $this->belongsTo(Rede::class);
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
 
     /* Escopo local: https://laravel.com/docs/7.x/eloquent#local-scopes

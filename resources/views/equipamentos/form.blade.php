@@ -117,8 +117,8 @@
     @elseif (((old('fixarip') == 0)) and (!isset($equipamento->id)))
         hidden
     @endif >
-    <label class="col-sm-2 col-form-label" for="ip">IP</label>
     <div class="col-sm-7">
+        <label class="col-sm-2 col-form-label" for="ip">IP</label>
         <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip ?? old('ip')  }}" placeholder="Ex: 192.168.0.1">
     </div>
 </div>

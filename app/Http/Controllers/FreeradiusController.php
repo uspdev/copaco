@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\Rede;
-use App\Equipamento;
+use App\Models\Rede;
+use App\Models\Equipamento;
 
 use App\Utils\NetworkOps;
 

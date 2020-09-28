@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Rede;
-use App\Equipamento;
-use App\Config;
+use App\Models\Rede;
+use App\Models\Equipamento;
+use App\Models\Config;
 
 use App\Utils\NetworkOps;
 use App\Utils\Utils;

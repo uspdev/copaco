@@ -34,13 +34,13 @@
                 <td>{{ $rede->gateway }}</td>
                 <td>{{ $rede->equipamentos->count() }}</td>
                 <td>
-                    <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('App\Http\Controllers\RedeController@edit', $rede->id)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                 </td>
                 <td>
-                    <form action="{{action('RedeController@destroy', $rede->id)}}" method="post">
+                    <form action="{{action('App\Http\Controllers\RedeController@destroy', $rede->id)}}" method="post">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
-                        <button class="delete-item btn btn-danger" type="submit">Deletar</button>
+                        <button class="delete-item btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i></button>
                     </form>
                 </td>
             </tr>

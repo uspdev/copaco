@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Maatwebsite\Excel\Excel;
 use App\Exports\ExcelExport;
 
-use App\Equipamento;
-use App\Rede;
-use App\User;
+use App\Models\Equipamento;
+use App\Models\Rede;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\EquipamentoRequest;
 use App\Utils\NetworkOps;

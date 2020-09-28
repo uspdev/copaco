@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use App\Models\Rede;
 class RedesTableSeeder extends Seeder
 {
     /**
@@ -24,8 +26,8 @@ class RedesTableSeeder extends Seeder
             'user_id'   => '1',
             'shared_network' => 'default',
         ];
-        App\Rede::create($entrada);
+        Rede::create($entrada);
 
-        factory(App\Rede::class, 10)->create();
+        Rede::factory(10)->create();
     }
 }

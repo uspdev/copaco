@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
-use App\Rede;
+use App\Models\Role;
+use App\Models\Rede;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
