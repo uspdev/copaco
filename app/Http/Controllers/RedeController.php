@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Rede;
-use App\User;
-use App\Config;
+use App\Models\Rede;
+use App\Models\User;
+use App\Models\Config;
 use Illuminate\Http\Request;
+use App\Http\Requests\RedeRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use App\Rules\MultiplesIP;
@@ -65,37 +66,15 @@ class RedeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RedeRequest $request)
     {
         // Validações
-        $request->validate([
-            'nome'      => 'required',
-            'shared_network'      => 'required',
-            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr)],
-            'cidr'      => 'required|numeric|min:8|max:30',
-            'vlan'      => 'numeric',
-            'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new MultiplesIP('DNS')],
-            'netbios'   => [new MultiplesIP('NetBIOS')],
-            'ad_domain' => [new Domain('Active Directory Domain')],
-            'ntp'       => [new MultiplesIP('NTP')],
-        ]);
+        $validated = $request->validated();
  
         // Persistência
         $rede = new Rede;
-        $rede->nome     = $request->nome;
-        $rede->shared_network     = $request->shared_network;
-        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
-        $rede->iprede   = $request->iprede;
-        $rede->dns      = $request->dns;
-        $rede->gateway  = $request->gateway;
-        $rede->ntp      = $request->ntp;
-        $rede->netbios  = $request->netbios;
-        $rede->cidr     = $request->cidr;
-        $rede->vlan     = $request->vlan;
-        $rede->ad_domain= $request->ad_domain;
-        $rede->user_id = \Auth::user()->id;
-        $rede->save();
+        $validated['user_id'] = \Auth::user()->id;
+        $rede = $rede->create($validated);
 
         // Salva rede no freeRadius
         if (config('copaco.freeradius_habilitar')) {
@@ -155,38 +134,13 @@ class RedeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rede $rede)
+    public function update(RedeRequest $request, Rede $rede)
     {
         // Validações
-        $request->validate([
-            'nome'      => 'required',
-            'shared_network'      => 'required',
-            // 'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->iprede, $request->cidr, $rede->id)],
-            'iprede'    => ['ip','required','different:gateway', new RedeCidr($request->cidr, $rede->id)],
-            'cidr'      => 'required|numeric|min:8|max:30',
-            'vlan'      => 'numeric',
-            'gateway'   => ['ip','required', new PertenceRede($request->gateway, $request->iprede, $request->cidr)],
-            'dns'       => [new MultiplesIP('DNS')],
-            'netbios'   => [new MultiplesIP('NetBIOS')],
-            'ad_domain' => [new Domain('Active Directory Domain')],
-            'ntp'       => [new MultiplesIP('NTP')],
-        ]);
-
+        $validated = $request->validated();
+ 
         // Persistência
-        $rede->nome     = $request->nome;
-        $rede->dhcpd_subnet_options = $request->dhcpd_subnet_options;
-        $rede->shared_network     = $request->shared_network;
-        $rede->iprede   = $request->iprede;
-        $rede->gateway  = $request->gateway;
-        $rede->dns      = $request->dns;
-        $rede->cidr     = $request->cidr;
-        $rede->ntp      = $request->ntp;
-        $rede->netbios  = $request->netbios;
-        $rede->cidr     = $request->cidr;
-        $rede->vlan     = $request->vlan;
-        $rede->ad_domain= $request->ad_domain;
-        $rede->touch();
-        $rede->save();
+        $rede->update($validated);
 
         // gravar log das mudanças
         DB::table('redes_changes')->insert(

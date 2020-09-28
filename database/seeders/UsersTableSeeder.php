@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use App\Models\User;
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -17,7 +19,7 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('secret'), // hash para 'secret'
             'username' => 'fulano',
         ];
-        App\User::create($entrada);
+        User::create($entrada);
 
     }
 }

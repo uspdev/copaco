@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use App\Models\Equipamento;
 class EquipamentosTableSeeder extends Seeder
 {
     /**
@@ -23,8 +25,8 @@ class EquipamentosTableSeeder extends Seeder
             'rede_id' => '16',
             'user_id'   => '1',
         ];
-        App\Equipamento::create($entrada);
+        Equipamento::create($entrada);
 
-        factory(App\Equipamento::class, 20)->create();
+        Equipamento::factory(20)->create();
     }
 }

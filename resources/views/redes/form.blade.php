@@ -67,8 +67,9 @@
                 @endforeach()
             </select>
         </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Enviar Dados">
-        </div>
     </div>
+</div>
+<br>
+<div class="form-group">
+    <input type="submit" class="btn btn-primary" value="Enviar Dados">
 </div>

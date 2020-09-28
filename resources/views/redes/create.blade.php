@@ -8,9 +8,9 @@
     @include('messages.flash')
     @include('messages.errors')
     
-<div class="row">
-
-        <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">Cadastrar Rede</div>
+        <div class="card-body">
             <form method="post" action="{{ url('redes') }}">
                 {{ csrf_field() }}
                 @include('redes.form')

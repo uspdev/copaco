@@ -8,9 +8,9 @@
     @include('messages.flash')
     @include('messages.errors')
     
-    <div class="row">
-
-        <div class="col-md-6">
+    <div class="card">
+        <div class="card-header">Editar Equipamento</div>
+        <div class="card-body">
             <form action="{{ url('equipamentos'). '/' . $equipamento->id }}" method='post'>
                 {{ csrf_field() }} 
                 {{ method_field('patch') }}

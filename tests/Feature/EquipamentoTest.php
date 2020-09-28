@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Rede;
-use App\User;
-use App\Equipamento;
+use App\Models\Rede;
+use App\Models\User;
+use App\Models\Equipamento;
 
 class EquipamentoTest extends TestCase
 {

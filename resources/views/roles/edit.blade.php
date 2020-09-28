@@ -6,13 +6,12 @@
 
 
 @section('content')
-
-<div class="row">
-    @include('messages.flash')
-    @include('messages.errors')
-
-    <div class="col-md-6">
-        <form method="post" action="{{ action('RoleController@update', $role->id) }}">
+@include('messages.flash')
+@include('messages.errors')
+<div class="card">
+    <div class="card-header">Editar Grupo</div>
+    <div class="card-body">
+        <form method="post" action="{{ action('App\Http\Controllers\RoleController@update', $role->id) }}">
             {{ csrf_field() }}
             {{ method_field('patch') }}
             @include('roles.form')

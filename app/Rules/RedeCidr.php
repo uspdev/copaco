@@ -3,7 +3,7 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use App\Rede;
+use App\Models\Rede;
 
 class RedeCidr implements Rule
 {
@@ -16,9 +16,10 @@ class RedeCidr implements Rule
      * @int rede_id - Id a ser ignorada ao executar RedeController@update()
      * @return void
      */
-    public function __construct($cidr, $rede_id = 0)
+    public function __construct($cidr, $ip_rede, $rede_id = 0)
     {
         $this->rede_id = $rede_id;
+        $this->ip_rede = $ip_rede;
         $this->cidr = $cidr;
     }
 
@@ -45,6 +46,6 @@ class RedeCidr implements Rule
      */
     public function message()
     {
-        return "A rede $this->iprede/$this->cidr já existe. Por favor altere!";
+        return "A rede $this->ip_rede/$this->cidr já existe. Por favor altere!";
     }
 }

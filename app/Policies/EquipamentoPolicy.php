@@ -2,13 +2,13 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 
-use App\Equipamento;
+use App\Models\Equipamento;
 
 class EquipamentoPolicy
 {

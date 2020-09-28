@@ -9,7 +9,7 @@
     @include('messages.errors')
 <h4><b>Nome da Rede:</b> {{$rede->nome}}</h4>
 <div>
-    <a href="{{action('RedeController@edit', $rede->id)}}" class="btn btn-success">Editar</a>
+    <a href="{{action('App\Http\Controllers\RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>
 </div>
 <br>
 <div class="card">

@@ -5,8 +5,8 @@ use IPTools\IP;
 use IPTools\Network;
 use IPTools\Range;
 
-use App\Rede;
-use App\Equipamento;
+use App\Models\Rede;
+use App\Models\Equipamento;
 
 class NetworkOps
 {

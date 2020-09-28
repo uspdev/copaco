@@ -9,7 +9,7 @@
     @include('messages.errors')
 
 <div>
-    <a href="{{action('RoleController@edit', $role->id)}}" class="btn btn-success">Editar</a>
+    <a href="{{action('App\Http\Controllers\RoleController@edit', $role->id)}}" class="btn btn-warning">Editar</a>
 </div>
 <br>
 

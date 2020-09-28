@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Config;
-use App\Rede;
+use App\Models\Config;
+use App\Models\Rede;
 use App\Rules\MultiplesIP;
 
 class ConfigController extends Controller

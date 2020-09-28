@@ -5,8 +5,8 @@ namespace App\Utils;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
-use App\Rede;
-use App\Equipamento;
+use App\Models\Rede;
+use App\Models\Equipamento;
 
 class Utils
 {

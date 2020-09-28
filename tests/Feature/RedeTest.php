@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Rede;
-use App\User;
+use App\Models\Rede;
+use App\Models\User;
 
 class RedeTest extends TestCase
 {

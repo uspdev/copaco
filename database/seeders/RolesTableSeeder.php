@@ -1,6 +1,11 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Rede;
 
 class RolesTableSeeder extends Seeder
 {
@@ -14,13 +19,13 @@ class RolesTableSeeder extends Seeder
         $entrada = [
             'nome' => 'Escola de Música',
         ];
-        App\Role::create($entrada);
+        Role::create($entrada);
 
-        factory(App\Role::class, 5)->create()->each(function ($role) {           
-            $users = factory(App\User::class, 5)->make();
+        Role::factory(5)->create()->each(function ($role) {           
+            $users = User::factory(5)->make();
             $role->users()->saveMany($users);
 
-            $redes = factory(App\Rede::class, 3)->make();
+            $redes = Rede::factory(3)->make();
             $role->redes()->saveMany($redes);
         });
     }

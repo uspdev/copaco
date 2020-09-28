@@ -4,8 +4,8 @@ namespace App\Utils;
 
 use Illuminate\Support\Facades\DB;
 
-use App\Rede;
-use App\Equipamento;
+use App\Models\Rede;
+use App\Models\Equipamento;
 
 use App\Utils\NetworkOps;
 

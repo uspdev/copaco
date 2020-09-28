@@ -7,7 +7,10 @@
 @section('content')
     @include('messages.flash')
     @include('messages.errors')
-
+<div>
+    <a href="{{action('App\Http\Controllers\UserController@edit', $user->username )}}" class="btn btn-warning">Editar</a>
+</div>
+<br>
 <div class="card">
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><b>Nome:</b> {{ $user->name }}</li>
@@ -21,18 +24,10 @@
      </li>
   </ul>
 </div>
-
+<br>
 <div>
     <a href="{{ url()->previous() }}" class="btn btn-primary">Voltar</a>
 </div>
-
-<br>
-
-    <div>
-        <a href="{{action('UserController@edit', $user->username )}}" class="btn btn-warning">Editar</a>
-    </div>
-
-<br>
 
 @stop
 

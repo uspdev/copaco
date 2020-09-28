@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\DhcpController;
+use App\Http\Controllers\Api\FreeradiusController;
+use App\Http\Controllers\Api\EquipamentoController;
 
-Route::post('/dhcpd.conf', 'Api\DhcpController@dhcpd');
-Route::post('/uniquedhcpd.conf', 'Api\DhcpController@uniquedhcpd');
-Route::post('/freeradius/authorize_file', 'Api\FreeradiusController@authorize_file');
+Route::post('/dhcpd.conf', [DhcpController::class, 'dhcpd']);
+Route::post('/uniquedhcpd.conf', [DhcpController::class, 'uniquedhcpd']);
+Route::post('/freeradius/authorize_file', [FreeradiusController::class, 'authorize_file']);
 
-Route::post('/equipamentos/{patrimonio}/ip', 'Api\EquipamentoController@ip');
+Route::post('/equipamentos/{patrimonio}/ip', [EquipamentoController::class, 'ip']);

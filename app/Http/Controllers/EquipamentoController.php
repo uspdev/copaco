@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Maatwebsite\Excel\Excel;
 use App\Exports\ExcelExport;
 
-use App\Equipamento;
-use App\Rede;
-use App\User;
+use App\Models\Equipamento;
+use App\Models\Rede;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\EquipamentoRequest;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
 use App\Rules\MacAddress;
@@ -44,17 +45,22 @@ class EquipamentoController extends Controller
         $request = request();
 
         $query = Equipamento::allowed();
-
         // search terms
         if (!is_null($request->search)) {
-            $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
-            $query->where(function($query) use ($request,$searchable_fields) {
-                foreach ($searchable_fields as $field) {
-                    $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
+            //Busca por responsável
+            if (!is_null($request->search)) {
+                $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
+                $query->where(function($query) use ($request,$searchable_fields) {
+                    foreach ($searchable_fields as $field) {
+                        $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
+                    }
+                });
+                $query2 = User::where('name', 'LIKE', "%$request->search%")->get();
+                foreach($query2 as $q){
+                    $query->orWhere('user_id','=', $q->id);
                 }
-            });
+            }
         }
-
         // Mostra apenas equipamentos sem rede
         if (!is_null($request->naoalocados)) {
             $query->where('ip', '=', null);
@@ -86,105 +92,6 @@ class EquipamentoController extends Controller
     }
 
     /**
-     * Cuida efetivamente da persistência
-     *
-     * @param   \App\Equipamento
-     * @param   \Illuminate\Http\Request    $request
-     * @return  [\App\Equipamento, string]
-    */
-    private function persisteEquipamento(Equipamento $equipamento, Request $request)
-    {
-        $erro = '';
-        $request->validate([
-            #'patrimonio' => ['nullable', new Patrimonio],
-            'macaddress' => ['required', 'unique:equipamentos,macaddress,'.$equipamento->id, new MacAddress],
-            'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
-            'ip' => 'nullable|ip',
-        ]);
-
-        /* aqui lidamos com o usuário */
-        $user = Auth::user();
-        $user_id = $user->id;
-
-        /*  aqui a gente lida com obtenção de IP */
-        $ip = $request->ip;
-        $rede_id = $request->rede_id;
-        /*  se estiver vazio, será falso */
-        $fixarip = $request->fixarip ? $request->fixarip : 0;
-
-        if (!$fixarip) {
-            $ip = null;
-        }
-
-        $redes = Rede::allowed()->get();
-        if (!$redes->contains('id', $rede_id)) {
-            $rede_id = null;
-            $ip = null;
-        }
-
-        /*  na primeira vez, trocaremos da rede vazia para alguma
-            ou não mexeremos com rede, pois '' != 0 devolve false
-
-            neste momento:
-                $ip == null => alocar automático
-                $ip != null => tentar alocar $ip
-        */
-        $cadastra = false;
-
-        /* cadastra se redes diferentes */
-        if ($equipamento->rede_id != $rede_id) {
-            $cadastra = true;
-        }
-        /* ou se ips diferentes dado redes iguais */
-        elseif ($equipamento->ip != $ip) {
-            $cadastra = true;
-        }
-
-        if ($cadastra) {
-            $aloca = NetworkOps::aloca($rede_id, $ip);
-            if (empty($aloca['danger'])) {
-                $rede_id = $aloca['rede'];
-                $ip = $aloca['ip'];
-            }
-            else {
-                $erro = $aloca['danger'];
-                $rede_id = null;
-                $ip = null;
-            }
-        }
-
-        /*  tratamento da data de vencimento. default: 10 anos
-         *   TODO: colocar no .env um default e usar de lá.
-         */
-        if (empty(trim($request->vencimento))) {
-            $vencimento = Carbon::now()->addYears(10);
-        }
-        else {
-            $vencimento = Carbon::createFromFormat('d/m/Y', $request->vencimento);
-        }
-
-        /* persistência (na ordem do formulário) */
-        $equipamento->naopatrimoniado = $request->naopatrimoniado;
-        $equipamento->patrimonio = $request->patrimonio;
-        $equipamento->descricaosempatrimonio = $request->descricaosempatrimonio;
-        $equipamento->macaddress = $request->macaddress;
-        $equipamento->local = $request->local;
-
-        $equipamento->vencimento = $vencimento;
-        $equipamento->rede_id = $rede_id;
-        $equipamento->fixarip = $fixarip;
-        $equipamento->ip = $ip;
-        $equipamento->save();
-
-        $data = [
-            'equipamento' => $equipamento,
-            'erro' => $erro,
-        ];
-
-        return $data;
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -205,17 +112,13 @@ class EquipamentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EquipamentoRequest $request)
     {
         $this->authorize('equipamentos.create');
-
-        $resultado = $this->persisteEquipamento(new Equipamento, $request);
-
+        $equipamento = new Equipamento;
+        $validated = $request->validated();     
+        $resultado = $equipamento->setEquipamento($equipamento, $validated,'store');
         $equipamento = $resultado['equipamento'];
-
-        $user = Auth::user();
-        $equipamento->user_id = $user->id;
-        $equipamento->save();
 
         $erro = $resultado['erro'];
         if ($erro) {
@@ -289,24 +192,22 @@ class EquipamentoController extends Controller
      * @param  \App\Equipamento  $equipamento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Equipamento $equipamento)
+    public function update(EquipamentoRequest $request, Equipamento $equipamento)
     {
         $this->authorize('equipamentos.update', $equipamento);
 
         // mac antigo para o freeradius
         $macaddress_antigo = $equipamento->macaddress;
-
-        $resultado = $this->persisteEquipamento($equipamento, $request);
+        $validated = $request->validated();     
+        $resultado = $equipamento->setEquipamento($equipamento, $validated,'update');
         $equipamento = $resultado['equipamento'];
         $erro = $resultado['erro'];
-
         // gravar log das mudanças
         DB::table('equipamentos_changes')->insert(
-            ['equipamento_id' => $equipamento->id, 'user_id' => \Auth::user()->id]
+            ['equipamento_id' => $equipamento->id, 'user_id' => Auth::user()->id]
         );
 
         if ($erro) {
-
             $request->session()->flash('alert-danger', $erro);
             return redirect("/equipamentos/$equipamento->id/edit");
         }

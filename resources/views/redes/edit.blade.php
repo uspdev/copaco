@@ -10,10 +10,10 @@
     @include('messages.flash')
     @include('messages.errors')
     
-<div class="row">
-
-    <div class="col-md-6">
-        <form method="post" action="{{ action('RedeController@update', $rede->id) }}">
+<div class="card">
+    <div class="card-header">Editar Rede</div>
+    <div class="card-body">
+        <form method="post" action="{{ action('App\Http\Controllers\RedeController@update', $rede->id) }}">
             {{ csrf_field() }}
             {{ method_field('patch') }}
             @include('redes.form')

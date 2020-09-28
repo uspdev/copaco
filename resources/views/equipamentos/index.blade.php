@@ -15,7 +15,7 @@
         </a>
     </div>
     <div class="col-auto float-right">
-        <a href="/excel?vencidos={{ request()->vencidos }}&naoalocados={{ request()->naoalocados }}&rede={{ request()->rede }}&rede_id={{ request()->rede_id }}&search={{ request()->search }}" class="btn btn-primary"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Exportar para Excel</a>
+        <a href="/excel?vencidos={{ request()->vencidos }}&naoalocados={{ request()->naoalocados }}&rede={{ request()->rede }}&rede_id={{ request()->rede_id }}&search={{ request()->search }}" class="btn btn-primary"><i class="fas fa-file-excel"></i> Exportar para Excel</a>
     </div>
 </div>
 <br>
@@ -97,12 +97,12 @@
                 </td>
 
                 <td>
-                    <a href="{{action('EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('App\Http\Controllers\EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                 </td>
                 <td>
-                    <form action="{{action('EquipamentoController@destroy', $equipamento->id)}}" method="post">
+                    <form action="{{action('App\Http\Controllers\EquipamentoController@destroy', $equipamento->id)}}" method="post">
                       {{csrf_field()}} {{ method_field('delete') }}
-                      <button class="delete-item btn btn-danger" type="submit">Deletar</button>
+                      <button class="delete-item btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i></button>
                   </form>
                 </td>
             </tr>

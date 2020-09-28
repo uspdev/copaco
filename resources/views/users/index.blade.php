@@ -38,7 +38,7 @@
                 </td>
 
                 <td>
-                    <a href="{{action('UserController@edit', $user->username)}}" class="btn btn-warning">Editar</a>
+                    <a href="{{action('App\Http\Controllers\UserController@edit', $user->username)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                 </td>
 
             </tr>
