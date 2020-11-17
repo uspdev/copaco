@@ -36,8 +36,9 @@ class RedeController extends Controller
      */
     public function index()
     {
-        $redes = Rede::paginate(20);
-        return view('redes.index')->with('redes', $redes);
+        return view('redes.index',[
+            'redes' => Rede::all(),
+        ]);
     }
 
     /**

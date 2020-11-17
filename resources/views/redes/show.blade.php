@@ -72,7 +72,7 @@
       <th>{{ $equipamento->patrimonio }}</th>
       <th>{{ $equipamento->descricao }}</th>
     </tr>
-    @endforeach
+  @endforeach
   </tdoby>
 </table>
 

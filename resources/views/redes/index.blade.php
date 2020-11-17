@@ -48,6 +48,5 @@
         </tbody>
     </table>
 </div>
-{{ $redes->appends(request()->query())->links() }}
 
 @stop
