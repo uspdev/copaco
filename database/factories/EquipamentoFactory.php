@@ -43,9 +43,8 @@ class EquipamentoFactory extends Factory
             $rede->id = null;
         }
         return [
-            'naopatrimoniado' => 0,
             'patrimonio' => null,
-            'descricaosempatrimonio' => $this->faker->paragraph(1),
+            'descricao' => $this->faker->paragraph(1),
             'macaddress' => $this->faker->unique()->macAddress,
             'local' => $this->faker->word,
             'vencimento' => date("Y-m-d", strtotime("+".rand(30, 360)."days")),

@@ -1,32 +1,3 @@
-$("input[name='naopatrimoniado']").change(function(){
-  if($(this).val() == 1){
-    checked_sim('naopatrimoniado');
-  }
-  else {
-    checked_nao('naopatrimoniado');
-  }
-});
-
-function checked_nao(name){
-  if (name == 'naopatrimoniado') {
-    $('#sempatrimonio').attr('hidden',false).find('input').attr('required',true);
-    $('#compatrimonio').attr('hidden',true).find('input').attr('required',false).val('');
-  }
-  else {
-    $('#equipamento_ip').attr('hidden',true).find('input').attr('required',false);
-  }
-}
-
-function checked_sim(name){
-  if (name == 'naopatrimoniado') {
-    $('#compatrimonio').attr('hidden',false).find('input').attr('required',true);
-    $('#sempatrimonio').attr('hidden',true).find('input').attr('required',false).val('');
-  }
-  else {
-    $('#equipamento_ip').attr('hidden',false).find('input').attr('required',true);
-  }
-}
-
 $('#datepicker').datepicker({
     format: 'dd/mm/yyyy',
     language: 'pt-BR',
@@ -54,9 +25,9 @@ $('#datepicker').datepicker({
     
 $("input[name='fixarip']").change(function(){
   if($(this).val() == 1){
-    checked_sim('fixarip');
+    $('#equipamento_ip').attr('hidden',false).find('input').attr('required',true);
   }
   else {
-    checked_nao('fixarip');
+    $('#equipamento_ip').attr('hidden',true).find('input').attr('required',false);
   }
 });

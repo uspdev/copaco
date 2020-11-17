@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('content_header')
-  <h1>Equipamento: {{ $equipamento->descricaosempatrimonio ?? $equipamento->patrimonio }} </h1>
+  <h1>Equipamento: {{ $equipamento->macaddress }} </h1>
 @stop
 
 @section('content')
@@ -13,22 +13,8 @@
   <div class="card-body">
 
     <ul class="list-group list-group-flush">
-      @if($equipamento->naopatrimoniado)
-        <li class="list-group-item"> <b>Patrimônio:</b> {{$equipamento->patrimonio}}
-  {{--
-          <br><i>Dados no mercúrio:</i>
-          <ul>        
-            <li>Material: {{ $info_patrimonio['Nomsgpitmmat'] }}</li>
-            <li>Responsável: {{ $info_patrimonio['Nompes'] }}</li>
-            <li>Centro de despesa: {{ $info_patrimonio['Nomcendsp'] }}</li>
-            <li>Localização: {{ $info_patrimonio['Idfloc'] }}</li>
-          </ul>
-        </li>
-  --}}
-      @else
-        <li class="list-group-item"> <b>Descrição:</b> {{$equipamento->descricaosempatrimonio}} </li>
-      @endif
-
+      <li class="list-group-item"><b>Patrimônio:</b> {{$equipamento->patrimonio}} </li>
+      <li class="list-group-item"><b>Descrição:</b> {{$equipamento->descricao}} </li>
       <li class="list-group-item"><b>Mac Address:</b> {{ $equipamento->macaddress }}</li>
       <li class="list-group-item"><b>Local:</b> {{ $equipamento->local }}</li>
       <li class="list-group-item"><b>Vencimento:</b> {{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</li>

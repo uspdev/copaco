@@ -26,13 +26,11 @@ class EquipamentoRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'naopatrimoniado' => 'required',
-            'patrimonio' => ['nullable', 'required_if:naopatrimoniado,1'],
-            //'patrimonio' => ['nullable', new Patrimonio],
+            'patrimonio' => ['nullable'],
             'macaddress' => [
                 'required',
             ],
-            'descricaosempatrimonio' => ['nullable','required_if:naopatrimoniado,0'],
+            'descricao' => ['nullable'],
             'local' => '',
             'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
             'rede_id' => ['nullable', Rule::in(Rede::allowed()->get()->sortBy('nome')->pluck('id'))],

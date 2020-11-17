@@ -62,7 +62,8 @@
         <thead>
             <tr>
                 <th>MAC Address</th>
-                <th>Identificação/patrimônio</th>
+                <th>Patrimônio</th>
+                <th>Descrição</th>
                 <th>IP</th>
                 <th>Rede</th>
                 <th>Vencimento</th>
@@ -74,7 +75,8 @@
             @foreach($equipamentos as $equipamento)
             <tr>
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
-                <td>{{ $equipamento->descricaosempatrimonio ?? $equipamento->patrimonio }}</td>
+                <td>{{ $equipamento->patrimonio }}</td>
+                <td>{{ $equipamento->descricao }}</td>
                 <td>{{ $equipamento->ip ?? '' }}</td>
                 <td><i>{{ $equipamento->rede->nome ?? '' }}</i>
                     @isset ($equipamento->rede->iprede)

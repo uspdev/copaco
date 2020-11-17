@@ -1,71 +1,34 @@
 <div class="form-group">
-    <label>Possui Patrimônio?</label>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-sim" value="1"
-            @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
-                checked
-            @elseif ((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1))
-                checked
-            @endif >
-        <label class="form-check-label" for="check-sim">Sim</label>
+  <div class="row">
+    <div class="col-sm">
+      <label for="patrimonio">Patrimônio</label>
+      <input type="text" class="form-control" id="patrimonio" name="patrimonio" placeholder="008.0051544" value="{{ $equipamento->patrimonio ?? old('patrimonio') }}">
     </div>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="naopatrimoniado" id="check-nao" value="0"
-            @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
-                checked
-            @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
-                checked
-            @endif >
-        <label class="form-check-label" for="check-nao">Não</label>
+
+    <div class="col-sm">
+      <label for="descricao">Descrição</label>
+      <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Computador do Fulano" value="{{ $equipamento->descricao ?? old('descricao') }}">
     </div>
-</div>
 
-<div class="form-group" id="compatrimonio"
-    @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
-        hidden
-    @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
-        hidden
-    @endif >
-    <label for="patrimonio">Patrimônio</label>
-    <input name="patrimonio" type="text" class="form-control" value="{{ $equipamento->patrimonio ?? old('patrimonio') }}" placeholder="Ex: 001.586985"
-        @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
-            required
-        @elseif (((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
-            required
-        @endif >
-</div>
-
-<div class="form-group" id="sempatrimonio"
-    @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 1))
-        hidden
-    @elseif (((old('naopatrimoniado') == null) ?? (old('naopatrimoniado') == 1)) and (!isset($equipamento->id)))
-        hidden
-    @endif >
-    <label for="descricaosempatrimonio">Descrição para não patrimoniados</label>
-    <input name="descricaosempatrimonio" type="text" class="form-control"
-        value="{{ $equipamento->descricaosempatrimonio ?? old('descricaosempatrimonio') }}" placeholder="Ex: Professor visitante Joãozinho"
-        @if (isset($equipamento->id) and ($equipamento->naopatrimoniado === 0))
-            required
-        @elseif ((old('naopatrimoniado') != null) and (old('naopatrimoniado') == 0))
-            required
-        @endif >
+    <div class="col-sm">
+      <label for="macaddress">Mac Address</label>
+      <input type="text" class="form-control" id="macaddress" name="macaddress" placeholder="Ex: 00:45:8A:AA:90:88" value="{{ $equipamento->macaddress ?? old('macaddress') }}">
+    </div>
+  </div>
 </div>
 
 <div class="form-group">
-    <label for="macaddress">Mac Address</label>
-    <input type="text" class="form-control" id="macaddress" name="macaddress" placeholder="Ex: 00:45:8A:AA:90:88" 
-           value="{{ $equipamento->macaddress ?? old('macaddress') }}">
-</div>
+  <div class="row">
+    <div class="col-sm">
+      <label for="local">Local</label>
+      <input type="text" class="form-control" id="local" name="local" value="{{ $equipamento->local ?? old('local') }}" placeholder="Ex: Sala 10">
+    </div>
 
-<div class="form-group">
-    <label for="local">Local</label>
-    <input type="text" class="form-control" id="local" name="local" value="{{ $equipamento->local ?? old('local') }}" placeholder="Ex: Sala 10">
-</div>
-
-<div class="form-group">
-    <label  for="vencimento">Vencimento</label>
-    <input type="text" class="form-control" id="datepicker" name="vencimento" 
-           value="{{ $equipamento->vencimento ?? old('vencimento')  }}" autocomplete="off"> 
+    <div class="col-sm">
+      <label  for="vencimento">Vencimento</label>
+      <input type="text" class="form-control datepicker" name="vencimento" value="{{ $equipamento->vencimento ?? old('vencimento')  }}" autocomplete="off"> 
+    </div>
+  </div>
 </div>
 
 <div class="form-group">

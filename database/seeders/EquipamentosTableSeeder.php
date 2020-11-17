@@ -14,9 +14,8 @@ class EquipamentosTableSeeder extends Seeder
     public function run()
     {
         $entrada = [
-            'naopatrimoniado' => 0,
             'patrimonio' => null,
-            'descricaosempatrimonio' => 'Computador do Prof. Joel',
+            'descricao' => 'Computador do Prof. Joel',
             'macaddress' => '00:55:44:88:78:77',
             'local' => 'Sala 10',
             'vencimento' => '2020-07-11',

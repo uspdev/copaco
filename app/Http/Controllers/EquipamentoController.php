@@ -49,7 +49,7 @@ class EquipamentoController extends Controller
         if (!is_null($request->search)) {
             //Busca por responsável
             if (!is_null($request->search)) {
-                $searchable_fields = ['macaddress','patrimonio','descricaosempatrimonio','local','ip'];
+                $searchable_fields = ['macaddress','patrimonio','descricao','local','ip'];
                 $query->where(function($query) use ($request,$searchable_fields) {
                     foreach ($searchable_fields as $field) {
                         $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
@@ -156,15 +156,6 @@ class EquipamentoController extends Controller
             ]);
         }
 
-/*
-        if ($equipamento->naopatrimoniado) {
-            $patrimonio = new dadosUsp;
-            $xml = $patrimonio->fetchNumpat($equipamento->patrimonio);
-            $info_patrimonio = $patrimonio->xml2array($xml);
-            $info_patrimonio;
-            return view('equipamentos.show', compact('equipamento','changes','info_patrimonio'));
-        }
-*/
         return view('equipamentos.show', compact('equipamento','changes'));
     }
 
@@ -243,7 +234,7 @@ class EquipamentoController extends Controller
 
     public function excel(Excel $excel){
         /* Falta acertar as permissões */
-        $headings = ['patrimonio','descricaosempatrimonio','macaddress','local','vencimento','ip'];
+        $headings = ['patrimonio','descricao','macaddress','local','vencimento','ip'];
         $equipamentos = $this->search()->get($headings)->toArray();
         $export = new ExcelExport($equipamentos, $headings);
         return $excel->download($export, 'equipamentos.xlsx');

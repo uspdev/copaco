@@ -60,19 +60,17 @@
     <tr>
       <th scope="col">MacAddress</th>
       <th scope="col">IP</th>
-      <th scope="col">Patrimônio/Descrição</th>
+      <th scope="col">Patrimônio</th>
+      <th scope="col">Descrição</th>
     </tr>
   </thead>
   <tbody>
-  @foreach($rede->equipamentos as $equipamento)
+  @foreach($rede->equipamentos->sortBy('ip') as $equipamento)
     <tr>
       <th><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress}}</a></th>
       <th>{{ $equipamento->ip }}</th>
-      @if($equipamento->patrimonio != null)
-        <th>{{ $equipamento->patrimonio }}</th>
-      @else
-        <th>{{ $equipamento->descricaosempatrimonio }}</th>
-      @endif
+      <th>{{ $equipamento->patrimonio }}</th>
+      <th>{{ $equipamento->descricao }}</th>
     </tr>
     @endforeach
   </tdoby>
