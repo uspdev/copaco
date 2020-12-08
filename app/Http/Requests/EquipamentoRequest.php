@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\Rede;
+use App\Rules\MacAddress;
 
 class EquipamentoRequest extends FormRequest
 {
@@ -27,15 +28,13 @@ class EquipamentoRequest extends FormRequest
     {
         $rules = [
             'patrimonio' => ['nullable'],
-            'macaddress' => [
-                'required',
-            ],
+            'macaddress' => ['required', new MacAddress],
             'descricao' => ['nullable'],
             'local' => '',
-            'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
-            'rede_id' => ['nullable', Rule::in(Rede::allowed()->get()->sortBy('nome')->pluck('id'))],
-            'fixarip' => 'required',
-            'ip' => 'nullable|ip|required_if:fixarip,1',
+            'vencimento' => '',
+            #'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
+            'rede_id' => ['nullable', Rule::in(Rede::allowed()->get()->pluck('id'))],
+            'ip' => 'nullable|ip',
         ];
         if ($this->method() == 'PATCH' || $this->method() == 'PUT'){
             array_push($rules['macaddress'], 'unique:equipamentos,macaddress,'.$this->equipamento->id);
