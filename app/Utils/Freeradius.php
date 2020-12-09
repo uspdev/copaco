@@ -91,58 +91,56 @@ class Freeradius
 
     public function cadastraOuAtualizaEquipamento($equipamento, $mac_antigo = null)
     {
-        // Verifica se equipamento não está vencido
-        $vencimento = Carbon::CreateFromFormat('d/m/Y', $equipamento->vencimento);
-        if($vencimento >= Carbon::now()) {
+        // Falta verifica se equipamento não está vencido antes de mandar para freeradius
+        #if($vencimento >= Carbon::now()) {
 
-            // Garante que a rede para esse equipamento também esteja cadastrada
-            $this->cadastraOuAtualizaRede($equipamento->rede);
-            
-            // corrige mac-address
-            $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
-            $mac_antigo = $this->formataMacAddr($mac_antigo);
+        // Garante que a rede para esse equipamento também esteja cadastrada
+        $this->cadastraOuAtualizaRede($equipamento->rede);
+        
+        // corrige mac-address
+        $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
+        $mac_antigo = $this->formataMacAddr($mac_antigo);
 
-            // 1. Popula tabela radusergroup
-            $fields = [
-                'UserName' => $equipamento->macaddress,
-                'GroupName' => $equipamento->rede->id,
-            ];
+        // 1. Popula tabela radusergroup
+        $fields = [
+            'UserName' => $equipamento->macaddress,
+            'GroupName' => $equipamento->rede->id,
+        ];
 
-            $filter = [
-                'UserName' => $mac_antigo,
-            ];
-            
-            // radusergroup: first, check if this record exist before insert
-            $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
-            
-            $radius_db = DB::connection('freeradius')->table('radusergroup');
+        $filter = [
+            'UserName' => $mac_antigo,
+        ];
+        
+        // radusergroup: first, check if this record exist before insert
+        $check = DB::connection('freeradius')->table('radusergroup')->select()->where($filter)->first();
+        
+        $radius_db = DB::connection('freeradius')->table('radusergroup');
 
-            if (is_null($mac_antigo) || is_null($check)) {
-                $radius_db->insert($fields);
-            } else {
-                $radius_db->where($filter)->update($fields);
-            }
+        if (is_null($mac_antigo) || is_null($check)) {
+            $radius_db->insert($fields);
+        } else {
+            $radius_db->where($filter)->update($fields);
+        }
 
-            // 2. popula tabela radcheck
+        // 2. popula tabela radcheck
 
-            $fields = [
-                'UserName' => $equipamento->macaddress,
-                'Attribute' => 'Cleartext-Password',
-                'Value' => $equipamento->macaddress,
-                'Op' => ':=',
-            ];
+        $fields = [
+            'UserName' => $equipamento->macaddress,
+            'Attribute' => 'Cleartext-Password',
+            'Value' => $equipamento->macaddress,
+            'Op' => ':=',
+        ];
 
-            $filter = [
-                'UserName' => $mac_antigo,
-            ];
+        $filter = [
+            'UserName' => $mac_antigo,
+        ];
 
-            $check = DB::connection('freeradius')->table('radcheck')->select()->where($filter)->first();
+        $check = DB::connection('freeradius')->table('radcheck')->select()->where($filter)->first();
 
-            if (is_null($mac_antigo) || is_null($check)) {
-                DB::connection('freeradius')->table('radcheck')->insert($fields);
-            } else {
-                DB::connection('freeradius')->table('radcheck')->where($filter)->update($fields);
-            }
+        if (is_null($mac_antigo) || is_null($check)) {
+            DB::connection('freeradius')->table('radcheck')->insert($fields);
+        } else {
+            DB::connection('freeradius')->table('radcheck')->where($filter)->update($fields);
         }
     }
 
