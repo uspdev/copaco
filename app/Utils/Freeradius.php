@@ -92,7 +92,8 @@ class Freeradius
     public function cadastraOuAtualizaEquipamento($equipamento, $mac_antigo = null)
     {
         // Verifica se equipamento não está vencido
-        if($equipamento->vencimento >= Carbon::now()) {
+        $vencimento = Carbon::CreateFromFormat('d/m/Y', $equipamento->vencimento);
+        if($vencimento >= Carbon::now()) {
 
             // Garante que a rede para esse equipamento também esteja cadastrada
             $this->cadastraOuAtualizaRede($equipamento->rede);
