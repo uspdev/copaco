@@ -79,17 +79,17 @@ class NetworkOps
         return false;
     }
 
-    public static function isIpAvailable(Rede $rede, $ip)
+    public static function isIpAvailable(Rede $rede, $ip, $ip_ignore = null)
     {
         $ips_alocados = $rede->equipamentos->pluck('ip')->all();
-        if (in_array($ip, $ips_alocados)) {
+        if (in_array($ip, $ips_alocados) && $ip != $ip_ignore) {
             return false;
         } else {
             return true;
         }
     }
 
-    public static function aloca($rede_id, $ip)
+    public static function aloca($rede_id, $ip, $ip_ignore = null)
     {
         $danger = '';
 
@@ -138,7 +138,7 @@ class NetworkOps
                 $rede_id = null;
             } else {
                 # verificar se ip está disponível
-                if (!NetworkOps::isIpAvailable($rede, $ip)) {
+                if (!NetworkOps::isIpAvailable($rede, $ip, $ip_ignore)) {
                     $danger = 'IP não disponível na rede selecionada. Equipamento não alocado.';
                     $ip = null;
                     $rede_id = null;

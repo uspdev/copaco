@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Rede;
 use App\Models\User;
 use Carbon\Carbon;
+use App\Utils\NetworkOps;
 
 class Equipamento extends Model
 {
@@ -82,98 +83,30 @@ class Equipamento extends Model
         return $query;
     }
 
-    public function setEquipamento(Equipamento $equipamento, $validated,$action){
-        $validated['vencimento'] = $this->getDataVencimento($validated);
-        $resultado = $this->setRede($validated, $this->getIpRede($validated));
-        if($action == 'store'){
-            $user = Auth::user();
-            $validated['user_id'] = $user->id;
-            $equipamento = Equipamento::create($validated);
+    public function setVencimentoAttribute($value) {
+        if($value){
+            $this->attributes['vencimento'] = Carbon::createFromFormat('d/m/Y', $value);
         }
-        else{
-            $equipamento->update($validated);
+        else {
+            $this->attributes['vencimento'] = Carbon::now()->addYears(10);
         }
-        $data = [
-            'equipamento' => $equipamento,
-            'erro' => $resultado,
-        ];    
-        return $data;
-    }
-    
-    public function getDataVencimento($equipamento){
-        /*  tratamento da data de vencimento. default: 10 anos
-         *   TODO: colocar no .env um default e usar de lá.
-         */
-        if($equipamento['vencimento'] == '') {
-            $data = Carbon::now()->addYears(10);
-        }
-        else{
-            $data = Carbon::createFromFormat('d/m/Y', $equipamento['vencimento']);
-        }
-        return $data;
     }
 
-    public function getIpRede($equipamento){
-        /* aqui lidamos com o usuário */
-        //$user = Auth::user();
-        //$user_id = $user->id;
-
-        /*  aqui a gente lida com obtenção de IP */
-        $ip = $equipamento['ip'];
-        $rede_id = $equipamento['rede_id'];
-        /*  se estiver vazio, será falso */
-        $fixarip = $equipamento['fixarip'] ? $equipamento['fixarip'] : 0;
-
-        if (!$fixarip) {
-            $ip = null;
+    public function getVencimentoAttribute($value) {
+        if($value){
+            return Carbon::CreateFromFormat('Y-m-d', $value)->format('d/m/Y');
         }
-
-        $redes = Rede::allowed()->get();
-        if (!$redes->contains('id', $rede_id)) {
-            $rede_id = null;
-            $ip = null;
-        }
-        $dados_rede = [
-            'rede_id' => $rede_id,
-            'ip' => $ip,
-            'fixarip' => $fixarip,
-        ];
-
-        return $dados_rede;
     }
 
-    public function setRede($equipamento, $dados_rede){
-        /*  na primeira vez, trocaremos da rede vazia para alguma
-            ou não mexeremos com rede, pois '' != 0 devolve false
+    /* Quando a rede está zerada, temos que zerar o campo IP */
+    public function setRedeIpAttribute($value){
+        !empty($value) ?: $this->attributes['ip'] = null;
+    }
 
-            neste momento:
-                $ip == null => alocar automático
-                $ip != null => tentar alocar $ip
-        */
-        $cadastra = false;
-        $erro = '';
-        /* cadastra se redes diferentes */
-        if ($equipamento['rede_id'] != $dados_rede['rede_id']) {
-            $cadastra = true;
-        }
-        /* ou se ips diferentes dado redes iguais */
-        elseif ($equipamento['ip'] != $dados_rede['ip']) {
-            $cadastra = true;
-        }
-
-        if ($cadastra) {
-            $aloca = NetworkOps::aloca($dados_rede['rede_id'], $dados_rede['ip']);
-            if (empty($aloca['danger'])) {
-                $equipamento['rede_id'] = $aloca['rede'];
-                $equipamento['ip'] = $aloca['ip'];
-            }
-            else {
-                $erro = $aloca['danger'];
-                $equipamento['rede_id'] = null;
-                $equipamento['ip'] = null;
-            }
-        }
-        return $erro;
+    public function setIpAttribute($value){
+        $aloca = NetworkOps::aloca($this->rede_id, $value, $this->ip);
+        $this->attributes['rede_id'] = $aloca['rede'];
+        $this->attributes['ip'] = $aloca['ip'];
+        empty($aloca['danger']) ?: request()->session()->flash('alert-danger', $aloca['danger']);
     }    
-            
 }

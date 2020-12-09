@@ -115,17 +115,11 @@ class EquipamentoController extends Controller
     public function store(EquipamentoRequest $request)
     {
         $this->authorize('equipamentos.create');
-        $equipamento = new Equipamento;
-        $validated = $request->validated();     
-        $resultado = $equipamento->setEquipamento($equipamento, $validated,'store');
-        $equipamento = $resultado['equipamento'];
-
-        $erro = $resultado['erro'];
-        if ($erro) {
-            $request->session()->flash('alert-danger', $erro);
-            return redirect("/equipamentos/$equipamento->id/edit");
-        }
-
+        $validated = $request->validated();
+        $user = Auth::user();
+        $validated['user_id'] = $user->id;
+        $equipamento = Equipamento::create($validated);
+        
         // salva equipamento no freeRadius
         if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {
             $this->freeradius->cadastraOuAtualizaEquipamento($equipamento);
@@ -171,8 +165,6 @@ class EquipamentoController extends Controller
 
         $user = Auth::user();
         $redes = Rede::allowed()->get();
-
-        $equipamento->vencimento = Carbon::createFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y');
         return view('equipamentos.edit', compact('equipamento', 'redes'));
     }
 
@@ -188,20 +180,13 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.update', $equipamento);
 
         // mac antigo para o freeradius
-        $macaddress_antigo = $equipamento->macaddress;
-        $validated = $request->validated();     
-        $resultado = $equipamento->setEquipamento($equipamento, $validated,'update');
-        $equipamento = $resultado['equipamento'];
-        $erro = $resultado['erro'];
+        $macaddress_antigo = $equipamento->macaddress;  
+        $equipamento->update($request->validated());
+
         // gravar log das mudanças
         DB::table('equipamentos_changes')->insert(
             ['equipamento_id' => $equipamento->id, 'user_id' => Auth::user()->id]
         );
-
-        if ($erro) {
-            $request->session()->flash('alert-danger', $erro);
-            return redirect("/equipamentos/$equipamento->id/edit");
-        }
 
         // atualiza equipamento no freeRadius
         if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {

@@ -28,6 +28,6 @@ class RedesTableSeeder extends Seeder
         ];
         Rede::create($entrada);
 
-        Rede::factory(10)->create();
+        #Rede::factory(10)->create();
     }
 }

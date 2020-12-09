@@ -36,19 +36,12 @@ class EquipamentoFactory extends Factory
         // Não começa em zero para excluir gateway
         $ip_selecionado = NetworkOps::getRandomIP($rede->iprede, $rede->cidr);
 
-        // fixar IPs
-        $fixarip = $this->faker->boolean();
-        if(!$fixarip){
-            $ip_selecionado = null;
-            $rede->id = null;
-        }
         return [
             'patrimonio' => null,
             'descricao' => $this->faker->paragraph(1),
             'macaddress' => $this->faker->unique()->macAddress,
             'local' => $this->faker->word,
-            'vencimento' => date("Y-m-d", strtotime("+".rand(30, 360)."days")),
-            'fixarip' => $fixarip,
+            'vencimento' => date("d/m/Y", strtotime("+".rand(30, 360)."days")),
             'ip' => $ip_selecionado,
             'rede_id' => $rede->id,
             'user_id' => $role_user->user_id,
