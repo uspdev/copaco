@@ -88,7 +88,7 @@
                     @endisset
                 </td>
 
-                <td>{{ \Carbon\Carbon::CreateFromFormat('Y-m-d', $equipamento->vencimento)->format('d/m/Y') }}</td>
+                <td>{{ $equipamento->vencimento }}</td>
 
                 <td>
                     @can('admin')

@@ -16,16 +16,14 @@ class EquipamentosTableSeeder extends Seeder
         $entrada = [
             'patrimonio' => null,
             'descricao' => 'Computador do Prof. Joel',
-            'macaddress' => '00:55:44:88:78:77',
+            'macaddress' => '01:55:44:88:78:77',
             'local' => 'Sala 10',
-            'vencimento' => '2020-07-11',
-            'fixarip' => 1,
-            'ip' => '192.168.0.22',
+            'vencimento' => '25/11/2022',
+            'ip' => '192.168.0.10',
             'rede_id' => '16',
             'user_id'   => '1',
         ];
-        Equipamento::create($entrada);
-
-        Equipamento::factory(20)->create();
+        #Equipamento::create($entrada);
+        #Equipamento::factory(20)->create();
     }
 }

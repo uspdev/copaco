@@ -87,7 +87,7 @@ class Equipamento extends Model
         if($value){
             $this->attributes['vencimento'] = Carbon::createFromFormat('d/m/Y', $value);
         }
-        else{
+        else {
             $this->attributes['vencimento'] = Carbon::now()->addYears(10);
         }
     }
@@ -100,23 +100,13 @@ class Equipamento extends Model
 
     /* Quando a rede está zerada, temos que zerar o campo IP */
     public function setRedeIpAttribute($value){
-        if(!$value){
-            $this->attributes['ip'] == '';
-        }
+        !empty($value) ?: $this->attributes['ip'] = null;
     }
 
     public function setIpAttribute($value){
-        if($value){
-            $aloca = NetworkOps::aloca($this->attributes['rede_id'], $value);
-            
-            if (empty($aloca['danger'])) {
-                $this->attributes['rede_id'] = $aloca['rede'];
-                $this->attributes['ip'] = $aloca['ip'];
-            } else {
-                $this->attributes['rede_id'] == null;
-                $this->attributes['ip'] == null;
-                request()->session()->flash('alert-danger', $aloca['danger']);
-            }
-        }
-    }        
+        $aloca = NetworkOps::aloca($this->rede_id, $value, $this->ip);
+        $this->attributes['rede_id'] = $aloca['rede'];
+        $this->attributes['ip'] = $aloca['ip'];
+        empty($aloca['danger']) ?: request()->session()->flash('alert-danger', $aloca['danger']);
+    }    
 }

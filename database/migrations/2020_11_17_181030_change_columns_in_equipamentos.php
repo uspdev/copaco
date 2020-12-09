@@ -15,6 +15,7 @@ class ChangeColumnsInEquipamentos extends Migration
     {
         Schema::table('equipamentos', function (Blueprint $table) {
             $table->dropColumn('naopatrimoniado');
+            $table->dropColumn('fixarip');
             $table->renameColumn('descricaosempatrimonio', 'descricao');
         });
     }

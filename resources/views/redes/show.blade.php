@@ -61,6 +61,7 @@
       <th scope="col">MacAddress</th>
       <th scope="col">IP</th>
       <th scope="col">Patrimônio</th>
+      <th scope="col">Local</th>
       <th scope="col">Descrição</th>
     </tr>
   </thead>
@@ -70,6 +71,7 @@
       <th><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress}}</a></th>
       <th>{{ $equipamento->ip }}</th>
       <th>{{ $equipamento->patrimonio }}</th>
+      <th>{{ $equipamento->local }}</th>
       <th>{{ $equipamento->descricao }}</th>
     </tr>
   @endforeach

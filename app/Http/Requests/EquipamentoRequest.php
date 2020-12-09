@@ -31,8 +31,7 @@ class EquipamentoRequest extends FormRequest
             'macaddress' => ['required', new MacAddress],
             'descricao' => ['nullable'],
             'local' => '',
-            'vencimento' => '',
-            #'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
+            'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
             'rede_id' => ['nullable', Rule::in(Rede::allowed()->get()->pluck('id'))],
             'ip' => 'nullable|ip',
         ];
@@ -44,5 +43,4 @@ class EquipamentoRequest extends FormRequest
         }
         return $rules;
     }
-
 }
