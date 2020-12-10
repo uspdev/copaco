@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Rede;
 use App\Models\User;
 use Carbon\Carbon;
+use Session;
 use App\Utils\NetworkOps;
 
 class Equipamento extends Model
@@ -107,6 +108,6 @@ class Equipamento extends Model
         $aloca = NetworkOps::aloca($this->rede_id, $value, $this->ip);
         $this->attributes['rede_id'] = $aloca['rede'];
         $this->attributes['ip'] = $aloca['ip'];
-        empty($aloca['danger']) ?: request()->session()->flash('alert-danger', $aloca['danger']);
+        empty($aloca['danger']) ?: Session::flash('alert-danger', $aloca['danger']);
     }    
 }
