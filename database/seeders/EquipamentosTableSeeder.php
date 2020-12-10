@@ -23,7 +23,7 @@ class EquipamentosTableSeeder extends Seeder
             'rede_id' => '16',
             'user_id'   => '1',
         ];
-        #Equipamento::create($entrada);
-        #Equipamento::factory(20)->create();
+        Equipamento::create($entrada);
+        Equipamento::factory(20)->create();
     }
 }
