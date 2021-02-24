@@ -46,6 +46,6 @@ class RedeCidr implements Rule
      */
     public function message()
     {
-        return "A rede $this->ip_rede/$this->cidr já existe. Por favor altere!";
+        return "A rede $this->ip_rede/$this->cidr já existe neste sistema.";
     }
 }

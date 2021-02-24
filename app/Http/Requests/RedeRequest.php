@@ -28,9 +28,9 @@ class RedeRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'nome'      => 'required',
+            'nome'      => ['required'],
             'shared_network'      => 'required',
-            'iprede'    => ['ip','required','different:gateway', new RedeCidr($this->cidr,$this->iprede)],
+            'iprede'    => ['ip','required','different:gateway'],
             'cidr'      => 'required|numeric|min:8|max:30',
             'vlan'      => 'numeric',
             'gateway'   => ['ip','required', new PertenceRede($this->gateway, $this->iprede, $this->cidr)],
@@ -39,9 +39,13 @@ class RedeRequest extends FormRequest
             'ad_domain' => [new Domain('Active Directory Domain')],
             'ntp'       => [new MultiplesIP('NTP')],
         ];
-        //if ($this->method() != 'PATCH' || $this->method() != 'PUT'){
-            //array_push($rules['iprede'], ['ip','required','different:gateway', new RedeCidr($this->cidr,$this->iprede)]);
-        //}
+        if ($this->method() == 'PATCH' || $this->method() == 'PUT'){
+            array_push($rules['nome'], 'unique:redes,nome,' .$this->rede->id);
+            array_push($rules['iprede'], new RedeCidr($this->cidr,$this->iprede,$this->rede->id));
+        } else {
+            array_push($rules['nome'], 'unique:redes');
+            array_push($rules['iprede'], new RedeCidr($this->cidr,$this->iprede));
+        }
         return $rules;
     }
 }
