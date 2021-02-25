@@ -49,7 +49,7 @@ HEREDOC;
  * vamos colocar tudo na default */
         $shared_network = Config::where('key','shared_network')->first();
         if(empty($shared_network)){
-            $redes = Rede::all();
+            $redes = Rede::where('active_dhcp',1)->get();
             $dhcp .= <<<HEREDOC
 
 shared-network "default" {
@@ -64,7 +64,7 @@ HEREDOC;
                 array_push($shared_networks, "default");
 
             foreach($shared_networks as $sn){
-                $redes = Rede::where('shared_network',$sn)->get();
+                $redes = Rede::where('shared_network',$sn)->where('active_dhcp',1)->get();
                 if(!$redes->isEmpty()){
                     $dhcp .= <<<HEREDOC
 

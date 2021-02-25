@@ -28,16 +28,18 @@ class RedeRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'nome'      => ['required'],
-            'shared_network'      => 'required',
-            'iprede'    => ['ip','required','different:gateway'],
-            'cidr'      => 'required|numeric|min:8|max:30',
-            'vlan'      => 'numeric',
-            'gateway'   => ['ip','required', new PertenceRede($this->gateway, $this->iprede, $this->cidr)],
-            'dns'       => [new MultiplesIP('DNS')],
-            'netbios'   => [new MultiplesIP('NetBIOS')],
-            'ad_domain' => [new Domain('Active Directory Domain')],
-            'ntp'       => [new MultiplesIP('NTP')],
+            'nome'              => ['required'],
+            'shared_network'    => 'required',
+            'iprede'            => ['ip','required','different:gateway'],
+            'cidr'              => 'required|numeric|min:8|max:30',
+            'vlan'              => 'numeric',
+            'gateway'           => ['ip','required', new PertenceRede($this->gateway, $this->iprede, $this->cidr)],
+            'dns'               => [new MultiplesIP('DNS')],
+            'netbios'           => [new MultiplesIP('NetBIOS')],
+            'ad_domain'         => [new Domain('Active Directory Domain')],
+            'ntp'               => [new MultiplesIP('NTP')],
+            'active_dhcp'       => 'nullable|boolean',
+            'active_freeradius' => 'nullable|boolean',
         ];
         if ($this->method() == 'PATCH' || $this->method() == 'PUT'){
             array_push($rules['nome'], 'unique:redes,nome,' .$this->rede->id);
@@ -47,5 +49,13 @@ class RedeRequest extends FormRequest
             array_push($rules['iprede'], new RedeCidr($this->cidr,$this->iprede));
         }
         return $rules;
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'active_dhcp' => isset($this->active_dhcp) ? $this->active_dhcp:0,
+            'active_freeradius' => isset($this->active_freeradius) ? $this->active_freeradius:0,
+        ]);
     }
 }

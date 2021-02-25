@@ -39,7 +39,7 @@ class FreeradiusController extends Controller
         DB::connection('freeradius')->table('radcheck')->delete();
 
         // Re-inseri tudo novamente
-        $redes = Rede::all();
+        $redes = Rede::where('active_freeradius',1)->get();
         foreach ($redes as $rede) {
             $this->freeradius->cadastraOuAtualizaRede($rede);
             foreach ($rede->equipamentos as $equipamento) {

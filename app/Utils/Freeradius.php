@@ -21,7 +21,7 @@ class Freeradius
     {
         $build = "";
 
-        $redes = Rede::all();
+        $redes = Rede::where('active_freeradius',1)->get();
         foreach ($redes as $rede) {
             if (isset($rede->vlan) && !empty($rede->vlan)) {
                 foreach ($rede->equipamentos as $equipamento) {
