@@ -1,5 +1,20 @@
 <?php
 
+$redes = [
+    [
+        'text' => 'Cadastrar',
+        'url' => config('app.url') . '/redes/create',
+    ],
+    [
+        'text' => 'Listar',
+        'url' => config('app.url') . '/redes',
+    ],
+    [
+        'text' => 'Migrar equipamentos entre redes',
+        'url' => config('app.url') . '/redes/migrate',
+    ],
+];
+
 return [
     'title' => '',
     'skin' => env('USP_THEME_SKIN', 'uspdev'),
@@ -11,36 +26,36 @@ return [
     'menu' => [
         [
             'text' => 'Minha Conta',
-            'url'  => '/',
+            'url'  => config('app.url'),
             'can'  => 'equipamentos.create',
         ],
         [
             'text' => 'Equipamentos',
-            'url'  => '/equipamentos',
+            'url'  => config('app.url') . '/equipamentos',
             'icon' => 'desktop',
             'can'  => 'equipamentos.create',
         ],
         [
             'text'        => 'Redes',
-            'url'         => '/redes',
             'icon'        => 'sitemap',
             'can'         => 'admin',
+            'submenu'     => $redes,
         ],
         [
             'text'        => 'Configurações',
-            'url'         => '/config',
+            'url'         => config('app.url') . '/config',
             'icon'        => 'file',
             'can'         => 'admin',
         ],
         [
             'text'        => 'Grupos',
-            'url'         => '/roles',
+            'url'         => config('app.url') . '/roles',
             'icon'        => 'group',
             'can'         => 'admin',
         ], 
         [
             'text'        => 'Pessoas',
-            'url'         => '/users',
+            'url'         => config('app.url') . '/users',
             'icon'        => 'home',
             'can'         => 'admin',
         ], 

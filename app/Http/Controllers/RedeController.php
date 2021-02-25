@@ -17,6 +17,8 @@ use App\Rules\RedeCidr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
+use App\Utils\NetworkOps;
 
 class RedeController extends Controller
 {
@@ -181,5 +183,41 @@ class RedeController extends Controller
         }
         $rede->delete();
         return redirect()->route('redes.index')->with('alert-danger', 'Rede deletada!');
+    }
+
+    public function migrate_form(){
+        return view('redes.migrate',[
+            'redes' => Rede::all()
+        ]);
+    }
+
+    public function migrate_store(Request $request){
+
+        # Validações para verificar se a rede são válidas
+        $ids = Rede::pluck('id')->all();
+        $request->validate([
+            'to'   => ['required','integer','different:from',Rule::in($ids)],
+            'from' => ['required','integer','different:to',  Rule::in($ids)],
+        ]);
+
+        # Equipamentos que serão migrados
+        $equipamentos = Rede::find($request->from)->equipamentos;
+
+        # Verificação se a rede de destino comporta os equipamentos
+        $to = Rede::find($request->to);
+        if(NetworkOps::numberAvailableIPs($to) <= $equipamentos->count()){
+            $msg = "Ação não executada pois não há IPs disponíveis na rede de destino";
+            request()->session()->flash('alert-danger', $msg);
+            return redirect("/redes/migrate");
+        }
+
+        foreach($equipamentos as $equipamento){
+            $equipamento->rede_id = $request->to;
+            $equipamento->ip = ''; # aqui o mutator será chamado
+            $equipamento->save();
+        }
+
+        request()->session()->flash('alert-info', 'Equipamentos migrados com sucesso');
+        return redirect("/redes/migrate");
     }
 }

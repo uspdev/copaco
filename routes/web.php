@@ -12,6 +12,10 @@ use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
+# Migração de equipamentos entre redes
+Route::get('redes/migrate', [RedeController::class,'migrate_form']);
+Route::post('redes/migrate', [RedeController::class,'migrate_store']);
+
 # resources
 Route::resource('equipamentos', EquipamentoController::class);
 Route::resource('redes', RedeController::class);
@@ -36,4 +40,3 @@ Route::post('register', [RegisterController::class, 'register']);
 
 # logout 
 Route::post('/logout', [LoginController::class, 'logout']);
-Route::get('/logout', [LoginController::class, 'logout']);

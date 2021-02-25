@@ -147,4 +147,12 @@ class NetworkOps
         }
         return ['rede'=>$rede_id, 'ip'=>$ip, 'danger' => $danger];
     }
+
+    public static function numberAvailableIPs(Rede $rede)
+    {
+        $alocados = count($rede->equipamentos->all());
+        $total = count(Network::parse("{$rede->iprede}/{$rede->cidr}")->hosts);
+
+        return $total - $alocados - 1;
+    }
 }
