@@ -63,11 +63,12 @@
             <tr>
                 <th>MAC Address</th>
                 <th>Patrimônio</th>
-                <th>Descrição</th>
+                
                 <th>IP</th>
                 <th>Rede</th>
                 <th>Vencimento</th>
                 <th>Responsável</th>
+                <th>Descrição</th>
                 <th colspan="2">Ações</th>
             </tr>
         </thead>
@@ -76,7 +77,6 @@
             <tr>
                 <td><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress }}</a></td>
                 <td>{{ $equipamento->patrimonio }}</td>
-                <td>{{ $equipamento->descricao }}</td>
                 <td>{{ $equipamento->ip ?? '' }}</td>
                 <td><i>{{ $equipamento->rede->nome ?? '' }}</i>
                     @isset ($equipamento->rede->iprede)
@@ -97,6 +97,7 @@
                         {{ $equipamento->user->name ?? '' }}
                     @endcan
                 </td>
+                <td>{!! nl2br($equipamento->descricao) !!}</td>
 
                 <td>
                     <a href="{{action('App\Http\Controllers\EquipamentoController@edit', $equipamento->id)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
@@ -107,6 +108,7 @@
                       <button class="delete-item btn btn-danger" type="submit"><i class="fas fa-trash-alt"></i></button>
                   </form>
                 </td>
+                
             </tr>
             @endforeach
         </tbody>

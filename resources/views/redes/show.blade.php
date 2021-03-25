@@ -72,7 +72,7 @@
       <th>{{ $equipamento->ip }}</th>
       <th>{{ $equipamento->patrimonio }}</th>
       <th>{{ $equipamento->local }}</th>
-      <th>{{ $equipamento->descricao }}</th>
+      <td>{!! nl2br($equipamento->descricao) !!}</td>
     </tr>
   @endforeach
   </tdoby>

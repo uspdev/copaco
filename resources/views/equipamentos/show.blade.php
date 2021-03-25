@@ -14,13 +14,13 @@
 
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><b>Patrimônio:</b> {{$equipamento->patrimonio}} </li>
-      <li class="list-group-item"><b>Descrição:</b> {{$equipamento->descricao}} </li>
       <li class="list-group-item"><b>Mac Address:</b> {{ $equipamento->macaddress }}</li>
       <li class="list-group-item"><b>Local:</b> {{ $equipamento->local }}</li>
       <li class="list-group-item"><b>Vencimento:</b> {{ $equipamento->vencimento }}</li>
       <li class="list-group-item"><b>Rede:</b> {{ $equipamento->rede->nome ?? '' }}</li>
       <li class="list-group-item"><b>IP:</b> {{ $equipamento->ip ?? '' }}</li>
       <li class="list-group-item"><b>Responsável</b>: {{ $equipamento->user->name }}</li>
+      <li class="list-group-item"><b>Descrição:</b> {!! nl2br($equipamento->descricao) !!} </li>
 
     </ul>
   </div>
