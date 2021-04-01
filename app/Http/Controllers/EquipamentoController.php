@@ -136,21 +136,9 @@ class EquipamentoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Equipamento $equipamento)
-    {
+    {       
         $this->authorize('equipamentos.view', $equipamento);
-
-        $logs = DB::table('equipamentos_changes')->where('equipamento_id', $equipamento->id)->orderBy('when', 'desc')->get();
-        $changes = Collection::make([]);
-        foreach($logs as $log){
-            $user = User::find($log->user_id);
-            $changes->push([
-                'when' => Carbon::createFromFormat('Y-m-d H:i:s', $log->when)->format('d/m/Y H:i'),
-                'username' => $user->username,
-                'name' => $user->name
-            ]);
-        }
-
-        return view('equipamentos.show', compact('equipamento','changes'));
+        return view('equipamentos.show', compact('equipamento'));
     }
 
     /**
@@ -182,11 +170,6 @@ class EquipamentoController extends Controller
         // mac antigo para o freeradius
         $macaddress_antigo = $equipamento->macaddress;  
         $equipamento->update($request->validated());
-
-        // gravar log das mudanças
-        DB::table('equipamentos_changes')->insert(
-            ['equipamento_id' => $equipamento->id, 'user_id' => Auth::user()->id]
-        );
 
         // atualiza equipamento no freeRadius
         if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {

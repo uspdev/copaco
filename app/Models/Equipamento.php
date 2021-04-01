@@ -11,9 +11,11 @@ use App\Models\User;
 use Carbon\Carbon;
 use Session;
 use App\Utils\NetworkOps;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Equipamento extends Model
+class Equipamento extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
     protected $guarded = [
@@ -95,7 +97,8 @@ class Equipamento extends Model
 
     public function getVencimentoAttribute($value) {
         if($value){
-            return Carbon::CreateFromFormat('Y-m-d', $value)->format('d/m/Y');
+            $Ymd = substr($value,0,10);
+            return Carbon::CreateFromFormat('Y-m-d', $Ymd)->format('d/m/Y');
         }
     }
 
