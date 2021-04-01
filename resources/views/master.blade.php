@@ -3,10 +3,10 @@
 @section('title', 'COPACO')
 
 @section('flash')
-<div class="row">
-    @include('messages.flash')
-    @include('messages.errors')
-</div>
+
+@include('messages.flash')
+@include('messages.errors')
+
 @stop
 
 @section('styles')

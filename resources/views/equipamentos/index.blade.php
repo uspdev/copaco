@@ -5,8 +5,6 @@
 @stop
 
 @section('content')
-    @include('messages.flash')
-    @include('messages.errors')
 
 <div class="row">
     <div class="col-sm float-left">

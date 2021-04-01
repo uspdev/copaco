@@ -5,8 +5,6 @@
 @stop
 
 @section('content')
-    @include('messages.flash')
-    @include('messages.errors')
 
 <div class="card">
   <div class="card-header">Dados do Equipamento</div>

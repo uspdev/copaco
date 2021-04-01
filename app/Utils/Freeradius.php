@@ -48,7 +48,7 @@ class Freeradius
         return $build;
     }
 
-    public function cadastraOuAtualizaRede($rede)
+    public static function cadastraOuAtualizaRede(Rede $rede)
     {
         $records = [
             [$rede->id, 'Tunnel-Type', ':=', 'VLAN'],
@@ -80,7 +80,7 @@ class Freeradius
         }
     }
 
-    public function deletaRede($rede)
+    public static function deletaRede(Rede $rede)
     {
         $filter = [
             'groupname' => $rede->id,
@@ -89,17 +89,17 @@ class Freeradius
         DB::connection('freeradius')->table('radgroupreply')->where($filter)->delete();
     }
 
-    public function cadastraOuAtualizaEquipamento($equipamento, $mac_antigo = null)
+    public static function cadastraOuAtualizaEquipamento(Equipamento $equipamento, $mac_antigo = null)
     {
         // Falta verifica se equipamento não está vencido antes de mandar para freeradius
         #if($vencimento >= Carbon::now()) {
 
         // Garante que a rede para esse equipamento também esteja cadastrada
-        $this->cadastraOuAtualizaRede($equipamento->rede);
+        self::cadastraOuAtualizaRede($equipamento->rede);
         
         // corrige mac-address
-        $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
-        $mac_antigo = $this->formataMacAddr($mac_antigo);
+        $equipamento->macaddress = self::formataMacAddr($equipamento->macaddress);
+        $mac_antigo = self::formataMacAddr($mac_antigo);
 
         // 1. Popula tabela radusergroup
         $fields = [
@@ -144,10 +144,10 @@ class Freeradius
         }
     }
 
-    public function deletaEquipamento($equipamento)
+    public static function deletaEquipamento(Equipamento $equipamento)
     {
         // 1. deleta da tabela radusergroup
-        $equipamento->macaddress = $this->formataMacAddr($equipamento->macaddress);
+        $equipamento->macaddress = self::formataMacAddr($equipamento->macaddress);
         $filter = [
             'UserName' => $equipamento->macaddress,
         ];
@@ -157,7 +157,7 @@ class Freeradius
         DB::connection('freeradius')->table('radcheck')->where($filter)->delete();
     }
 
-    public function formataMacAddr($macaddr)
+    public static function formataMacAddr($macaddr)
     {
         $macaddr_separator = config('copaco.freeradius_macaddr_separator');
         $macaddr_case = config('copaco.freeradius_macaddr_case');

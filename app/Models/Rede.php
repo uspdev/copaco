@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\Equipamento;
 use App\Models\User;
+use App\Observers\RedeObserver;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Rede extends Model implements Auditable
@@ -16,6 +17,11 @@ class Rede extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
     protected $guarded = ['id'];
+
+    protected static function booted()
+    {
+        Rede::observe(RedeObserver::class);
+    }
 
     public function equipamentos()
     {

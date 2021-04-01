@@ -13,7 +13,6 @@ use App\Http\Requests\EquipamentoRequest;
 use App\Utils\NetworkOps;
 use App\Rules\Patrimonio;
 use App\Rules\MacAddress;
-use App\Utils\Freeradius;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -28,12 +27,10 @@ use Carbon\Carbon;
 
 class EquipamentoController extends Controller
 {
-    public $freeradius;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->freeradius = new Freeradius;
     }
 
     /**
@@ -119,12 +116,7 @@ class EquipamentoController extends Controller
         $user = Auth::user();
         $validated['user_id'] = $user->id;
         $equipamento = Equipamento::create($validated);
-        
-        // salva equipamento no freeRadius
-        if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {
-            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento);
-        }
-        
+                
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }
@@ -168,13 +160,8 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.update', $equipamento);
 
         // mac antigo para o freeradius
-        $macaddress_antigo = $equipamento->macaddress;  
+        #$macaddress_antigo = $equipamento->macaddress;  
         $equipamento->update($request->validated());
-
-        // atualiza equipamento no freeRadius
-        if (config('copaco.freeradius_habilitar') && !is_null($equipamento->rede_id)) {
-            $this->freeradius->cadastraOuAtualizaEquipamento($equipamento, $macaddress_antigo);
-        }
         
         $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
@@ -189,12 +176,6 @@ class EquipamentoController extends Controller
     public function destroy(Equipamento $equipamento, Request $request)
     {
         $this->authorize('equipamentos.delete', $equipamento);
-
-        // deleta equipamento no freeRadius
-        if (config('copaco.freeradius_habilitar')) {
-            $this->freeradius->deletaEquipamento($equipamento);
-        }
-
         $equipamento->delete();
         $request->session()->flash('alert-danger', 'Equipamento deletado com sucesso!');
         return redirect()->route('equipamentos.index');

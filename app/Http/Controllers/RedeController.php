@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\View;
 use App\Rules\MultiplesIP;
 use App\Rules\Domain;
 use App\Rules\PertenceRede;
-use App\Utils\Freeradius;
 use App\Rules\RedeCidr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,12 +22,9 @@ use App\Utils\NetworkOps;
 class RedeController extends Controller
 {
 
-    public $freeradius;
-
     public function __construct()
     {
         $this->middleware('can:admin');
-        $this->freeradius = new Freeradius;
     }
 
     /**
@@ -78,11 +74,6 @@ class RedeController extends Controller
         $rede = new Rede;
         $validated['user_id'] = \Auth::user()->id;
         $rede = $rede->create($validated);
-
-        // Salva rede no freeRadius
-        if (config('copaco.freeradius_habilitar')) {
-            $this->freeradius->cadastraOuAtualizaRede($rede);
-        }
 
         $request->session()->flash('alert-success', 'Rede cadastrada com sucesso!');
         return redirect()->route('redes.index');
@@ -135,11 +126,6 @@ class RedeController extends Controller
         // Persistência
         $rede->update($validated);
 
-        // Salva/update rede no freeRadius
-        if (config('copaco.freeradius_habilitar')) {
-            $this->freeradius->cadastraOuAtualizaRede($rede);
-        }
-
         $request->session()->flash('alert-success', 'Rede atualizada com sucesso!');
         return redirect()->route('redes.show', $rede->id);
     }
@@ -152,17 +138,8 @@ class RedeController extends Controller
      */
     public function destroy(Rede $rede)
     {
-        // deleta rede no freeRadius
-        if (config('copaco.freeradius_habilitar')) {
-            $this->freeradius->deletaRede($rede);
-        } 
-
         // Desaloca os equipamentos dessa rede 
         foreach ($rede->equipamentos as $equipamento) {
-            // deleta equipamentos no freeRadius
-            if (config('copaco.freeradius_habilitar')) {
-                $this->freeradius->deletaEquipamento($equipamento);
-            }
             $equipamento->ip = null;
             $equipamento->save();
         }

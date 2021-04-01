@@ -11,6 +11,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Session;
 use App\Utils\NetworkOps;
+use App\Observers\EquipamentoObserver;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Equipamento extends Model implements Auditable
@@ -21,7 +22,17 @@ class Equipamento extends Model implements Auditable
     protected $guarded = [
         'id',
     ];
-    
+   
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        Equipamento::observe(EquipamentoObserver::class);
+    }
+
     public function rede()
     {
         return $this->belongsTo(Rede::class);
