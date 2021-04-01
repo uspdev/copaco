@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
 use App\Models\Equipamento;
 use App\Models\User;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Rede extends Model
+class Rede extends Model implements Auditable
 {  
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = ['id'];
 

@@ -5,8 +5,7 @@
 @stop
 
 @section('content')
-    @include('messages.flash')
-    @include('messages.errors')
+
 <h4><b>Nome da Rede:</b> {{$rede->nome}}</h4>
 <div>
     <a href="{{action('App\Http\Controllers\RedeController@edit', $rede->id)}}" class="btn btn-warning">Editar</a>
@@ -79,22 +78,10 @@
 </table>
 
 <h4>Alterações nessa rede</h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Data</th>
-      <th scope="col">Usuário(a)</th>
-    </tr>
-  </thead>
-  <tbody>
-  @foreach($changes as $change)
-    <tr>
-      <th> {{ $change['when'] }} </th>
-      <th> {{ $change['username'] }} - {{ $change['name'] }}</th>
-    </tr>
-    @endforeach
-  </tdoby>
-</table>
+<h2>Histórico</h2>
+
+@include('partials.audit.index', ['model' => $rede])
+
 @stop
 
 

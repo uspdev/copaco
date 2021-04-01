@@ -40,6 +40,7 @@ class RedeRequest extends FormRequest
             'ntp'               => [new MultiplesIP('NTP')],
             'active_dhcp'       => 'nullable|boolean',
             'active_freeradius' => 'nullable|boolean',
+            'dhcpd_subnet_options' => 'nullable',
         ];
         if ($this->method() == 'PATCH' || $this->method() == 'PUT'){
             array_push($rules['nome'], 'unique:redes,nome,' .$this->rede->id);

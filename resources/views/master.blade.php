@@ -2,11 +2,11 @@
 
 @section('title', 'COPACO')
 
-@section('content')
-    <div class="row">
-        @include('messages.flash')
-        @include('messages.errors')
-    </div>
+@section('flash')
+<div class="row">
+    @include('messages.flash')
+    @include('messages.errors')
+</div>
 @stop
 
 @section('styles')

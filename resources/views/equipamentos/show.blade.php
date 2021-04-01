@@ -46,29 +46,9 @@
 </div>
 <br>
 
-<h2>Alterações nesse equipamento</h2>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Data</th>
-      <th scope="col">Usuário(a)</th>
-      <th scope="col">Mudanças</th>
-    </tr>
-  </thead>
-  <tbody>
-  @foreach($equipamento->audits as $audit)
-    <tr>
-      <td> {{ $audit->getMetadata()['audit_created_at'] }} </td>
-      <td> {{ $audit->getMetadata()['user_name'] }}</td>
-      <td> 
-        @foreach($audit->getModified() as $field=>$modified)
-        <b>{{$field}}:</b> {{ $modified['old'] ?? '' }} <b>-></b> {{ $modified['new'] }}<br>
-        @endforeach
-      </td>
-    </tr>
-  @endforeach
-  </tdoby>
-</table>
+<h2>Histórico</h2>
+
+@include('partials.audit.index', ['model' => $equipamento])
 
 @stop
 

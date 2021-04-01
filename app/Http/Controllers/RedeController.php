@@ -96,17 +96,7 @@ class RedeController extends Controller
      */
     public function show(Rede $rede)
     {
-        $logs = DB::table('redes_changes')->where('rede_id', $rede->id)->orderBy('when', 'desc')->get();
-        $changes = Collection::make([]);
-        foreach($logs as $log){
-            $user = User::find($log->user_id);
-            $changes->push([
-                'when' => Carbon::createFromFormat('Y-m-d H:i:s', $log->when)->format('d/m/Y H:i'),
-                'username' => $user->username,
-                'name' => $user->name
-            ]);
-        }
-        return view('redes.show', compact('rede','changes'));
+        return view('redes.show', compact('rede'));
     }
 
     /**
@@ -144,11 +134,6 @@ class RedeController extends Controller
  
         // Persistência
         $rede->update($validated);
-
-        // gravar log das mudanças
-        DB::table('redes_changes')->insert(
-            ['rede_id' => $rede->id, 'user_id' => \Auth::user()->id]
-        );
 
         // Salva/update rede no freeRadius
         if (config('copaco.freeradius_habilitar')) {
