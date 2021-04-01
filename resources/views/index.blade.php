@@ -4,9 +4,7 @@
     <h1>Sistema COntrole do PArque COmputacional</h1>
 @stop
 
-@section('content')
-    @parent
-    
+@section('content')   
         @auth
             <div class="card">
                 <div class="card-header"><b>{{ Auth::user()->name }}</b>
