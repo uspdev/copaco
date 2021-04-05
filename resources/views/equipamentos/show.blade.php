@@ -21,6 +21,7 @@
       <li class="list-group-item"><b>Descrição:</b> {!! nl2br($equipamento->descricao) !!} </li>
 
     </ul>
+    @include('equipamentos.partials.files')
   </div>
 </div>
 </br>
@@ -47,6 +48,7 @@
 <h2>Histórico</h2>
 
 @include('partials.audit.index', ['model' => $equipamento])
+
 
 @stop
 
