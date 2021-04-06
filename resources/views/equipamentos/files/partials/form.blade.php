@@ -4,7 +4,6 @@
     <div class="row">
         <div class="form-group col-sm">
             <input type="file" class="form-control-file" id="arquivo-do-trabalho" name="file">
-            <span class="badge badge-warning"><b>Atenção:</b> Os arquivos a serem enviados devem ter no máximo 12mb, nos formatos: pdf, jpg ou png.</span><br>
         </div>
     </div>     
     <div class="row">
