@@ -17,7 +17,17 @@
             <tbody>
             @foreach ($equipamento->files as $file)
                 <tr>
-                    <td><a href="/files/{{$file->id}}">{{ $file->original_name }}</a></td>
+                    @if(preg_match('/jpeg|png/i', $file->mimetype))
+                        <td>
+                            <a class="d-inline-block ml-1 mr-1" data-fancybox="arquivo-galeria" href="files/{{ $file->id }}">
+                                <img class="arquivo-img" width="100px" src="files/{{ $file->id }}"
+                                alt="{{ $file->original_name }}" data-toggle="tooltip" data-placement="top"
+                                title="{{ $file->original_name }}">
+                            </a>
+                        </td>
+                    @else
+                        <td><a href="/files/{{$file->id}}">{{ $file->original_name }}</a></td>
+                    @endif
                     <td>
                         {{ Carbon\Carbon::parse($file->created_at)->format('d/m/Y') }}
                     </td>

@@ -1,5 +1,11 @@
 @extends('master')
 
+@section('styles')
+  @parent
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+@endsection
+
+
 @section('content_header')
   <h1>Equipamento: {{ $equipamento->macaddress }} </h1>
 @stop
@@ -52,3 +58,7 @@
 
 @stop
 
+@section('javascripts_bottom')
+  @parent
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+@endsection

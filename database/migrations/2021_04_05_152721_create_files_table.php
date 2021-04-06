@@ -18,8 +18,11 @@ class CreateFilesTable extends Migration
             $table->timestamps();
             $table->string('original_name');
             $table->string('path');
+            $table->string('mimetype');
             $table->integer('equipamento_id')->unsigned()->nullable();
-            $table->foreign('equipamento_id')->references('id')->on('equipamentos')->onDelete('set null');        
+            $table->foreign('equipamento_id')->references('id')->on('equipamentos')->onDelete('set null');
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');        
         });
     }
 
