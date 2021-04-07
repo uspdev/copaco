@@ -13,6 +13,7 @@ use Session;
 use App\Utils\NetworkOps;
 use App\Observers\EquipamentoObserver;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\File;
 
 class Equipamento extends Model implements Auditable
 {
@@ -41,6 +42,11 @@ class Equipamento extends Model implements Auditable
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
     }
 
     /* Escopo local: https://laravel.com/docs/7.x/eloquent#local-scopes
