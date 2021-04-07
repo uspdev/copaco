@@ -10,6 +10,7 @@ class FileController extends Controller
 {
     public function store(Request $request)
     {
+        $this->authorize('equipamentos.create');
         $request->validate([
             'file' => 'required',
             'equipamento_id' => 'required|integer|exists:equipamentos,id',
@@ -26,11 +27,13 @@ class FileController extends Controller
 
     public function show(File $file)
     {
+        $this->authorize('equipamentos.view', $file->equipamento);
         return Storage::download($file->path, $file->original_name);
     }
 
     public function destroy(File $file)
     {
+        $this->authorize('equipamentos.delete', $file->equipamento);
         Storage::delete($file->path);
         $file->delete();
         return back();
