@@ -5,7 +5,6 @@
 @stop
 
 @section('content')
-    @parent
         <div>
             <form action="/api/dhcpd.conf" method="post">
                 {{csrf_field()}}
