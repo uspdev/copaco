@@ -35,7 +35,7 @@ class RedeController extends Controller
     public function index()
     {
         return view('redes.index',[
-            'redes' => Rede::orderBy('nome', 'ASC')->get();
+            'redes' => Rede::orderBy('nome')->get()
         ]);
     }
 
