@@ -15,6 +15,17 @@ $redes = [
     ],
 ];
 
+$right_menu = [
+    [
+        'text'   => '<i class="fas fa-hard-hat"></i>',
+        'title'  => 'logs',
+        'target' => '_blank',
+        'url'    => config('app.url') . '/logs',
+        'align'  => 'right',
+        'can'    => 'admin',
+    ],
+];
+
 return [
     'title' => '',
     'skin' => env('USP_THEME_SKIN', 'uspdev'),
@@ -60,4 +71,5 @@ return [
             'can'         => 'admin',
         ], 
     ],
+    'right_menu' => $right_menu,
 ];

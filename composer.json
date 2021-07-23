@@ -19,6 +19,7 @@
         "laravel/ui": "^3.0",
         "maatwebsite/excel": "^3.1",
         "owen-it/laravel-auditing": "^12.0",
+        "rap2hpoutre/laravel-log-viewer": "^1.7",
         "respect/validation": "^2.0",
         "s1lentium/iptools": "^1.1",
         "uspdev/laravel-usp-theme": "^2.0",
