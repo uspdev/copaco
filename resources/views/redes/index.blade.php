@@ -21,6 +21,7 @@
             <tr>
                 <th>Nome</th>
                 <th>IP Rede</th>
+                <th>VLAN</th>
                 <th>Gateway</th>
                 <th>Hosts</th>
                 <th colspan="2">Ações</th>
@@ -31,6 +32,7 @@
             <tr>
                 <td><a href="/redes/{{ $rede->id }}">{{ $rede->nome }}</a></td>
                 <td>{{ $rede->iprede }}/{{ $rede->cidr }}</td>
+                <td>{{ $rede->vlan }}</td>
                 <td>{{ $rede->gateway }}</td>
                 <td>{{ $rede->equipamentos->count() }}</td>
                 <td>
