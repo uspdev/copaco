@@ -18,7 +18,7 @@
                     <label for="from">Rede de origem:</label>
                     <select name="from" class="form-control">
                         <option value="" selected="">Selecione</option>
-                        @foreach($redes as $rede)
+                        @foreach($redes->sortBy('nome') as $rede)
                             <option value="{{ $rede->id }}" {{ (old('from') == $rede->id) ? 'selected' : ''}}>
                             {{ $rede->iprede}}/{{$rede->cidr}} - {{$rede->nome  }} (Equipamentos: {{$rede->equipamentos->count()}})
                             </option>                
@@ -31,7 +31,7 @@
                     <label for="to">Rede de destino:</label>
                     <select name="to" class="form-control">
                         <option value="" selected="">Selecione</option>
-                        @foreach($redes as $rede)
+                        @foreach($redes->sortBy('nome') as $rede)
                             <option value="{{ $rede->id }}" {{ (old('to') == $rede->id) ? 'selected' : ''}}>
                                 {{ $rede->iprede}}/{{$rede->cidr}} - {{$rede->nome  }} (Disponíveis: {{ \App\Utils\NetworkOps::numberAvailableIPs($rede) }})
                             </option>                
