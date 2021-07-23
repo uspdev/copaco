@@ -43,3 +43,5 @@ Route::post('register', [RegisterController::class, 'register']);
 # logout 
 Route::post('/logout', [LoginController::class, 'logout']);
 
+# Logs  
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
