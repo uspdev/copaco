@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
-        "doctrine/dbal": "^2.10",
+        "doctrine/dbal": "^3.1",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -23,7 +23,7 @@
         "respect/validation": "^2.0",
         "s1lentium/iptools": "^1.1",
         "uspdev/laravel-usp-theme": "^2.0",
-        "uspdev/senhaunica-socialite": "^2.0"
+        "uspdev/senhaunica-socialite": "^4.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
