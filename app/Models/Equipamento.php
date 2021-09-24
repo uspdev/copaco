@@ -67,12 +67,12 @@ class Equipamento extends Model implements Auditable
      */
     public function scopeAllowed($query,$type='normal')
     {
-        /* 0. Usuário administadores acessam todas redes */
+        /* 0. Usuário administradores acessam todas redes */
         if (Gate::allows('admin')) {
             return $query;
         }
 
-        /* 1. E não administradores acessam equipamentos que ele é dono */
+        /* 1. E não administradores acessam equipamentos que são donos */
         $user = auth()->user();
         $query->where('user_id', '=', $user->id);
         

@@ -26,17 +26,7 @@ class Patrimonio implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ($value == '') {
-            return true;
-        }
-
-        /*
-        $patrimonio = new dadosUsp;
-        if ($patrimonio->stabem($value) == false) {
-            return false;
-        }
-        */
-        return true;
+        return preg_match('/\d{3}\.\d{6}/', $value) ? true : false;
     }
 
     /**
@@ -46,6 +36,6 @@ class Patrimonio implements Rule
      */
     public function message()
     {
-        return 'Patrimônio inválido';
+        return 'Patrimônio inválido. Exemplo: 008.048742';
     }
 }

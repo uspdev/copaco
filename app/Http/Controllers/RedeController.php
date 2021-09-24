@@ -56,7 +56,10 @@ class RedeController extends Controller
         if (!in_array("default", $shared_networks)) 
             array_push($shared_networks, "default");
         
-        return view('redes.create',compact('shared_networks'));
+        return view('redes.create',[
+            'shared_networks' => $shared_networks,
+            'rede' => new Rede, 
+        ]);
     }
 
     /**

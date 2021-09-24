@@ -2,27 +2,27 @@
 
     <div class="col-sm form-group">
         <label for="nome">Nome</label>
-        <input type="text" class="form-control" name="nome" value="{{ $rede->nome ?? old('nome')  }}" placeholder="Ex: Departamento de Música" required >
+        <input type="text" class="form-control" name="nome" value="{{ old('nome', $rede->nome)  }}" placeholder="Ex: Departamento de Música" required >
     </div>
 
     <div class="col-sm form-group">
         <label for="iprede">IP Rede</label>
-        <input type="text" class="form-control" name="iprede" value="{{ $rede->iprede ?? old('iprede') }}" placeholder="Ex: 143.107.75.0" required >
+        <input type="text" class="form-control" name="iprede" value="{{ old('iprede', $rede->iprede) }}" placeholder="Ex: 143.107.75.0" required >
     </div>
 
     <div class="col-sm form-group">
         <label for="cidr">Cidr</label>
-        <input type="text" class="form-control" name="cidr" value="{{ $rede->cidr ?? old('cidr') }}" placeholder="Ex: 29" required >
+        <input type="text" class="form-control" name="cidr" value="{{ old('cidr', $rede->cidr) }}" placeholder="Ex: 29" required >
     </div>
 
     <div class="col-sm form-group">
         <label for="gateway">Gateway</label>
-        <input type="text" class="form-control" name="gateway" value="{{ $rede->gateway ?? old('gateway') }}" placeholder="Ex: 143.107.75.1" required >
+        <input type="text" class="form-control" name="gateway" value="{{ old('gateway', $rede->gateway) }}" placeholder="Ex: 143.107.75.1" required >
     </div>
 
     <div class="col-sm form-group">
         <label for="vlan">VLAN</label>
-        <input type="text" class="form-control" name="vlan" value="{{ $rede->vlan ?? old('vlan') }}" placeholder="Ex: 1587">
+        <input type="text" class="form-control" name="vlan" value="{{ old('vlan', $rede->vlan) }}" placeholder="Ex: 1587">
     </div>
 
 </div>
@@ -34,19 +34,19 @@
         <div class="row">
             <div class="col-sm form-group">
                 <label for="netbios">Netbios</label>
-                <input type="text" class="form-control" name="netbios" value="{{ $rede->netbios ?? old('netbios') }}" placeholder="Ex: 10.0.0.4, 10.3.3.2">
+                <input type="text" class="form-control" name="netbios" value="{{ old('netbios', $rede->netbios) }}" placeholder="Ex: 10.0.0.4, 10.3.3.2">
             </div>
             <div class="col-sm form-group">
                 <label for="ntp">NTP</label>
-                <input type="text" class="form-control" name="ntp" value="{{ $rede->ntp ?? old('ntp') }}" placeholder="Ex: 143.107.40.8, 172.16.0.28">
+                <input type="text" class="form-control" name="ntp" value="{{ old('ntp', $rede->ntp) }}" placeholder="Ex: 143.107.40.8, 172.16.0.28">
             </div>
             <div class="col-sm form-group">
                 <label for="dns">DNS</label>
-                <input type="text" class="form-control" name="dns" value="{{ $rede->dns ?? old('dns') }}" placeholder="Ex: 143.107.253.3, 143.107.253.3">
+                <input type="text" class="form-control" name="dns" value="{{  old('dns', $rede->dns) }}" placeholder="Ex: 143.107.253.3, 143.107.253.3">
             </div>
             <div class="col-sm form-group">
                 <label for="ad_domain">Domain Active Directory</label>
-                <input type="text" class="form-control" name="ad_domain" value="{{ $rede->ad_domain ?? old('ad_domain') }}"placeholder="Ex: mydomain.usp.br">
+                <input type="text" class="form-control" name="ad_domain" value="{{ old('ad_domain', $rede->ad_domain) }}"placeholder="Ex: mydomain.usp.br">
             </div>
             <div class="col-sm form-group">
                 <label for="shared_network">shared-network</label>
@@ -69,9 +69,9 @@
         <div class="form-group">
             <label for="dhcp_global">Opções para subnet do dhcp</label>
             @isset($rede->dhcpd_subnet_options)
-                <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ $rede->dhcpd_subnet_options ?? old('dhcpd_subnet_options') }}</textarea>
+                <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ old('dhcpd_subnet_options', $rede->dhcpd_subnet_options) }}</textarea>
             @else
-                <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ "deny unknown-clients;" ?? old('dhcpd_subnet_options') }}</textarea>
+                <textarea rows="4" cols="50" class="form-control" name="dhcpd_subnet_options">{{ old('dhcpd_subnet_options', "deny unknown-clients;") }}</textarea>
             @endisset
         </div>
 

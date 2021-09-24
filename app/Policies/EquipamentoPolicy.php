@@ -29,19 +29,19 @@ class EquipamentoPolicy
     public function update(User $user, Equipamento $equipamento)
     {
         $owner = $user->id === $equipamento->user_id;
-        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento->rede_id);
+        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento);
     }
 
     public function view(User $user, Equipamento $equipamento)
     {
         $owner = $user->id === $equipamento->user_id;
-        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento->rede_id);
+        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento);
     }
 
     public function delete(User $user, Equipamento $equipamento)
     {
         $owner = $user->id === $equipamento->user_id;
-        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento->rede_id);
+        return $owner || $this->is_superAdmin || $this->temAcessoNaRedeDeUmAdminGrupo($user,$equipamento);
     }
 
     public function create(User $user)
@@ -49,8 +49,9 @@ class EquipamentoPolicy
         return true;
     }
 
-    public function temAcessoNaRedeDeUmAdminGrupo($user,$rede_id)
-    {
+    public function temAcessoNaRedeDeUmAdminGrupo($user,$equipamento)
+    {   
+        $rede_id = $equipamento->rede_id;
         foreach($user->roles()->get() as $role){       
             foreach($role->redes()->get() as $rede){
                 if($role->grupoadmin && $rede->id==$rede_id) {

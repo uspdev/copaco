@@ -52,6 +52,8 @@ class EquipamentoController extends Controller
                         $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
                     }
                 });
+                
+                // Busca por nome de usuário também
                 $query2 = User::where('name', 'LIKE', "%$request->search%")->get();
                 foreach($query2 as $q){
                     $query->orWhere('user_id','=', $q->id);
@@ -100,7 +102,10 @@ class EquipamentoController extends Controller
         // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
         $user = Auth::user();
         $redes = Rede::allowed()->get();
-        return view('equipamentos.create', compact('redes'));
+        return view('equipamentos.create', [
+            'redes' => $redes,
+            'equipamento' => new Equipamento
+        ]);
     }
 
     /**

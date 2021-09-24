@@ -2,17 +2,17 @@
   <div class="row">
     <div class="col-sm">
       <label for="patrimonio">Patrimônio</label>
-      <input type="text" class="form-control" id="patrimonio" name="patrimonio" placeholder="008.0051544" value="{{ $equipamento->patrimonio ?? old('patrimonio') }}">
+      <input type="text" class="form-control" id="patrimonio" name="patrimonio" placeholder="008.0051544" value="{{ old('patrimonio', $equipamento->patrimonio) }}">
     </div>
 
     <div class="col-sm">
       <label  for="vencimento">Vencimento</label>
-      <input type="text" class="form-control datepicker" name="vencimento" value="{{ $equipamento->vencimento ?? old('vencimento')  }}" autocomplete="off"> 
+      <input type="text" class="form-control datepicker" name="vencimento" value="{{ old('vencimento', $equipamento->vencimento)  }}" autocomplete="off"> 
     </div>
 
     <div class="col-sm">
       <label for="macaddress">Mac Address</label>
-      <input type="text" class="form-control" id="macaddress" name="macaddress" placeholder="Ex: 00:45:8A:AA:90:88" value="{{ $equipamento->macaddress ?? old('macaddress') }}">
+      <input type="text" class="form-control" id="macaddress" name="macaddress" placeholder="Ex: 00:45:8A:AA:90:88" value="{{ old('macaddress', $equipamento->macaddress) }}">
     </div>
   </div>
 </div>
@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col-sm">
       <label for="local">Local</label>
-      <input type="text" class="form-control" id="local" name="local" value="{{ $equipamento->local ?? old('local') }}" placeholder="Ex: Sala 10">
+      <input type="text" class="form-control" id="local" name="local" value="{{ old('local', $equipamento->local) }}" placeholder="Ex: Sala 10">
     </div>
   </div>
 </div>
@@ -50,7 +50,7 @@
 
     <div class="col-sm-4">
         <label class="col-form-label" for="ip"></label>
-        <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ $equipamento->ip ?? old('ip')  }}" placeholder="Ex: 192.168.0.1">
+        <input type="text" class="form-control form-control-lg" id="ip" name="ip" value="{{ old('ip', $equipamento->ip)  }}" placeholder="Ex: 192.168.0.1">
         <small>Deixe em branco para atribuição de IP automática ou defina um manualmente IP</small>
     </div>
   </div>
@@ -60,7 +60,7 @@
   <div class="row">
     <div class="col-sm">
       <label for="descricao">Descrição</label>
-      <textarea class="form-control" id="descricao" name="descricao" rows="7">{{ $equipamento->descricao ?? old('descricao') }}</textarea>
+      <textarea class="form-control" id="descricao" name="descricao" rows="7">{{ old('descricao', $equipamento->descricao) }}</textarea>
     </div>
   </div>
 </div>

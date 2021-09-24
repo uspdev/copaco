@@ -9,16 +9,14 @@ use Respect\Validation\Validator as v;
 class PertenceRede implements Rule
 {
     public $iprede;
-    public $gateway;
     public $cidr;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($gateway, $iprede, $cidr)
+    public function __construct($iprede, $cidr)
     {
-        $this->gateway = $gateway;
         $this->iprede = $iprede;
         $this->cidr = $cidr;
     }
@@ -32,15 +30,7 @@ class PertenceRede implements Rule
      */
     public function passes($attribute, $value)
     {
-        if ( !v::ip()->validate($this->iprede) or !v::ip()->validate($this->gateway) or !v::intVal()->validate($this->cidr)) {
-            return false;
-        }
-
-        if (NetworkOps::pertenceRede($this->gateway, $this->iprede, $this->cidr)) {
-            return true;
-        }
-
-        return false;
+        return NetworkOps::pertenceRede($value, $this->iprede, $this->cidr);
     }
 
     /**
