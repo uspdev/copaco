@@ -66,14 +66,19 @@ class LoginController extends Controller
         $unidades = explode(',', trim(config('copaco.senha_unica_unidades')));
 
         if ($unidades) {
-            $login = false;
-            foreach ($userSenhaUnica->vinculo as $vinculo) {
-                if (in_array($vinculo['siglaUnidade'], $unidades)) {
-                    if ($vinculo['tipoVinculo'] != 'ALUNOGR') {
-                        $login = true;
+            if(config('copaco.allow_login_all')){
+                $login = true;
+            } else {
+                $login = false;
+                foreach ($userSenhaUnica->vinculo as $vinculo) {
+                    if (in_array($vinculo['siglaUnidade'], $unidades)) {
+                        if ($vinculo['tipoVinculo'] != 'ALUNOGR') {
+                            $login = true;
+                        }
                     }
                 }
             }
+
         }
 
         if (!$login) {

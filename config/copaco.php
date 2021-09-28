@@ -27,6 +27,9 @@ return [
     # Unidades autorizadas
     'senha_unica_unidades' => env('SENHAUNICA_UNIDADES'),
 
+    # permitir login de todos, aluno etc
+    'allow_login_all' => env('ALLOW_LOGIN_ALL',0),
+
     # Admins
     'superadmins_usernames' => env('SUPERADMINS_USERNAMES'),
 
