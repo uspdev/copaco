@@ -54,7 +54,7 @@ class EquipamentoPolicy
         $rede_id = $equipamento->rede_id;
         foreach($user->roles()->get() as $role){       
             foreach($role->redes()->get() as $rede){
-                if($role->grupoadmin && $rede->id==$rede_id) {
+                if($role && $rede->id==$rede_id) {
                     return true;
                 }
             }
