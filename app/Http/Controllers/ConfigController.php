@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Config;
 use App\Models\Rede;
+use App\Models\Config;
 use App\Rules\MultiplesIP;
+use Illuminate\Http\Request;
+use Uspdev\UspTheme\Facades\UspTheme;
 
 class ConfigController extends Controller
 {
@@ -16,6 +17,7 @@ class ConfigController extends Controller
 
     public function index()
     {
+        UspTheme::activeUrl('config');
         $redes = Rede::all();
         $configs = Config::all();
         $consumer_deploy_key = config('copaco.consumer_deploy_key');

@@ -1,4 +1,4 @@
-<form action="/files" enctype="multipart/form-data" method="POST">
+<form action="files" enctype="multipart/form-data" method="POST">
     @csrf
     <input type="hidden" name="equipamento_id" value="{{$equipamento->id}}">
     <div class="row">

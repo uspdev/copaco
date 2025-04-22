@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Rede;
 use App\Models\User;
-use App\Models\Config;
-use Illuminate\Http\Request;
-use App\Http\Requests\RedeRequest;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
-use App\Rules\MultiplesIP;
 use App\Rules\Domain;
-use App\Rules\PertenceRede;
+use App\Models\Config;
 use App\Rules\RedeCidr;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
-use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 use App\Utils\NetworkOps;
+use App\Rules\MultiplesIP;
+use App\Rules\PertenceRede;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Requests\RedeRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
+use Uspdev\UspTheme\Facades\UspTheme;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\Collection;
 
 class RedeController extends Controller
 {
@@ -34,6 +35,8 @@ class RedeController extends Controller
      */
     public function index()
     {
+        UspTheme::activeUrl('redes');
+        
         return view('redes.index',[
             'redes' => Rede::orderBy('nome')->get()
         ]);
@@ -90,6 +93,7 @@ class RedeController extends Controller
      */
     public function show(Rede $rede)
     {
+        UspTheme::activeUrl('redes');
         return view('redes.show', compact('rede'));
     }
 
@@ -101,6 +105,7 @@ class RedeController extends Controller
      */
     public function edit(Rede $rede)
     {
+        UspTheme::activeUrl('redes');
         $shared_networks = Config::where('key','shared_network')->first();
         if(!is_null($shared_networks)){
             $shared_networks = array_map('trim', explode(',',$shared_networks->value));

@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\IndexController;
-use App\Http\Controllers\EquipamentoController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\RedeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FreeradiusController;
+use App\Http\Controllers\EquipamentoController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\FileController;
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
 

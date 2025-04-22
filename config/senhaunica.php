@@ -2,7 +2,7 @@
 
 return [
     // para rotas internas
-    'routes' => false, // usa rotas e controller internos
+    'routes' => 'false', // usa rotas e controller internos
 
     // coloque um prefixo em caso de colisão de rotas
     // para todas as rotas internas da biblioteca (login, loginas, callback, logout e users).
@@ -14,7 +14,7 @@ return [
 
     // define as rotas para o gerenciador de usuários interno, dentro de prefix
     // se vazio, desabilita a rota de gerenciamento de usuários interna
-    'userRoutes' => 'users',
+    'userRoutes' => 'senhaunica-users',
 
     // usa as permissoes internas, padrão para v4.
     // Se false, não usará permission ao efetuar login
@@ -25,6 +25,13 @@ return [
 
     // se true, habilita botão para remover usuário (destroy)
     'destroyUser' => false,
+    
+    // view para editar campo de usuário personalizado. Pode ser mais de uma coluna
+    // 'key' é opcional e se estiver setado permite ordenar por esta coluna, passando o nome da coluna do DB
+    // é passado $user para a view
+    'customUserField' => [
+        // ['view' => 'users.partials.include', 'key' => 'db_column', 'label' => 'custom label', 'width' => '100px'],
+    ],
 
     // se true, revoga as permissões do usuario se não estiver no env.
     // quer dizer que as permissões serão gerenciadas todas a partir do env da aplicação.

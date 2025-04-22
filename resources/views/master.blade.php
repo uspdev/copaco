@@ -4,7 +4,7 @@
 
 @section('flash')
 
-@include('messages.flash')
+{{-- @include('messages.flash') colocado no theme --}}
 @include('messages.errors')
 
 @stop

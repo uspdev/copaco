@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Maatwebsite\Excel\Excel;
-use App\Exports\ExcelExport;
+use UspTheme;
+use Carbon\Carbon;
 
-use App\Models\Equipamento;
 use App\Models\Rede;
 use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Requests\EquipamentoRequest;
-use App\Utils\NetworkOps;
-use App\Rules\Patrimonio;
+use Uspdev\dadosUsp;
 use App\Rules\MacAddress;
+use App\Rules\Patrimonio;
+use App\Utils\NetworkOps;
+use App\Models\Equipamento;
+use App\Exports\ExcelExport;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Excel;
 
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-use Uspdev\dadosUsp;
-
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\EquipamentoRequest;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\Collection;
-use Carbon\Carbon;
 
 class EquipamentoController extends Controller
 {
@@ -85,6 +86,7 @@ class EquipamentoController extends Controller
 
     public function index()
     {
+        UspTheme::activeUrl('equipamentos');
         $equipamentos = $this->search()->paginate(20);
         $redes = Rede::allowed()->get();
         return view(('equipamentos.index'), compact('equipamentos','redes'));
@@ -98,6 +100,7 @@ class EquipamentoController extends Controller
     public function create()
     {
         $this->authorize('equipamentos.create');
+        UspTheme::activeUrl('equipamentos');
 
         // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
         $user = Auth::user();
@@ -134,6 +137,7 @@ class EquipamentoController extends Controller
      */
     public function show(Equipamento $equipamento)
     {       
+        UspTheme::activeUrl('equipamentos');
         $this->authorize('equipamentos.view', $equipamento);
         return view('equipamentos.show', compact('equipamento'));
     }
@@ -147,6 +151,7 @@ class EquipamentoController extends Controller
     public function edit(Equipamento $equipamento)
     {
         $this->authorize('equipamentos.update', $equipamento);
+        UspTheme::activeUrl('equipamentos');
 
         $user = Auth::user();
         $redes = Rede::allowed()->get();

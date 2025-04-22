@@ -30,7 +30,7 @@
         <tbody>
             @foreach($redes as $rede)
             <tr>
-                <td><a href="/redes/{{ $rede->id }}">{{ $rede->nome }}</a></td>
+                <td><a href="redes/{{ $rede->id }}">{{ $rede->nome }}</a></td>
                 <td>{{ $rede->iprede }}/{{ $rede->cidr }}</td>
                 <td>{{ $rede->vlan }}</td>
                 <td>{{ $rede->gateway }}</td>

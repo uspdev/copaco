@@ -26,14 +26,14 @@
                             </a>
                         </td>
                     @else
-                        <td><a href="/files/{{$file->id}}">{{ $file->original_name }}</a></td>
+                        <td><a href="files/{{$file->id}}">{{ $file->original_name }}</a></td>
                     @endif
                     <td>
                         {{ Carbon\Carbon::parse($file->created_at)->format('d/m/Y') }}
                     </td>
                     @can('equipamentos.delete', $equipamento)
                         <td>
-                            <form method="POST" class="form-group" action="/files/{{$file->id}}">
+                            <form method="POST" class="form-group" action="files/{{$file->id}}">
                                 @csrf 
                                 @method('delete')
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Você tem certeza que deseja apagar?')"><i class="fas fa-trash-alt"></i></button>

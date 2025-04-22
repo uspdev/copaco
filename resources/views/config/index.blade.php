@@ -6,7 +6,7 @@
 
 @section('content')
         <div>
-            <form action="/api/dhcpd.conf" method="post">
+            <form action="api/dhcpd.conf" method="post">
                 {{csrf_field()}}
                 <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
                 <button class="btn btn-success" type="submit">Gerar dhcpd.conf com subnets</button>
@@ -16,7 +16,7 @@
         <br />
 
         <div>
-            <form action="/api/freeradius/authorize_file" method="post">
+            <form action="api/freeradius/authorize_file" method="post">
                 {{csrf_field()}}
                 <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
                 <button class="btn btn-success" type="submit">Gerar authorize para freeradius</button>
@@ -26,7 +26,7 @@
         <br />
 
         <div>
-            <form action="/freeradius/sincronize" method="post">
+            <form action="freeradius/sincronize" method="post">
                 {{csrf_field()}}
                 <button class="btn btn-success" type="submit">Sincronizar com Freeradius</button>
             </form>
@@ -35,7 +35,7 @@
         <br />
 
         <div>
-            <form action="/api/uniquedhcpd.conf" method="post">
+            <form action="api/uniquedhcpd.conf" method="post">
                 {{csrf_field()}}
                 <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
                 <button class="btn btn-info" type="submit">Gerar dhcpd.conf único (sem subnets - depuração)</button>
@@ -45,7 +45,7 @@
         <div>
 
             <br>
-            <form action="/config" class="form-group" method="post">
+            <form action="config" class="form-group" method="post">
                 {{csrf_field()}}
 
                 @include('config.partials.dhcp')

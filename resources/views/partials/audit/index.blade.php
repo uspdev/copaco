@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-  @foreach($model->audits as $audit)
+  @foreach($model->audits()->orderBy('created_at', 'desc')->get() as $audit)
     <tr>
       <td> {{ \Carbon\Carbon::parse($audit->getMetadata()['audit_created_at'])->format('d/m/Y H:i') }} </td>
       <td> {{ $audit->getMetadata()['user_name'] }}</td>

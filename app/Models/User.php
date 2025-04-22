@@ -11,6 +11,7 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     use Notifiable, HasFactory;
+    use \Uspdev\SenhaunicaSocialite\Traits\HasSenhaunica;
 
     /**
      * The attributes that are mass assignable.

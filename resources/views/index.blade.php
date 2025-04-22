@@ -28,7 +28,7 @@
             </div>
 
         @else
-            Você ainda não fez seu <a href="/login"> login</a>!
+            Você ainda não fez seu <a href="login"> login</a>!
         @endauth
     
 @stop

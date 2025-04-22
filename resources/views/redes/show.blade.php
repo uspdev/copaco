@@ -44,7 +44,7 @@
           <li class="list-group-item"><b>Grupos com permissão nessa rede:</b>
             <ul>
               @foreach ( $rede->roles()->get() as $role)        
-                <li><a href="/roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
+                <li><a href="roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
               @endforeach
             </ul>
           </li>
@@ -67,7 +67,7 @@
   <tbody>
   @foreach($rede->equipamentos->sortBy('ip') as $equipamento)
     <tr>
-      <th><a href="/equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress}}</a></th>
+      <th><a href="equipamentos/{{ $equipamento->id }}"> {{ $equipamento->macaddress}}</a></th>
       <th>{{ $equipamento->ip }}</th>
       <th>{{ $equipamento->patrimonio }}</th>
       <th>{{ $equipamento->local }}</th>

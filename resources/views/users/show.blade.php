@@ -18,7 +18,7 @@
     <li class="list-group-item"><b>Grupos:</b>
         <ul>
             @foreach ( $user->roles()->get() as $role)        
-                <li><a href="/roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
+                <li><a href="roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
             @endforeach
         </ul>
      </li>

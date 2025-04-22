@@ -25,7 +25,7 @@
         <tbody>
             @foreach($roles as $role)
             <tr>
-                <td><a href="/roles/{{ $role->id }}">{{ $role->nome }}</a></td>
+                <td><a href="roles/{{ $role->id }}">{{ $role->nome }}</a></td>
                 <td>
                     <a href="{{action('App\Http\Controllers\RoleController@edit', $role->id)}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
                 </td>

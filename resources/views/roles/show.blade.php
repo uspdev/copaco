@@ -28,14 +28,14 @@
             <li class="list-group-item"><b>Pessoas</b>: 
                 <ul>
                 @foreach($role->users()->get() as $user)
-                <li> <a href="/users/{{ $user->username }}">{{ $user->name }}</a></li>
+                <li> <a href="users/{{ $user->username }}">{{ $user->name }}</a></li>
                 @endforeach
                 </ul>
             </li>
             <li class="list-group-item"><b>Redes</b>: 
                 <ul>
                 @foreach($role->redes()->get() as $rede)
-                <li> <a href="/redes/{{ $rede->id }}">{{ $rede->nome }}</a></li>
+                <li> <a href="redes/{{ $rede->id }}">{{ $rede->nome }}</a></li>
                 @endforeach
                 </ul>
             </li>

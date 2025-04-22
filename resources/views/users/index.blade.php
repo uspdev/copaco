@@ -24,13 +24,13 @@
         <tbody>
             @foreach($users as $user)
             <tr>
-                <td><a href="/users/{{ $user->username }}">{{ $user->username }}</a></td>
+                <td><a href="users/{{ $user->username }}">{{ $user->username }}</a></td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>
                     <ul>
                     @forelse ( $user->roles()->get() as $role)        
-                        <li><a href="/roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
+                        <li><a href="roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
                     @empty
                         <li>Sem grupo</li>
                     @endforelse
