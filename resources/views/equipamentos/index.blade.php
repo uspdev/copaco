@@ -90,7 +90,7 @@
 
                 <td>
                     @can('admin')
-                        <a href="/users/{{$equipamento->user->username}}">{{ $equipamento->user->name ?? '' }}</a>
+                        <a href="/users/{{$equipamento->user->codpes}}">{{ $equipamento->user->name ?? '' }}</a>
                     @elsecannot('admin')
                         {{ $equipamento->user->name ?? '' }}
                     @endcan

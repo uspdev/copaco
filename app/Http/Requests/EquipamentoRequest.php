@@ -35,7 +35,7 @@ class EquipamentoRequest extends FormRequest
             'descricao' => ['nullable'],
             'local' => '',
             'vencimento' => 'nullable|date_format:"d/m/Y"|after:today',
-            'rede_id' => ['required', Rule::in(Rede::allowed()->get()->pluck('id'))],
+            'rede_id' => ['required', Rule::in(Rede::all()->pluck('id'))],
             'ip' => ['nullable','ip',],
         ];
         if ($this->method() == 'PATCH' || $this->method() == 'PUT'){

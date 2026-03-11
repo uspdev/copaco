@@ -36,22 +36,6 @@
     </div>
 </div>
 <br>
-<div class="card">
-    <div class="card-header">Configurações de Permissões</div>
-    <div class="card-body">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><b>Responsável</b>: {{ $rede->user->name }}</li>
-          <li class="list-group-item"><b>Grupos com permissão nessa rede:</b>
-            <ul>
-              @foreach ( $rede->roles()->get() as $role)        
-                <li><a href="/roles/{{ $role->id }}"> {{ $role->nome }} </a></li>
-              @endforeach
-            </ul>
-          </li>
-      </ul>
-    </div>
-</div>
-<br>
 <h4> Equipamentos alocados nesta rede: </h4>
 
 <table class="table">

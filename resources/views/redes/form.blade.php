@@ -85,6 +85,11 @@
             <label>Disponibilizar esta rede no freeradius ?</label>
         </div>
 
+        <div>
+            <input type="checkbox" name="onlyadmin" value="1" @if(isset($rede) and $rede->onlyadmin == 1) checked @endif>
+            <label>Somente administradores podem cadastrar equipamentos nessa rede ?</label>
+        </div>
+
     </div>
 </div>
 <br>

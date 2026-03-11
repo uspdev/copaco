@@ -1,14 +1,14 @@
 @extends('master')
 
 @section('content_header')
-  <h1>{{ $user->username }} </h1>
+  <h1>{{ $user->codpes }} - {{ $user->name }} </h1>
 @stop
 
 @section('content')
     @include('messages.flash')
     @include('messages.errors')
 <div>
-    <a href="{{action('App\Http\Controllers\UserController@edit', $user->username )}}" class="btn btn-warning">Editar</a>
+    <a href="{{action('App\Http\Controllers\UserController@edit', $user->codpes )}}" class="btn btn-warning">Editar</a>
 </div>
 <br>
 <div class="card">

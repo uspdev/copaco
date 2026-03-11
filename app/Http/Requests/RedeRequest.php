@@ -40,6 +40,7 @@ class RedeRequest extends FormRequest
             'ntp'               => [new MultiplesIP('NTP')],
             'active_dhcp'       => 'nullable|boolean',
             'active_freeradius' => 'nullable|boolean',
+            'onlyadmin'         => 'nullable|boolean',
             'dhcpd_subnet_options' => 'nullable',
         ];
         if ($this->method() == 'PATCH' || $this->method() == 'PUT'){
@@ -57,6 +58,7 @@ class RedeRequest extends FormRequest
         $this->merge([
             'active_dhcp' => isset($this->active_dhcp) ? $this->active_dhcp:0,
             'active_freeradius' => isset($this->active_freeradius) ? $this->active_freeradius:0,
+            'onlyadmin' => isset($this->onlyadmin) ? $this->onlyadmin:0,
         ]);
     }
 }

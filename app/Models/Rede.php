@@ -33,32 +33,4 @@ class Rede extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
-    public function roles()
-    {
-      return $this->belongsToMany(Role::class,'role_rede');
-    }
-
-    public function hasRole($role)
-    {
-      return null !== $this->roles()->where('nome', $role)->first();
-    }
-
-    /* Método que retorna as redes que o usuário logado tem acesso */
-    public function scopeAllowed($query)
-    {
-        /* Usuários administradores podem acessar todas redes */
-        if( Gate::allows('admin') ) {
-            return $query;
-        }
-
-        $user = auth()->user();
-        $redes = [];
-        foreach($user->roles()->get() as $role){       
-            foreach($role->redes()->get() as $rede){
-                array_push($redes,$rede->id);
-            }
-        }
-        $query->OrWhereIn('id',array_unique($redes));
-        return $query;
-    }
 }

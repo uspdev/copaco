@@ -1,45 +1,6 @@
 <?php
 
 return [
-    /*
-    |--------------------------------------------------------------------------
-    | USPdev Copaco - Arquivo Principal de Configuração
-    |--------------------------------------------------------------------------
-    |
-    | Este arquivo abriga as integrações com bibliotecas desenvolvidas pelo USPdev e bibliotecas
-    | externas. Novas diretivas devem ser criadas aqui se a release do desenvolvedor
-    | não provê um arquivo próprio de configuração
-    |
-    */
-    'codigo_acesso' => env('CODIGO_ACESSO', false),
-    'somente_senhaunica' => env('SOMENTE_SENHAUNICA', false),
-    /*
-    |--------------------------------------------------------------------------
-    | Senha Única
-    |--------------------------------------------------------------------------
-    | TODO: DOCUMENTAR VARIÁVEIS
- */
-
-    'senha_unica_key' => env('SENHAUNICA_KEY', false),
-    'senha_unica_secret' => env('SENHAUNICA_SECRET', false),
-    'senha_unica_callback_id' => env('SENHAUNICA_CALLBACK_ID', false),
-
-    # Unidades autorizadas
-    'senha_unica_unidades' => env('SENHAUNICA_UNIDADES'),
-
-    # permitir login de todos, aluno etc
-    'allow_login_all' => env('ALLOW_LOGIN_ALL',0),
-
-    # Admins
-    'superadmins_usernames' => env('SUPERADMINS_USERNAMES'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | DHCP e FreeRadius
-    |--------------------------------------------------------------------------
-    | consumer_deploy_key = parâmetro enviado para os servidores DHCP e FreeRadius
-    | freeradius_macaddr_case = 'upper','lower'
-     */
     'consumer_deploy_key' => env('CONSUMER_DEPLOY_KEY', false),
 
     'freeradius_habilitar' => env('FREERADIUS_HABILITAR', false),
