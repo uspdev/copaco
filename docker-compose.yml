@@ -1,0 +1,58 @@
+services:
+  copaco:
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: copaco:latest
+    container_name: copaco
+    ports:
+      - "8000:80"
+    depends_on:
+      - mariadb
+    networks:
+      - copaco-network
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+      DB_CONNECTION: mysql
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_DATABASE: copaco
+      DB_USERNAME: copaco
+      DB_PASSWORD: copaco
+      CACHE_DRIVER: file
+      SESSION_DRIVER: file
+      QUEUE_CONNECTION: sync
+      HOME: /tmp
+    restart: unless-stopped
+
+  mariadb:
+    image: mariadb:11
+    container_name: copaco_mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: copaco
+      MYSQL_USER: copaco
+      MYSQL_PASSWORD: copaco
+      MYSQL_ROOT_PASSWORD: copaco
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - copaco-network
+
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: copaco_selenium
+    ports:
+      - "7903:7900" # VNC (pra ver o browser rodando)
+    networks:
+      - copaco-network
+    shm_size: 2gb
+
+networks:
+  copaco-network:
+
+volumes:
+  mariadb_data:
+

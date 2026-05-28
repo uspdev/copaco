@@ -1,0 +1,12 @@
+.git
+.gitignore
+.env
+.idea
+.vscode
+node_modules
+public/storage
+storage/*.key
+storage/logs
+vendor
+npm-debug.log
+yarn-error.log
