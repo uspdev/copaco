@@ -45,7 +45,7 @@ services:
     image: selenium/standalone-chrome
     container_name: copaco_selenium
     ports:
-      - "7903:7900" # VNC (pra ver o browser rodando)
+      - "7900:7900" # VNC (pra ver o browser rodando)
     networks:
       - copaco-network
     shm_size: 2gb
