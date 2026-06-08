@@ -24,8 +24,6 @@ services:
       MYSQL_USER: copaco
       MYSQL_PASSWORD: copaco
       MYSQL_ROOT_PASSWORD: copaco
-    volumes:
-      - mariadb_data:/var/lib/mysql
     networks:
       - copaco-network
 
@@ -40,7 +38,3 @@ services:
 
 networks:
   copaco-network:
-
-volumes:
-  mariadb_data:
-
