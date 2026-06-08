@@ -14,7 +14,7 @@ class IndexTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                ->assertUrlIs('http://copaco/');
+                ->assertSee('Copaco');
         });
     }
 }
