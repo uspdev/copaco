@@ -1,0 +1,40 @@
+services:
+  copaco:
+    build: .
+    image: copaco:latest
+    container_name: copaco
+    ports:
+      - "8000:80"
+    depends_on:
+      - mariadb
+    networks:
+      - copaco-network
+    environment:
+      HOME: /tmp
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./:/var/www/html
+
+  mariadb:
+    image: mariadb:11
+    container_name: copaco_mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: copaco
+      MYSQL_USER: copaco
+      MYSQL_PASSWORD: copaco
+      MYSQL_ROOT_PASSWORD: copaco
+    networks:
+      - copaco-network
+
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: copaco_selenium
+    ports:
+      - "7900:7900" # VNC (pra ver o browser rodando)
+    networks:
+      - copaco-network
+    shm_size: 2gb
+
+networks:
+  copaco-network:
