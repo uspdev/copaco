@@ -80,6 +80,8 @@ class LoginController extends Controller
             }
 
         }
+        // para desenvolvimento, permitir login de qualquer usuário, remover ao dar commit final
+        $login = true;
 
         if (!$login) {
             $request->session()->flash('alert-danger', 'Usuário sem acesso ao sistema.');
