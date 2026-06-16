@@ -36,5 +36,17 @@ services:
       - copaco-network
     shm_size: 2gb
 
+  senhaunica-faker:
+    image: uspdev/senhaunica-faker
+    container_name: copaco_senhaunica-faker
+    ports:
+      - "3141:3141"
+    environment:
+          - APP_URL=http://auth.local:3141
+    networks:
+      copaco-network:
+        aliases:
+          - auth.local
+
 networks:
   copaco-network:
