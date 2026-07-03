@@ -13,7 +13,7 @@ class NavegacaoTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
                 ->clickLink('Faça login usando senha única USP!');
-            $browser->waitFor('#loginUsuario', 10)
+            $browser->waitFor('#loginUsuario')
                 ->type('#loginUsuario', '1111')
                 ->press('Login');
 

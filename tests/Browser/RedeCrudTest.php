@@ -16,7 +16,7 @@ class RedeCrudTest extends DuskTestCase
             // Login obrigatório
             $browser->visit('/login')
                 ->clickLink('Faça login usando senha única USP!');
-            $browser->waitFor('#loginUsuario', 10)
+            $browser->waitFor('#loginUsuario')
                 ->type('#loginUsuario', '1111')
                 ->press('Login');
             // Início do teste crud
