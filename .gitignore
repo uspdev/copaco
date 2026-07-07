@@ -27,3 +27,4 @@ public/vendor/
 !public/assets
 .phpunit.result.cache
 .phpunit.cache/
+.vscode/settings.json

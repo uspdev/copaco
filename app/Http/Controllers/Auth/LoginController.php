@@ -45,12 +45,12 @@ class LoginController extends Controller
     {
         return 'username';
     }
-    
+
     public function redirectToProvider()
     {
        return Socialite::driver('senhaunica')->redirect();
     }
-    
+
     public function handleProviderCallback(Request $request)
     {
         $userSenhaUnica = Socialite::driver('senhaunica')->user();
@@ -91,11 +91,11 @@ class LoginController extends Controller
         $user->email = $userSenhaUnica->email;
         $user->name = $userSenhaUnica->nompes;
         $user->save();
- 
+
         Auth::login($user, true);
         return redirect('/');
     }
-    
+
     public function logout()
     {
         Auth::logout();

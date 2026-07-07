@@ -15,13 +15,26 @@ class Utils
         $rede = Rede::orderBy('updated_at', 'DESC')->first();
         $equipamento = Equipamento::orderBy('updated_at', 'DESC')->first();
 
-        $rede = Carbon::createFromFormat('Y-m-d H:i:s', $rede->updated_at);
-        $equipamento = Carbon::createFromFormat('Y-m-d H:i:s', $equipamento->updated_at);
-
-        if($rede->greaterThan($equipamento)){
-            return $rede->format('d/m/Y H:i:s');
+        if (is_null($rede) && is_null($equipamento)) {
+            return Carbon::now()->format('d/m/Y H:i:s');
         }
-        return $equipamento->format('d/m/Y H:i:s');
+
+        if (is_null($rede)) {
+            return Carbon::parse($equipamento->updated_at)->format('d/m/Y H:i:s');
+        }
+
+        if (is_null($equipamento)) {
+            return Carbon::parse($rede->updated_at)->format('d/m/Y H:i:s');
+        }
+
+        $redeUpdatedAt = Carbon::parse($rede->updated_at);
+        $equipamentoUpdatedAt = Carbon::parse($equipamento->updated_at);
+
+        if ($redeUpdatedAt->greaterThan($equipamentoUpdatedAt)) {
+            return $redeUpdatedAt->format('d/m/Y H:i:s');
+        }
+
+        return $equipamentoUpdatedAt->format('d/m/Y H:i:s');
     }
 
 }
