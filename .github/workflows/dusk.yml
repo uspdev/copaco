@@ -8,88 +8,54 @@ jobs:
   dusk:
     runs-on: ubuntu-latest
 
-    services:
-      mariadb:
-        image: mariadb:10.11
-        env:
-          MARIADB_DATABASE: db
-          MARIADB_ROOT_PASSWORD: admin
-          MARIADB_USER: admin
-          MARIADB_PASSWORD: admin
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
-
-      senhaunica-faker:
-        image: uspdev/senhaunica-faker
-        ports:
-          - 3141:3141
-        env:
-          APP_URL: http://127.0.0.1:3141
+    env:
+      SERVICE_NAME: copaco
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.4
-          extensions: mbstring, dom, pdo, mysql
-          coverage: none
-
-      - name: Install Composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
-
-      # 1. Copia o .env.example direto para .env
-      - name: Copy env from example
+      - name: Create .env
         run: cp .env.example .env
 
-      # 2. Remove as variáveis visuais do Dusk caso existam no .env
-      - name: Remove Dusk visual variables
+      - name: Set UID/GID
         run: |
-          sed -i '/DUSK_START_MAXIMIZED/d' .env || true
-          sed -i '/DUSK_HEADLESS_DISABLED/d' .env || true
+          echo "UID=$(id -u)" >> $GITHUB_ENV
+          echo "GID=$(id -g)" >> $GITHUB_ENV
 
-      # 3. Injeta as configurações do Dusk e do Banco de Dados no .env gerado
-      - name: Configure .env file for testing
-        run: |
-          echo "APP_URL=http://127.0.0.1:47800" >> .env
-          echo "DUSK_DRIVER_URL=http://localhost:9515" >> .env
-          echo "SENHAUNICA_DEV=http://127.0.0.1:3141/wsusuario/oauth" >> .env
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=db" >> .env
-          echo "DB_USERNAME=admin" >> .env
-          echo "DB_PASSWORD=admin" >> .env
-
-      - name: Generate APP_KEY
-        run: php artisan key:generate
+      - name: Build and start containers
+        run: docker compose up -d --build
 
       - name: Wait for MariaDB
         run: |
-          for i in {1..30}; do
-            mysqladmin ping -h127.0.0.1 -P3306 --silent && break
+          for i in {1..40}; do
+            if docker compose exec -T mariadb mariadb -u${{ env.SERVICE_NAME }} -p${{ env.SERVICE_NAME }} -e "SELECT 1;" &> /dev/null; then
+              echo "MariaDB is ready"
+              exit 0
+            fi
+            echo "Waiting for MariaDB..."
             sleep 2
           done
 
-      - name: Run migrations
-        run: php artisan migrate --force
+      - name: Install Composer dependencies
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} composer install --no-interaction --prefer-dist
 
-      - name: Install Chrome
-        uses: browser-actions/setup-chrome@v1
+      - name: Generate APP_KEY
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan key:generate
+
+      - name: Run migrations
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan migrate --force
 
       - name: Install ChromeDriver
-        run: php artisan dusk:chrome-driver --detect
-
-      - name: Start Laravel server
-        run: php artisan serve --port=47800 &
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan dusk:chrome-driver --detect
 
       - name: Run Dusk
-        run: php artisan dusk --without-tty
+        run: docker compose exec -T ${{ env.SERVICE_NAME }} php artisan dusk --without-tty
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down -v
