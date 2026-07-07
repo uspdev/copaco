@@ -28,3 +28,4 @@ public/vendor/
 .phpunit.result.cache
 .phpunit.cache/
 app/Http/Controllers/Auth/LoginController.php
+.vscode/settings.json

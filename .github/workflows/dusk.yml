@@ -25,6 +25,13 @@ jobs:
           --health-timeout=5s
           --health-retries=10
 
+      senhaunica-faker:
+        image: uspdev/senhaunica-faker
+        ports:
+          - 3141:3141
+        env:
+          APP_URL: http://127.0.0.1:3141
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,6 +61,7 @@ jobs:
         run: |
           echo "APP_URL=http://127.0.0.1:47800" >> .env
           echo "DUSK_DRIVER_URL=http://localhost:9515" >> .env
+          echo "SENHAUNICA_DEV=http://127.0.0.1:3141/wsusuario/oauth" >> .env
           echo "DB_CONNECTION=mysql" >> .env
           echo "DB_HOST=127.0.0.1" >> .env
           echo "DB_PORT=3306" >> .env
