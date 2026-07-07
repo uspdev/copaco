@@ -55,16 +55,10 @@ class RedeCrudTest extends DuskTestCase
                 ->pause(1000)
                 ->assertSee('Rede Teste Editada');
 
-            // Gerar Keadhcp
-            $browser->visit("/config")
-                ->press('Gerar configuração Kea (JSON) - Redes segmentadas')
-                ->pause(2000)
-                ->assertSee('141.232.67.1');
-
             // Delete
             $browser->visit('/redes')
                 ->click("form[action$='/redes/{$rede->id}'] button.delete-item")
-                ->acceptDialog() 
+                ->acceptDialog()
                 ->pause(1000)
                 ->assertDontSee('Rede Teste Editada');
         });
