@@ -6,6 +6,26 @@
 
 @section('content')
         <div>
+            <form action="/api/kea" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
+                <button class="btn btn-info" type="submit">Gerar configuração Kea (JSON) - Redes segmentadas</button>
+            </form>
+        </div>
+        
+        <br />
+
+        <div>
+            <form action="/api/kea/unique" method="post">
+                {{csrf_field()}}
+                <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
+                <button class="btn btn-info" type="submit">Gerar configuração Kea única (JSON) - Sem segmentação</button>
+            </form>
+        </div>
+
+        <br />
+
+        <div>
             <form action="/api/dhcpd.conf" method="post">
                 {{csrf_field()}}
                 <input type="hidden" name="consumer_deploy_key" value="{{ $consumer_deploy_key }}">
