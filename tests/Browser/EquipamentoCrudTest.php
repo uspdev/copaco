@@ -2,12 +2,10 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\Equipamento;
 use App\Models\Rede;
-use App\Models\User;
 
 class EquipamentoCrudTest extends DuskTestCase
 {
@@ -74,14 +72,14 @@ class EquipamentoCrudTest extends DuskTestCase
             // Delete
             $browser->visit('/equipamentos')
                 ->click("form[action$='/equipamentos/{$equipamento->id}'] button.delete-item")
-                ->acceptDialog()  
+                ->acceptDialog()
                 ->pause(1000)
                 ->assertDontSee('200.106505');
 
             // Deletar a rede criada para o teste
             $browser->visit('/redes')
                 ->click("form[action$='/redes/{$rede->id}'] button.delete-item")
-                ->acceptDialog() 
+                ->acceptDialog()
                 ->pause(1000)
                 ->assertDontSee('Rede Teste Editada');
         });

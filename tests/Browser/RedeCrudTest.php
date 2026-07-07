@@ -2,11 +2,9 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\Rede;
-use App\Models\User;
 
 class RedeCrudTest extends DuskTestCase
 {
