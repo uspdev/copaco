@@ -12,23 +12,10 @@
                     ( você é super administrador )
                   @endcan
                 </div>
-
-                <div class="card-body">
-                    <b>Meus grupos:</b>
-                    <ul class="list-group">
-    
-                        @forelse (Auth::user()->roles()->get() as $role)
-                            <li class="list-group-item"> {{ $role->nome }} </li>
-                        @empty
-                            <li class="list-group-item">Não está em nenhum grupo </li>
-                        @endforelse
-                    </ul>
-
-                </div>
             </div>
 
         @else
-            Você ainda não fez seu <a href="/login"> login</a>!
+            Você ainda não fez seu login. <a href="/login"> login USP </a> ou <a href="/loginlocal"> login local </a>!
         @endauth
     
 @stop

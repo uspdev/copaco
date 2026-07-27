@@ -41,7 +41,7 @@ class EquipamentoController extends Controller
     private function search(){
         $request = request();
 
-        $query = Equipamento::allowed();
+        $query = new Equipamento;
         // search terms
         if (!is_null($request->search)) {
             //Busca por responsável
@@ -75,10 +75,16 @@ class EquipamentoController extends Controller
             $query = $query->where('rede_id', $request->rede_id);
         }
 
+        // para usuários não admin, filtra só equipamentos que ele tem acesso
+        if (!Gate::allows('admin')) {
+            $query = $query->where('user_id', Auth::user()->id);
+        }
+
+
         // quando não há registros
         if (!$query->count()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
-        }
+        }  
 
         return $query;
     }
@@ -86,7 +92,7 @@ class EquipamentoController extends Controller
     public function index()
     {
         $equipamentos = $this->search()->paginate(20);
-        $redes = Rede::allowed()->get();
+        $redes = Rede::all();
         return view(('equipamentos.index'), compact('equipamentos','redes'));
     }
 
@@ -100,8 +106,12 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.create');
 
         // Mandar somente as redes que o usuário tem permissão de inserção de equipamentos
-        $user = Auth::user();
-        $redes = Rede::allowed()->get();
+        if(Gate::allows('admin')){
+            $redes = Rede::all();
+        } else {
+            $redes = Rede::where('onlyadmin',0)->get();
+        }
+        
         return view('equipamentos.create', [
             'redes' => $redes,
             'equipamento' => new Equipamento
@@ -148,8 +158,11 @@ class EquipamentoController extends Controller
     {
         $this->authorize('equipamentos.update', $equipamento);
 
-        $user = Auth::user();
-        $redes = Rede::allowed()->get();
+        if(Gate::allows('admin')){
+            $redes = Rede::all();
+        } else {
+            $redes = Rede::where('onlyadmin',0)->get();
+        }
         return view('equipamentos.edit', compact('equipamento', 'redes'));
     }
 
