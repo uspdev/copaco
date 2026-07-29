@@ -10,19 +10,8 @@ use App\Models\Rede;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\EquipamentoRequest;
-use App\Utils\NetworkOps;
-use App\Rules\Patrimonio;
-use App\Rules\MacAddress;
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
-use Uspdev\dadosUsp;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 
 class EquipamentoController extends Controller
@@ -41,23 +30,21 @@ class EquipamentoController extends Controller
     private function search(){
         $request = request();
 
-        $query = new Equipamento;
+        $query = Equipamento::query();
         // search terms
         if (!is_null($request->search)) {
             //Busca por responsável
-            if (!is_null($request->search)) {
-                $searchable_fields = ['macaddress','patrimonio','descricao','local','ip'];
-                $query->where(function($query) use ($request,$searchable_fields) {
-                    foreach ($searchable_fields as $field) {
-                        $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
-                    }
-                });
-                
-                // Busca por nome de usuário também
-                $query2 = User::where('name', 'LIKE', "%$request->search%")->get();
-                foreach($query2 as $q){
-                    $query->orWhere('user_id','=', $q->id);
+            $searchable_fields = ['macaddress','patrimonio','descricao','local','ip'];
+            $query->where(function($query) use ($request,$searchable_fields) {
+                foreach ($searchable_fields as $field) {
+                    $query->orWhere($field, 'LIKE', '%' . $request->search . '%');
                 }
+            });
+
+            // Busca por nome de usuário também
+            $query2 = User::where('name', 'LIKE', "%$request->search%")->get();
+            foreach($query2 as $q){
+                $query->orWhere('user_id','=', $q->id);
             }
         }
         // Mostra apenas equipamentos sem rede
@@ -84,7 +71,7 @@ class EquipamentoController extends Controller
         // quando não há registros
         if (!$query->count()) {
             $request->session()->flash('alert-danger', 'Não há registros!');
-        }  
+        }
 
         return $query;
     }
@@ -111,7 +98,7 @@ class EquipamentoController extends Controller
         } else {
             $redes = Rede::where('onlyadmin',0)->get();
         }
-        
+
         return view('equipamentos.create', [
             'redes' => $redes,
             'equipamento' => new Equipamento
@@ -131,7 +118,7 @@ class EquipamentoController extends Controller
         $user = Auth::user();
         $validated['user_id'] = $user->id;
         $equipamento = Equipamento::create($validated);
-                
+
         $request->session()->flash('alert-success', 'Equipamento cadastrado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }
@@ -143,7 +130,7 @@ class EquipamentoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Equipamento $equipamento)
-    {       
+    {
         $this->authorize('equipamentos.view', $equipamento);
         return view('equipamentos.show', compact('equipamento'));
     }
@@ -178,9 +165,9 @@ class EquipamentoController extends Controller
         $this->authorize('equipamentos.update', $equipamento);
 
         // mac antigo para o freeradius
-        #$macaddress_antigo = $equipamento->macaddress;  
+        #$macaddress_antigo = $equipamento->macaddress;
         $equipamento->update($request->validated());
-        
+
         $request->session()->flash('alert-success', 'Equipamento atualizado com sucesso!');
         return redirect("/equipamentos/$equipamento->id");
     }

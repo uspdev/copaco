@@ -50,7 +50,13 @@ $menu = [
         'icon'        => 'sitemap',
         'can'         => 'admin',
         'submenu'     => $redes,
-    ]
+    ],
+    [
+        'text'        => 'Configurações',
+        'url'         => config('app.url') . '/config',
+        'icon'        => 'file',
+        'can'         => 'admin',
+    ],
 ];
 
 return [
