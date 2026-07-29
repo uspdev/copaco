@@ -6,11 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
+use Uspdev\SenhaunicaSocialite\Traits\HasSenhaunica;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasFactory;
+    use Notifiable, HasFactory, HasRoles, HasSenhaunica;
+
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','username',
+        'name', 'email', 'password'
     ];
 
     /**
@@ -29,27 +31,4 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-    public function roles()
-    {
-      return $this->belongsToMany(Role::class);
-    }
-
-    /**
-    * Check multiple roles
-    * @param array $roles
-    */
-    public function hasAnyRole($roles)
-    {
-      return null !== $this->roles()->whereIn('nome', $roles)->first();
-    }
-    
-    /**
-    * Check one role
-    * @param string $role
-    */
-    public function hasRole($role)
-    {
-      return null !== $this->roles()->where('nome', $role)->first();
-    }
 }
