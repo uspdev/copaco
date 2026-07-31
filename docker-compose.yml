@@ -9,11 +9,11 @@ services:
       - mariadb
     networks:
       - copaco-network
+    volumes:
+      - ./:/var/www/html
     environment:
       HOME: /tmp
     user: "${UID:-1000}:${GID:-1000}"
-    volumes:
-      - ./:/var/www/html
 
   mariadb:
     image: mariadb:11
@@ -24,6 +24,24 @@ services:
       MYSQL_USER: copaco
       MYSQL_PASSWORD: copaco
       MYSQL_ROOT_PASSWORD: copaco
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - copaco-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: copaco_phpmyadmin
+    restart: always
+    depends_on:
+      - mariadb
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: copaco
     networks:
       - copaco-network
 
@@ -31,11 +49,13 @@ services:
     image: selenium/standalone-chrome
     container_name: copaco_selenium
     ports:
-      - "7900:7900" # VNC (pra ver o browser rodando)
+      - "7900:7900"
     networks:
       - copaco-network
     shm_size: 2gb
 
+  # No /etc/hosts do seu computador colocar a linha `127.0.0.1 auth.local`
+  # particularidades do protocolo oAuth1 usado na USP
   senhaunica-faker:
     image: uspdev/senhaunica-faker
     container_name: copaco_senhaunica-faker
@@ -50,3 +70,6 @@ services:
 
 networks:
   copaco-network:
+
+volumes:
+  mariadb_data:

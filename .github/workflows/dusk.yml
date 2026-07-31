@@ -18,6 +18,10 @@ jobs:
       - name: Create .env
         run: cp .env.example .env
 
+      - name: Add auth.local to hosts to senhaunica-faker works properly
+        run: |
+          echo "127.0.0.1 auth.local" | sudo tee -a /etc/hosts
+
       - name: Set UID/GID
         run: |
           echo "UID=$(id -u)" >> $GITHUB_ENV
