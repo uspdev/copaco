@@ -11,16 +11,17 @@ class RedeCrudTest extends DuskTestCase
     public function test_rede_crud()
     {
         $this->browse(function (Browser $browser) {
-            // Login obrigatório
-            $browser->visit('/login')
-                ->clickLink('Faça login usando senha única USP!');
+            $browser->visit('/')
+                ->clickLink('login USP');
             $browser->waitFor('#loginUsuario')
-                ->type('#loginUsuario', '1111')
+                ->type('#callback', 'http://copaco/callback')
+                ->type('#loginUsuario', '111111')
                 ->press('Login');
             // Início do teste crud
             //Create
             $browser->visit('/redes')
-                ->assertSee('Adicionar Rede')
+                ->Pause(5000)
+                ->assertSee('Nº de Redes Cadastradas:')
                 ->visit('/redes/create')
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
@@ -47,11 +48,18 @@ class RedeCrudTest extends DuskTestCase
 
             // Update
             $browser->visit("/redes/{$rede->id}/edit")
+                ->Pause(3000)
                 ->assertSee('Editar Rede')
                 ->type('nome', 'Rede Teste Editada')
                 ->press('Enviar Dados')
                 ->pause(1000)
                 ->assertSee('Rede Teste Editada');
+
+            // Gerar Keadhcp
+            $browser->visit("/config")
+                ->press('Gerar configuração Kea (JSON) - Redes segmentadas')
+                ->pause(2000)
+                ->assertSee('141.232.67.1');
 
             // Delete
             $browser->visit('/redes')

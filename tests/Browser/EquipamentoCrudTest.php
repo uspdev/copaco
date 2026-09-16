@@ -12,17 +12,19 @@ class EquipamentoCrudTest extends DuskTestCase
     public function test_equipamento_crud()
     {
         $this->browse(function (Browser $browser) {
-            // Login obrigatório
-            $browser->visit('/login')
-                ->clickLink('Faça login usando senha única USP!');
+            $browser->visit('/')
+                ->clickLink('login USP');
             $browser->waitFor('#loginUsuario')
-                ->type('#loginUsuario', '1111')
+                ->type('#callback', 'http://copaco/callback')
+                ->type('#loginUsuario', '111111')
                 ->press('Login');
             // Início do teste crud
             //Criação da rede para o teste do equipamento
             $browser->visit('/redes')
+                ->Pause(3000)
                 ->assertSee('Adicionar Rede')
                 ->visit('/redes/create')
+                ->Pause(3000)                
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
                 ->type('iprede', '141.232.67.0')
