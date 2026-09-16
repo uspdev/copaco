@@ -6,12 +6,11 @@ use App\Models\Rede;
 use App\Models\Equipamento;
 use App\Models\Config;
 use App\Utils\NetworkOps;
-use App\Utils\Utils;
-use IPTools\Network;
+use App\Actions\GenerateIdFromSubnet;
 
 class KeaService
 {
-    
+
      /* Estrutura base do Kea Dhcp4*/
 
     private function baseConfig(): array
@@ -100,6 +99,7 @@ class KeaService
 
         $config['Dhcp4']['subnet4'] = [
             [
+                'id' => 1,
                 'subnet' => "{$iprede}/{$cidr}",
                 'pools' => [
                     ['pool' => "{$rangeBegin} - {$rangeEnd}"],
@@ -161,11 +161,13 @@ class KeaService
                 $reservations[] = [
                     'hw-address' => $equip->macaddress,
                     'ip-address' => $equip->ip,
+                    'hostname'   => 'equipamento' . $equip->id,
                 ];
             }
         }
 
         return [
+            'id' => GenerateIdFromSubnet::execute($rede->iprede),
             'subnet' => $subnetCidr,
             'pools' => [
                 ['pool' => "{$rangeBegin} - {$rangeEnd}"],
@@ -193,6 +195,7 @@ class KeaService
                 $reservations[] = [
                     'hw-address' => $equip->macaddress,
                     'ip-address' => $ip,
+                    'hostname'   => 'equipamento' . $equip->id
                 ];
                 $ipsAlocados[] = $ip;
             }

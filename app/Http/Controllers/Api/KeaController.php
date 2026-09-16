@@ -29,7 +29,6 @@ class KeaController extends Controller
         }
     }
 
-
     public function uniquekeab(Request $request)
     {
         if ($request->consumer_deploy_key != config('copaco.consumer_deploy_key')) {
@@ -43,4 +42,5 @@ class KeaController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 }
