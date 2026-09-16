@@ -21,10 +21,10 @@ class EquipamentoCrudTest extends DuskTestCase
             // Início do teste crud
             //Criação da rede para o teste do equipamento
             $browser->visit('/redes')
-                ->Pause(3000)
+                ->waitForText('Adicionar Rede', 15)
                 ->assertSee('Adicionar Rede')
                 ->visit('/redes/create')
-                ->Pause(3000)                
+                ->waitForText('Cadastrar Rede', 15)
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
                 ->type('iprede', '141.232.67.0')
@@ -38,7 +38,7 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->select('shared_network', 'default')
                 ->check('active_dhcp')
                 ->press('Enviar Dados')
-                ->pause(1000)
+                ->waitForText('Rede Teste', 15)
                 ->assertSee('Rede Teste');
 
             $rede = Rede::latest()->first();
@@ -52,7 +52,7 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->select('rede_id', $rede->id)
                 ->type('descricao', 'Equipamento Teste')
                 ->press('Enviar')
-                ->pause(1000)
+                ->waitForText('Equipamento Teste', 15)
                 ->assertSee('Equipamento Teste');
 
             $equipamento =  Equipamento::latest()->first();
@@ -60,7 +60,7 @@ class EquipamentoCrudTest extends DuskTestCase
             // Read
             $browser->visit("/equipamentos/{$equipamento->id}")
                 ->visit("/equipamentos/{$equipamento->id}")
-                ->pause(1000)
+                ->waitForText('200.106504', 15)
                 ->assertSee('200.106504');
 
             // Update
@@ -68,22 +68,22 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->assertSee('Editar Equipamento')
                 ->type('patrimonio', '200.106505')
                 ->press('Enviar')
-                ->pause(1000)
+                ->waitForText('200.106505', 15)
                 ->assertSee('200.106505');
 
             // Delete
             $browser->visit('/equipamentos')
                 ->click("form[action$='/equipamentos/{$equipamento->id}'] button.delete-item")
                 ->acceptDialog()
-                ->pause(1000)
+                ->waitUntilMissingText('200.106505', 15)
                 ->assertDontSee('200.106505');
 
             // Deletar a rede criada para o teste
             $browser->visit('/redes')
                 ->click("form[action$='/redes/{$rede->id}'] button.delete-item")
                 ->acceptDialog()
-                ->pause(1000)
-                ->assertDontSee('Rede Teste Editada');
+                ->waitUntilMissingText('Rede Teste', 15)
+                ->assertDontSee('Rede Teste');
         });
     }
 }

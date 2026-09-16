@@ -16,13 +16,15 @@ class RedeCrudTest extends DuskTestCase
             $browser->waitFor('#loginUsuario')
                 ->type('#callback', 'http://copaco/callback')
                 ->type('#loginUsuario', '111111')
-                ->press('Login');
+                ->press('Login')
+                ->waitForText('você é super administrador', 15);
             // Início do teste crud
             //Create
             $browser->visit('/redes')
-                ->Pause(5000)
+                ->waitForText('Nº de Redes Cadastradas:', 15)
                 ->assertSee('Nº de Redes Cadastradas:')
                 ->visit('/redes/create')
+                ->waitForText('Cadastrar Rede', 15)
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
                 ->type('iprede', '141.232.67.0')
@@ -36,36 +38,36 @@ class RedeCrudTest extends DuskTestCase
                 ->select('shared_network', 'default')
                 ->check('active_dhcp')
                 ->press('Enviar Dados')
-                ->pause(1000)
+                ->waitForText('Rede Teste', 15)
                 ->assertSee('Rede Teste');
 
             $rede =  Rede::latest()->first();
 
             // Read
             $browser->visit("/redes/{$rede->id}")
-                ->pause(1000)
+                ->waitForText('Rede Teste', 15)
                 ->assertSee('Rede Teste');
 
             // Update
             $browser->visit("/redes/{$rede->id}/edit")
-                ->Pause(3000)
+                ->waitForText('Editar Rede', 15)
                 ->assertSee('Editar Rede')
                 ->type('nome', 'Rede Teste Editada')
                 ->press('Enviar Dados')
-                ->pause(1000)
+                ->waitForText('Rede Teste Editada', 15)
                 ->assertSee('Rede Teste Editada');
 
             // Gerar Keadhcp
             $browser->visit("/config")
                 ->press('Gerar configuração Kea (JSON) - Redes segmentadas')
-                ->pause(2000)
+                ->waitForText('141.232.67.1', 15)
                 ->assertSee('141.232.67.1');
 
             // Delete
             $browser->visit('/redes')
                 ->click("form[action$='/redes/{$rede->id}'] button.delete-item")
                 ->acceptDialog()
-                ->pause(1000)
+                ->waitUntilMissingText('Rede Teste Editada', 15)
                 ->assertDontSee('Rede Teste Editada');
         });
     }
