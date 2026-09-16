@@ -7818,20 +7818,20 @@
         },
         {
             "name": "uspdev/laravel-usp-theme",
-            "version": "2.8.30",
+            "version": "2.8.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/uspdev/laravel-usp-theme.git",
-                "reference": "a862e5ca192dd2f215f8f53dcbbfac89c8b81c2b"
+                "reference": "459eb72ca923714933a139a4990437de7f5daad0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/a862e5ca192dd2f215f8f53dcbbfac89c8b81c2b",
-                "reference": "a862e5ca192dd2f215f8f53dcbbfac89c8b81c2b",
+                "url": "https://api.github.com/repos/uspdev/laravel-usp-theme/zipball/459eb72ca923714933a139a4990437de7f5daad0",
+                "reference": "459eb72ca923714933a139a4990437de7f5daad0",
                 "shasum": ""
             },
             "require": {
-                "uspdev/cadastros-auxiliares-client": "^1.0"
+                "uspdev/cadastros-auxiliares-client": "^1"
             },
             "type": "library",
             "extra": {
@@ -7865,9 +7865,9 @@
             "description": "usp theme for laravel",
             "support": {
                 "issues": "https://github.com/uspdev/laravel-usp-theme/issues",
-                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.30"
+                "source": "https://github.com/uspdev/laravel-usp-theme/tree/2.8.41"
             },
-            "time": "2026-05-08T17:37:30+00:00"
+            "time": "2026-09-15T16:37:01+00:00"
         },
         {
             "name": "uspdev/senhaunica-socialite",
@@ -10597,5 +10597,5 @@
         "php": "^8.3"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
