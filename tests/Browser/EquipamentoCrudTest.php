@@ -25,7 +25,7 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->waitForText('Adicionar Rede', 30)
                 ->assertSee('Adicionar Rede')
                 ->visit('/redes/create')
-                ->waitFor('form[action="/redes"]', 30)
+                ->waitForText('Cadastrar Rede', 30)
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
                 ->type('iprede', '141.232.67.0')
@@ -46,7 +46,7 @@ class EquipamentoCrudTest extends DuskTestCase
 
             //Create
             $browser->visit('/equipamentos/create')
-                ->waitFor('form[action="/equipamentos"]', 30)
+                ->waitForText('Cadastro de Equipamento', 30)
                 ->type('patrimonio', '200.106504')
                 ->type('vencimento', '05/12/2032')
                 ->type('macaddress', 'AF:60:38:94:D8:D9')
