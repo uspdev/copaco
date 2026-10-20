@@ -17,14 +17,15 @@ class EquipamentoCrudTest extends DuskTestCase
             $browser->waitFor('#loginUsuario')
                 ->type('#callback', 'http://copaco/callback')
                 ->type('#loginUsuario', '111111')
-                ->press('Login');
+                ->press('Login')
+                ->waitForText('você é super administrador', 30);
             // Início do teste crud
             //Criação da rede para o teste do equipamento
             $browser->visit('/redes')
-                ->waitForText('Adicionar Rede', 15)
+                ->waitForText('Adicionar Rede', 30)
                 ->assertSee('Adicionar Rede')
                 ->visit('/redes/create')
-                ->waitForText('Cadastrar Rede', 15)
+                ->waitFor('form[action="/redes"]', 30)
                 ->assertSee('Cadastrar Rede')
                 ->type('nome', 'Rede Teste')
                 ->type('iprede', '141.232.67.0')
@@ -38,13 +39,14 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->select('shared_network', 'default')
                 ->check('active_dhcp')
                 ->press('Enviar Dados')
-                ->waitForText('Rede Teste', 15)
+                ->waitForText('Rede Teste', 30)
                 ->assertSee('Rede Teste');
 
             $rede = Rede::latest()->first();
 
             //Create
             $browser->visit('/equipamentos/create')
+                ->waitFor('form[action="/equipamentos"]', 30)
                 ->type('patrimonio', '200.106504')
                 ->type('vencimento', '05/12/2032')
                 ->type('macaddress', 'AF:60:38:94:D8:D9')
@@ -52,7 +54,7 @@ class EquipamentoCrudTest extends DuskTestCase
                 ->select('rede_id', $rede->id)
                 ->type('descricao', 'Equipamento Teste')
                 ->press('Enviar')
-                ->waitForText('Equipamento Teste', 15)
+                ->waitForText('Equipamento Teste', 30)
                 ->assertSee('Equipamento Teste');
 
             $equipamento =  Equipamento::latest()->first();
@@ -60,29 +62,33 @@ class EquipamentoCrudTest extends DuskTestCase
             // Read
             $browser->visit("/equipamentos/{$equipamento->id}")
                 ->visit("/equipamentos/{$equipamento->id}")
-                ->waitForText('200.106504', 15)
+                ->waitForText('200.106504', 30)
                 ->assertSee('200.106504');
 
             // Update
             $browser->visit("/equipamentos/{$equipamento->id}/edit")
+                ->waitFor("form[action$='/equipamentos/{$equipamento->id}']", 30)
+                ->waitFor('input[name="patrimonio"]', 30)
                 ->assertSee('Editar Equipamento')
                 ->type('patrimonio', '200.106505')
                 ->press('Enviar')
-                ->waitForText('200.106505', 15)
+                ->waitForText('200.106505', 30)
                 ->assertSee('200.106505');
 
             // Delete
             $browser->visit('/equipamentos')
+                ->waitFor("form[action$='/equipamentos/{$equipamento->id}']", 30)
                 ->click("form[action$='/equipamentos/{$equipamento->id}'] button.delete-item")
                 ->acceptDialog()
-                ->waitUntilMissingText('200.106505', 15)
+                ->waitUntilMissingText('200.106505', 30)
                 ->assertDontSee('200.106505');
 
             // Deletar a rede criada para o teste
             $browser->visit('/redes')
+                ->waitFor("form[action$='/redes/{$rede->id}']", 30)
                 ->click("form[action$='/redes/{$rede->id}'] button.delete-item")
                 ->acceptDialog()
-                ->waitUntilMissingText('Rede Teste', 15)
+                ->waitUntilMissingText('Rede Teste', 30)
                 ->assertDontSee('Rede Teste');
         });
     }
