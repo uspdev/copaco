@@ -17,7 +17,7 @@ Route::post('redes/migrate', [RedeController::class,'migrate_store']);
 # resources
 Route::resource('equipamentos', EquipamentoController::class);
 Route::resource('redes', RedeController::class);
-Route::resource('files', FileController::class);
+Route::resource('files', FileController::class)->only(['store','show','destroy']);
 
 # config
 Route::get('/config', [ConfigController::class, 'index']);
@@ -25,5 +25,5 @@ Route::post('/config', [ConfigController::class, 'config']);
 Route::post('/freeradius/sincronize', [FreeradiusController::class, 'sincronize']);
 Route::get('/excel', [EquipamentoController::class, 'excel'])->name('excel');
 
-# Logs  
+# Logs
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->middleware('can:admin');
